@@ -20,6 +20,7 @@
     "pre-commit.sh"
   ],
   "dependencies": {
+    "bootstrap": "~3.3.6",
     "nette.ajax.js": "~2.1.0",
     "jquery": ">=1.7.0"
   }
