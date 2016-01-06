@@ -1,0 +1,55 @@
+{var $title = "Error reporting"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/src/nette-extension/error.js"></script>
+    <script>
+    $(function(){
+        $("a.abort").on("click",function(){
+           var unique = $.nette.ext('unique');
+           unique.xhr.abort();
+           unique.xhr=null;
+        });
+    });
+    </script>
+{/define}
+
+
+{block #content}
+<p>
+	Catching errors after AJAX.
+</p>
+
+<p class="row">
+	<div class="col-md-4">
+		<a n:href="errorException!" class="btn btn-default">Run error</a>
+	</div>
+	<div class="col-md-8">
+		Shows error notification
+	</div>
+</p>
+<p class="row">
+	<div class="col-md-4">
+		<a n:href="badRequestException!" class="btn btn-default">Run bad request</a>
+	</div>
+	<div class="col-md-8">
+		Shows error notification
+	</div>
+</p>
+<p class="row">
+	<div class="col-md-4">
+		<a n:href="abortException!" class="btn btn-default">Run aborted request</a>
+	</div>
+	<div class="col-md-8">
+		Shows warning if was empty response
+	</div>
+</p>
+
+<p class="row">
+	<div class="col-md-4">
+		<a n:href="wait10Seconds!" class="btn btn-default">Run long time request</a>
+		<a href="#" class="btn btn-default abort">Aborted request</a>
+	</div>
+	<div class="col-md-8">
+		No error is thrown during abort of current request
+	</div>
+</p>

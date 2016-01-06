@@ -1,0 +1,512 @@
+/**
+ * Namespace for objects of pipas package
+ */
+var pipas = new function () {
+
+};
+
+/**
+ * Overlay management
+ * - Enables define overlay for multiple events for one target container
+ *
+ * @copyright Copyright (c) 2015 Petr štipek
+ * @license MIT
+ */
+(function ($, pipas) {
+    pipas.overlay = new function () {
+        var inner = {
+            parents: [],
+            getSelector: function (id) {
+                return (id && id != "body") ? "#" + id : "body";
+            },
+            getOverlay: function (parent) {
+                var parentSelector = this.getSelector(parent);
+                var $parent = $(parentSelector);
+                var $elm = $parent.find("> .pipas-overlay");
+                if (!$elm.length) {
+                    $elm = $('<div class="pipas-overlay"></div>');
+                    $parent.append($elm);
+                }
+                if ($parent.selector != "body") {
+                    $elm.css("zIndex", 998);
+                }
+                return $elm
+            },
+            setReserved: function ($elm, listObject) {
+                var array = $.map(listObject, function (value) {
+                    return [value];
+                });
+                $elm.attr("data-pipas-reserved", array.join(" "));
+            }
+        };
+        /**
+         * Show Overlay defined by ID in parent element
+         * @param id
+         * @param parent Parent ID
+         * @returns {*}
+         */
+        this.show = function (id, parent) {
+            var $elm = inner.getOverlay(parent);
+            var data = inner.parents[parent] || {idList: {}, elm: $elm};
+            data.idList[id] = id;
+            inner.parents[parent] = data;
+            $elm.show();
+            inner.setReserved($elm, data.idList);
+            return $elm;
+        };
+        /**
+         * Hide overlay order by id
+         * @param {string} id
+         */
+        this.hide = function (id) {
+            for (var par in inner.parents) {
+                if (inner.parents.hasOwnProperty(par) && inner.parents[par].idList[id]) {
+                    delete inner.parents[par].idList[id];
+                    if (Object.keys(inner.parents[par].idList).length == 0) {
+                        if(inner.parents[par].elm)inner.parents[par].elm.remove();
+                        delete inner.parents[par];
+                    } else {
+                        inner.setReserved(inner.parents[par].elm, inner.parents[par].idList);
+                    }
+                    break;
+                }
+            }
+        };
+        /**
+         * Cancel element despite of all allocated required
+         * @param parent
+         */
+        this.cancel = function (parent) {
+            if(inner.parents[parent]) {
+                inner.parents[parent].elm.remove();
+                delete inner.parents[parent];
+            }
+        }
+    };
+})(jQuery, pipas);
+/**
+ * Message modal window
+ *
+ * @copyright Copyright (c) 2015 Petr štipek
+ * @license MIT
+ */
+(function ($, window, overlay) {
+    pipas.message = new function () {
+        var inner = {
+            getContainer: function (identifier) {
+                return $(identifier ? "#" + identifier : "body");
+            },
+            getElement: function ($container) {
+                var $elm = $container.find("> .pipas-message");
+                if (!$elm.length) {
+                    $elm = $('<div class="modal pipas-message" role="dialog">'
+                        + '<div class="modal-dialog modal-sm"><div class="modal-content">'
+                        + '<div class="modal-header">'
+                        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Notifications</h4>'
+                        + '</div>'
+                        + '<div class="modal-body"></div>'
+                        + '</div>'
+                        + '</div></div>');
+                    $container.append($elm);
+                }
+                return $elm
+            },
+            supported:["info","success","danger","warning"]
+        };
+
+        this.showError = function (message, container) {
+            this.show(message, "danger", container);
+        };
+        this.showInfo = function (message, container) {
+            this.show(message, "info", container);
+        };
+        this.showSuccess = function (message, container) {
+            this.show(message, "success", container);
+        };
+        this.showWarning = function (message, container) {
+            this.show(message, "warning", container);
+        };
+        this.show = function (message, messageClass, container) {
+             if (messageClass === "error")messageClass = "danger";
+            else if (inner.supported.indexOf(messageClass)<0)messageClass = "info";
+
+            var $cnt = inner.getContainer(container);
+            var $elm = inner.getElement($cnt);
+
+            var $content = $elm.find(".modal-body");
+            overlay.show("message", container);
+
+            // message type wrapper
+            if ($content.find("> ." + messageClass + "s").length == 0) {
+                $content.append($("<div class='message-group " + messageClass + "s'></div>"));
+            }
+            //write message
+            var strong = messageClass == "danger" ? "Error" : messageClass.charAt(0).toUpperCase() + messageClass.slice(1);
+            var $existing = $content.find("> ." + messageClass + "s .alert span").filter(function () {
+                return $(this).text() == message;
+            });
+            if ($existing.length > 0) {
+                $existing.each(function () {
+                    var $alert = $(this).parent();
+                    var $badge = $alert.find("span.badge");
+                    if ($badge.length > 0) {
+                        $badge.text(parseInt($badge.text()) + 1);
+                    } else {
+                        $alert.find("strong").after(' <span class="badge">2</span> ');
+                    }
+                });
+            } else {
+                $content.find("> ." + messageClass + "s").append($("<div class='alert alert-" + messageClass + "'><strong>" + strong + "!</strong> <span>" + message + "</span></div>"));
+            }
+
+            // Check height overflow
+            var height = $(window).height();
+            if ($content.height() > height) {
+                $content.height(height - 150);
+            }
+
+            if (!$elm.is(":visible")) {
+                $elm.fadeIn();
+            }
+
+            var that = this;
+            var hideCallback = function () {
+                that.hide(container);
+            };
+            // Close event
+            $(".pipas-message")
+                .off("click", hideCallback)
+                .on("click", hideCallback);
+            //Enter key
+            $(document).on("keydown", function (event) {
+                if (event.keyCode == 13) {
+                    $(".pipas-message button").trigger('click');
+                }
+            });
+            return $elm;
+        };
+        this.hide = function (container) {
+            var $cnt = inner.getContainer(container);
+            var $elm = inner.getElement($cnt);
+            overlay.hide("message", container);
+            $elm.remove();
+        };
+
+
+    };
+})(jQuery, window, pipas.overlay);
+/**
+ * User messages management
+ *
+ * @copyright Copyright (c) 2015 Petr štipek
+ * @license MIT
+ */
+(function ($, pipas) {
+    if (!pipas.overlay)console.error("Overlay must be declared before spinner", pipas);
+
+    pipas.spinner = new function () {
+        var inner = {
+            parents: {},
+            getSelector: function (id) {
+                return (id && id != "body") ? "#" + id : "body";
+            },
+            createSpinner: function (parent) {
+                var parentSelector = this.getSelector(parent);
+                var $parent = $(parentSelector).css("position", "relative");
+                var $spinner = $parent.find("> .pipas-spinner");
+                if (!$spinner.length) {
+                    $spinner = $('<div class="pipas-spinner"><svg viewBox="0 -256 1792 1792"><defs id="defs3033"/><g transform="matrix(1,0,0,-1,121.49153,1315.7966)" id="g3027"><path d="M 496,192 Q 496,132 453.5,90 411,48 352,48 q -60,0 -102,42 -42,42 -42,102 0,60 42,102 42,42 102,42 59,0 101.5,-42 Q 496,252 496,192 z M 928,0 Q 928,-53 890.5,-90.5 853,-128 800,-128 747,-128 709.5,-90.5 672,-53 672,0 672,53 709.5,90.5 747,128 800,128 853,128 890.5,90.5 928,53 928,0 z M 320,640 Q 320,574 273,527 226,480 160,480 94,480 47,527 0,574 0,640 q 0,66 47,113 47,47 113,47 66,0 113,-47 47,-47 47,-113 z M 1360,192 q 0,-46 -33,-79 -33,-33 -79,-33 -46,0 -79,33 -33,33 -33,79 0,46 33,79 33,33 79,33 46,0 79,-33 33,-33 33,-79 z M 528,1088 Q 528,1015 476.5,963.5 425,912 352,912 279,912 227.5,963.5 176,1015 176,1088 q 0,73 51.5,124.5 51.5,51.5 124.5,51.5 73,0 124.5,-51.5 Q 528,1161 528,1088 z m 464,192 q 0,-80 -56,-136 -56,-56 -136,-56 -80,0 -136,56 -56,56 -56,136 0,80 56,136 56,56 136,56 80,0 136,-56 56,-56 56,-136 z m 544,-640 q 0,-40 -28,-68 -28,-28 -68,-28 -40,0 -68,28 -28,28 -28,68 0,40 28,68 28,28 68,28 40,0 68,-28 28,-28 28,-68 z m -208,448 q 0,-33 -23.5,-56.5 -23.5,-23.5 -56.5,-23.5 -33,0 -56.5,23.5 -23.5,23.5 -23.5,56.5 0,33 23.5,56.5 23.5,23.5 56.5,23.5 33,0 56.5,-23.5 23.5,-23.5 23.5,-56.5 z" id="path3029" style="fill:currentColor"/> </g></svg></div>');
+                    $spinner.appendTo($parent);
+                }
+                return $spinner;
+            },
+            setReserved: function ($elm, listObject) {
+                var array = $.map(listObject, function (value) {
+                    return [value];
+                });
+                $elm.attr("data-pipas-reserved", array.join(" "));
+            }
+        };
+        /**
+         * Show spinner with overlay defined by id on parent element
+         * @param id
+         * @param parent Parent ID
+         */
+        this.show = function (id, parent) {
+            if (!parent)parent = "body";
+            var $elm = inner.createSpinner(parent).show();
+            var data = inner.parents[parent] || {idList: {}, elm: $elm};
+            data.idList[id] = id;
+            inner.parents[parent] = data;
+            pipas.overlay.show(id, parent);
+            if (parent != "body") {
+                $elm.css("zIndex", 999);
+            }
+
+            inner.setReserved($elm, data.idList);
+        };
+        /**
+         * Hide overlay order by id
+         * @param {string} id
+         */
+        this.hide = function (id) {
+            for (var par in inner.parents) {
+                if (inner.parents.hasOwnProperty(par) && inner.parents[par].idList[id]) {
+                    delete inner.parents[par].idList[id];
+                    if (Object.keys(inner.parents[par].idList).length == 0) {
+                        if (inner.parents[par].elm)inner.parents[par].elm.remove();
+                        delete inner.parents[par];
+                    } else {
+                        inner.setReserved(inner.parents[par].elm, inner.parents[par].idList);
+                    }
+                    break;
+                }
+            }
+            pipas.overlay.hide(id);
+        };
+        /**
+         * Cancel element despite of all allocated required
+         * @param {string} parent
+         * @returns Element
+         */
+        this.cancel = function (parent) {
+            if (inner.parents[parent]) {
+                inner.parents[parent].elm.remove();
+                delete inner.parents[parent];
+            }
+            pipas.overlay.cancel(parent);
+        }
+    };
+})(jQuery, pipas);
+/**
+ * URL address management
+ *
+ * @copyright Copyright (c) 2015 Petr štipek
+ * @license MIT
+ */
+(function (history, pipas) {
+    pipas.url = {
+        stateTypeName: "pipasAjax",
+        creanedParameters: ["_fid"],
+        history: [],
+        baseUrl: "/",
+        /**
+         * Cleanse the URL from unnecessary parameters
+         * @param {string} url
+         * @returns {string}
+         */
+        clean: function (url) {
+            for (var key in this.creanedParameters) {
+
+                url = this.remove(url, this.creanedParameters[key]);
+            }
+            return url;
+        },
+        /**
+         * Append new parameter to url or override old value
+         * @param {string} url
+         * @param {string} param
+         * @param {string} value
+         * @returns {Boolean|string}
+         */
+        append: function (url, param, value) {
+            var params = this.separeParams(url);
+            params[param] = value;
+            return this.getPureUrl(url) + "?" + this.joinParams(params);
+        },
+        /**
+         * Appends parameters to url from another url
+         * @param {string} url
+         * @param {string} data
+         * @returns {Boolean|string}
+         */
+        appendData: function (url, data) {
+            var params = this.separeParams(url);
+            var array2 = this.separeParams(decodeURI(data));
+
+            for (var i in array2) {
+                params[i] = array2[i];
+            }
+            url = this.getPureUrl(url);
+            if (Object.keys(params).length === 0)
+                return url;
+            return url + "?" + this.joinParams(params);
+        },
+        /**
+         * Search parameter value
+         * @param {string} url
+         * @param {string} param
+         * @returns {null|string}
+         */
+        search: function (url, param) {
+            if (typeof url === 'string' && typeof param === 'string') {
+                var params = this.separeParams(url);
+                for (var i in params) {
+                    if (i === param)
+                        return params[i];
+                }
+            }
+            return null;
+        },
+        /**
+         * Remove parameter from URL
+         * @param {string} url
+         * @param {string} param
+         * @returns {string}
+         */
+        remove: function (url, param) {
+            if (typeof url === 'string' && typeof param === 'string') {
+                var params = this.separeParams(url);
+                for (var i in params) {
+                    if (i === param) {
+                        delete params[i];
+                    }
+                }
+                if (Object.keys(params).length === 0)
+                    return this.getPureUrl(url);
+                url = this.getPureUrl(url) + "?" + this.joinParams(params);
+            }
+            return url;
+        },
+        /**
+         * Change current url address to defined
+         * @param {type} url
+         * @returns {undefined}
+         */
+        changeTo: function (url) {
+            if (!url) {
+                url = "/";
+            } else {
+                url = this.clean(url);
+            }
+            var last = this.history.pop();
+            if (last !== url) {
+                this.history.push(last);
+            }
+            this.history.push(url);
+            if (history && history.pushState) {
+
+                if (history.state && history.state.url && history.state.url === url)
+                    return;
+                history.pushState({
+                    type: this.stateTypeName,
+                    url: url
+                }, null, url);
+            }
+            else {
+                console.error("an not write URL");
+            }
+        },
+        /**
+         * finds the parameter value in the data, which are acquired from GET
+         * @param {string} getData
+         * @param {string} param
+         * @returns {string|bool} String or False
+         */
+        searchFromData: function (getData, param) {
+            getData = decodeURI(getData);
+            if (typeof getData === 'string' && typeof param === 'string') {
+                var pair;
+                var b = getData.split("&");
+                for (i in b) {
+                    pair = b[i].split("=");
+                    if (pair[0] === param) {
+                        return pair[1];
+                    }
+                }
+            }
+            return false;
+        },
+        /**
+         * Returns URL without parameters
+         * @param {string} url
+         * @returns {string}
+         */
+        getPureUrl: function (url) {
+            if (typeof url === 'string') {
+                var base = url.split("?");
+                return base[0];
+            }
+            return "";
+        },
+        /**
+         * Gets parameters from URL as array
+         * @param {string} url
+         * @returns {array} asociativní pole
+         */
+        separeParams: function (url) {
+            var list = [];
+            if (typeof url === 'string') {
+                var base = url.split("?");
+                var params = base[base.length - 1];
+                var pair, pairs = params.split("&");
+                var ai = 0;//array iterator
+                for (var i in pairs) {
+                    if (pairs[i] !== "") {
+                        pair = pairs[i].split("=");
+                        if (pair[1]) {
+                            if (pair[0].indexOf("[]") !== -1) {
+                                //parametrem je pole, tak se z 'param[]' udělá 'param[cislo]'
+                                pair[0] = pair[0].substring(0, pair[0].length - 2) + "[" + ai + "]";
+                                ai++;
+                            }
+                            list[pair[0]] = pair[1];
+                        }
+                    }
+                }
+            }
+            return list;
+        },
+        /**
+         * oint parameters to GET string
+         * @param {array} params
+         * @returns {string}
+         */
+        joinParams: function (params) {
+            var url = "";
+            if (Array.isArray(params)) {
+                for (var i in params) {
+                    if (url !== "")
+                        url += "&";
+                    url += i + "=" + params[i];
+                }
+            }
+            return url;
+        },
+        /**
+         * Current document URL
+         * @returns {string}
+         */
+        getCurrent: function () {
+            return document.location.href;
+        }
+
+    };
+    if (!history.state) {
+        history.replaceState({
+            type: pipas.url.stateTypeName
+        }, null, document.location);
+    }
+})(history, pipas);
+/**
+ * Utilities and helpers
+ *
+ * @copyright Copyright (c) 2015 Petr štipek
+ * @license MIT
+ */
+(function (pipas) {
+    pipas.utils = {
+        /**
+         * Make clone of object
+         * @param {mixed} object
+         * @returns {mixed}
+         */
+        clone: function (object) {
+            if (object) {
+                return (JSON.parse(JSON.stringify(object)));
+            }
+            return object;
+        }
+    }
+})(pipas);

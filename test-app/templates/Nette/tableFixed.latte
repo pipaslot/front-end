@@ -1,0 +1,39 @@
+{var $title = "Fixed table header"}
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/src/nette-extension/table-fixedHeader.js"></script>
+{/define}
+
+
+{block #content}
+<table class="table table-striped table-bordered table-fixedHeader">
+	<thead class="bg-warning">
+		<tr>
+			<td>PČ DTB</td>
+            <td>OBJ</td>
+            <td>IČO</td>
+            <td>Název</td>
+            <td>Kontaktní osoba</td>
+            <td>Telefon</td>
+            <td>Provozovna adresa</td>
+            <td>Umístění váhy</td>
+            <td>Popis váhy</td>
+            <td>Ostatní poznámky k zakázce</td>
+            <td>Zakázka přeložena datum</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr n:for="$i=1;$i<100;$i++">
+			<td>{$i}</td>
+			<td>52</td>
+			<td>12344567</td>
+			<td>Název</td>
+			<td>Kontaktní osoba</td>
+			<td>Telefon</td>
+			<td>Provozovna adresa</td>
+			<td>Umístění váhy</td>
+			<td>Popis váhy</td>
+			<td>Ostatní poznámky k zakázce</td>
+			<td>Zakázka přeložena datum</td>
+		</tr>
+	</tbody>
+</table>

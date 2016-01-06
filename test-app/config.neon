@@ -1,0 +1,27 @@
+extensions:
+
+parameters:
+
+php:
+	date.timezone: Europe/Prague
+
+application:
+	mapping:
+		*: App\*Presenter
+session:
+	expiration: 14 days
+	debugger: true
+
+di:
+	debugger: false
+
+routing:
+    debugger: true
+    routes:
+    	index.php: Dashboard:default
+    	'<presenter>/<action>[/<id>]': Nette:default
+
+services:
+	cacheStorage:		Nette\Caching\Storages\FileStorage(%tempDir%)
+
+	- Pipas\Forms\FormFactory

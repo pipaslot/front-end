@@ -1,0 +1,19 @@
+.pipas-message .modal-body {
+    margin: 15px 0 15px 15px;
+    overflow: auto;
+    padding: 0 15px 0 0;
+    position: relative;
+}
+
+.pipas-message .alert {
+    margin-bottom: 10px;
+}
+
+.pipas-message .message-group:last-of-type .alert:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Data dumped though AJAX to the flash message by presenter method dump($data) */
+.pipas-message .nette-dump {
+    font-size: 8pt;
+}

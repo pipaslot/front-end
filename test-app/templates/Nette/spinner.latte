@@ -1,0 +1,96 @@
+{var $title = "Spinner"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/src/nette-extension/spinner.js"></script>
+    <script>
+    $.nette.ext("unique",false); //Disable extension unque
+    function loadNoSpinner(){
+        $.nette.ajax({
+            url: {link invalidate! text1},
+            spinner:{
+				show: false
+             }
+        });
+    }
+    function loadOnParent(){
+        $.nette.ajax({
+            url: {link invalidate! text1,1},
+            spinner:{
+                parent: {$control->getSnippetId('text1')}
+             }
+        });
+    }
+    function loadLongTimeMultiple(){
+            $.nette.ajax({
+                url: {link invalidate! text1,5},
+                spinner:{
+                    parent: "snippet-parent",//id if snippet parent prevent remove spinner by first request
+                    id: Math.random()*1000
+                 }
+            });
+        }
+    </script>
+{/define}
+
+{define styles}
+{/define}
+
+{define snippetText}
+	<div class="panel-body">
+		{ifset $redrawSnippets[$name]}
+			<p>time: {date("H:i:s")}</p>
+			<p>ajax: {if $presenter->isAjax()}ANO{else}NE{/if}</p>
+		    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend, arcu eu pretium sagittis, diam nulla scelerisque urna, sed scelerisque dui lorem eu ligula. In hac habitasse platea dictumst. Duis tincidunt arcu placerat, ultricies orci ut, semper lacus. Proin eu cursus urna, ut tincidunt odio. Maecenas et dolor non felis mattis tempor. Sed nisi mi, faucibus sit amet malesuada et, malesuada a nulla. Aliquam erat volutpat. Etiam ultricies sollicitudin quam, sed sagittis eros interdum vitae. Pellentesque pretium nunc non accumsan congue.</p>
+		{/ifset}
+	</div>
+{/define}
+
+{block #content}
+<p>
+	Spinner is called on press key F5 or CTRL + F5 or if browser refresh is called (page unload).
+</p>
+<p>
+	If multiple request are runned sith spinner on snippet, the first resul remove spinner element from them. For preventing apply spinner to snippet parent
+</p>
+
+<h2>Anchors</h2>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a n:href="invalidate! text1, 1" class="btn btn-default">On body</a>
+		<a n:href="invalidate! text1, 1" class="btn btn-default" data-spinner="{$control->getSnippetId('text1')}">On target element</a>
+		<a n:href="invalidate! text1" class="btn btn-default no-spinner">No spinner</a>
+		<br>
+		<a href="javascript:loadNoSpinner();" class="btn btn-default no-ajax">JS no-spinner</a>
+		<a href="javascript:loadOnParent();" class="btn btn-default no-ajax">JS On target element</a>
+		<a href="javascript:loadLongTimeMultiple();" class="btn btn-default no-ajax">JS On target element callable multiple</a>
+	</div>
+	<div id="snippet-parent">
+	{snippet text1}
+		{include snippetText name=>text1}
+	{/snippet}
+	</div>
+</div>
+
+<h2>Forms</h2>
+<div class="panel panel-default">
+	<div class="panel-body row">
+		<div class="col-md-4">
+			<h3>Spinner on body</h3>
+			<div n:snippet="formSpinnerBody">
+                {control formSpinnerBody}
+            </div>
+		</div>
+		<div class="col-md-4">
+			<h3>Spinner on snippet via form</h3>
+			<div n:snippet="formSpinnerSnippetViaForm">
+	            {control formSpinnerSnippetViaForm}
+	        </div>
+		</div>
+		<div class="col-md-4">
+			<h3>Spinner on snippet via button</h3>
+			<div n:snippet="formSpinnerSnippetViaButton">
+	            {control formSpinnerSnippetViaButton}
+	        </div>
+		</div>
+	</div>
+</div>

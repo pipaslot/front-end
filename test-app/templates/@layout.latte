@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Petr Štipek, p.stipek@email.cz">
+		<title>{ifset $title}{$title} | {/ifset}Front-end</title>
+
+        <link rel="stylesheet" href="{$basePath}/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{$basePath}/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{$basePath}/dist/pipas.css">
+	</head>
+
+	<body style="padding-top:50px">
+	<nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+             <a class="navbar-brand" href="#">Library tests</a>
+             <ul class="nav navbar-nav">
+                <li><a class="no-ajax" n:href="Nette:init">Nette-init</a></li>
+                <li><a class="no-ajax" n:href="Nette:error">Nette-error</a></li>
+                <li><a class="no-ajax" n:href="Nette:message">Nette-message</a></li>
+                <li><a class="no-ajax" n:href="Nette:redirect">Nette-redirect</a></li>
+                <li><a class="no-ajax" n:href="Nette:spinner">Nette-spinner</a></li>
+                <li><a class="no-ajax" n:href="Nette:tableFixed">Nette-table-fixed</a></li>
+                <li><a class="no-ajax" n:href="Nette:unique">Nette-unique</a></li>
+            </ul>
+        </div>
+    </nav>
+
+	<div class="container" n:snippet="content">
+		<div class="flashMessages">
+			<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type">{$flash->message|noescape}</div>
+		</div>
+		{ifset $title}<h1>{$title}</h1>{/ifset}
+		{include content}
+	</div>
+	<script type="text/javascript" src="{$basePath}/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="{$basePath}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{$basePath}/bower_components/nette.ajax.js/nette.ajax.js"></script>
+    <script type="text/javascript" src="{$basePath}/dist/pipas.js"></script>
+    {block scripts}
+    {/block}
+    <script type="text/javascript" src="{$basePath}/dist/nette-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "pipaslot-front-end",
+  "license": "MIT",
+  "keywords": [
+    "nette",
+    "ajax",
+    "front-end",
+    "javascript",
+    "jquery"
+  ],
+  "ignore": [
+    "node_modules",
+    "test-app"
+  ],
+  "dependencies": {
+    "nette.ajax.js": "~2.1.0",
+    "jquery": ">=1.7.0"
+  }
+}

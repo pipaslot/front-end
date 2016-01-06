@@ -1,0 +1,68 @@
+{var $title = "Unique requests"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/src/nette-extension/unique.js"></script>
+    <script>
+	function abortSame(){
+	    $.nette.ajax({
+	        url: {link invalidate! text1, 7},
+	    });
+	}
+	 function callableMultipple(){
+	    $.nette.ajax({
+	        url: {link invalidate! text1, 6},
+	        unique:false
+	    });
+	}
+	 function abortAll(){
+	    $.nette.ajax({
+	        url: {link invalidate! text1, 5},
+	        unique:true
+	    });
+	}
+	 function abortByKey(){
+	    $.nette.ajax({
+	        url: {link invalidate! text1, 5},
+	        unique:"jsUniqueKey"
+	    });
+	}
+    </script>
+{/define}
+
+{define styles}
+{/define}
+
+{define snippetText}
+	<div class="panel-body">
+		{ifset $redrawSnippets[$name]}
+			<p>time: {date("H:i:s")}</p>
+			<p>ajax: {if $presenter->isAjax()}ANO{else}NE{/if}</p>
+		    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend, arcu eu pretium sagittis, diam nulla scelerisque urna, sed scelerisque dui lorem eu ligula. In hac habitasse platea dictumst. Duis tincidunt arcu placerat, ultricies orci ut, semper lacus. Proin eu cursus urna, ut tincidunt odio. Maecenas et dolor non felis mattis tempor. Sed nisi mi, faucibus sit amet malesuada et, malesuada a nulla. Aliquam erat volutpat. Etiam ultricies sollicitudin quam, sed sagittis eros interdum vitae. Pellentesque pretium nunc non accumsan congue.</p>
+		{/ifset}
+	</div>
+{/define}
+
+{block #content}
+
+
+<h2>Anchors</h2>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a n:href="invalidate! text1, 7" class="btn btn-default">Call and abort same</a>
+		<a n:href="invalidate! text1, 6" class="btn btn-default no-unique">Can call more than once</a>
+		<a n:href="invalidate! text1, 5" class="btn btn-default unique">Call unique and abort all</a>
+		<a n:href="invalidate! text1, 5" class="btn btn-default" data-unique="uniqueKey">Aborted by key 1/2</a>
+		<a n:href="invalidate! text1, 5" class="btn btn-default" data-unique="uniqueKey">Aborted by key 2/2 (same as previous)</a>
+		<br>
+		<a href="javascript:abortSame();" class="btn btn-default">JS: Call and abort same</a>
+		<a href="javascript:callableMultipple();" class="btn btn-default">JS: Can call more than once</a>
+		<a href="javascript:abortAll();" class="btn btn-default">JS: Call unique and abort all</a>
+		<a href="javascript:abortByKey();" class="btn btn-default">JS: Aborted by key 1/2</a>
+		<a href="javascript:abortByKey();" class="btn btn-default">JS: Aborted by key 2/2 (same as previous)</a>
+	</div>
+	<div id="snippet-parent">
+	{snippet text1}
+		{include snippetText name=>text1}
+	{/snippet}
+	</div>
+</div>

@@ -1,0 +1,17 @@
+{var $title = "Redirections history"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/src/nette-extension/redirect.js"></script>
+{/define}
+
+{block #content}
+<h2>Redirection with AJAX</h2>
+<p>
+	You were redirected to this page via AJAX. Try to go back by browser history back button.
+</p>
+<p>
+	If you were redirected without AJAX, you had forgotten call invalidation on target page if ajax request was sent.
+</p>
+
+
+

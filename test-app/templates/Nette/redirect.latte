@@ -1,0 +1,22 @@
+{var $title = "Redirections"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/src/nette-extension/redirect.js"></script>
+{/define}
+
+{block #content}
+<p>
+	<a class="btn btn-default" n:href="redirectToPage2!">Redirect to init page from server</a>
+</p>
+<p>
+	<a class="btn btn-default" n:href="redirectToPage3!">Redirect without ajax, because server will returns plain HTML</a>
+</p>
+<p>
+	<a class="btn btn-default no-redirect" n:href="redirectToPage2!">Call request but ignore redirect</a>
+</p>
+<p>
+	<a class="btn btn-default" n:href="redirectToFailing!">Call failing request without current url redirection</a>
+</p>
+<p>
+	<a class="btn btn-default" n:href="redirectWithoutAjax!">Canceled AJAX redirection, because server sent <code>payload.noAjax=true</code></a>
+</p>

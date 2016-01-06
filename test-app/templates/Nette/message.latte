@@ -1,0 +1,42 @@
+{var $title = "Notification"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/src/nette-extension/message.js"></script>
+{/define}
+
+{define styles}
+	<link rel="stylesheet" href="{$basePath}/src/nette-extension/message.css"/>
+{/define}
+
+
+{block #content}
+<p>
+	Parsing Nette flash messages from HTMl and show them to modal dialog. Accepted jQuery selector patterns:
+	<ul>
+		<li><code>.flashMessages .alert-error</code> - as <span class="bg-danger">danger</span></li>
+		<li><code>.flashMessages .alert-danger</code> - as <span class="bg-danger">danger</span></li>
+		<li><code>.flashMessages .alert-info</code> - as <span class="bg-info">info</span></li>
+		<li><code>.flashMessages .alert-success</code> - as <span class="bg-success">success</span></li>
+		<li><code>.flashMessages .alert-warning</code> - as <span class="bg-warning">warning</span></li>
+		<li><code>form .alert-danger</code> - as <span class="bg-danger">danger</span></li>
+	</ul>
+</p>
+{snippet flashes}
+	<div class="flashMessages">
+		<div class="alert alert-error">1. error message of 5</div>
+		<div class="alert alert-danger">2. danger message of 5</div>
+		<div class="alert alert-info">3. info message of 5</div>
+		<div class="alert alert-success">4. success message of 5</div>
+		<div class="alert alert-warning">5. warning message of 5</div>
+	</div>
+{/snippet}
+
+<h2>Load from snippets</h2>
+<p>
+	<a n:href="flashMessages!" class="btn btn-default">Parse flash messages from response</a>
+</p>
+
+<h2>Load from snippets contains form</h2>
+<div n:snippet="formAjax">
+    {control formAjax}
+</div>

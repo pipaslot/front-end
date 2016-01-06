@@ -1,0 +1,30 @@
+{
+  "name": "pipaslot/front-end",
+  "description": "Front-end and AJAX libraries",
+  "keywords": [
+    "nette",
+    "ajax",
+    "front-end",
+    "javascript",
+    "jquery"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Petr Štipek",
+      "email": "pipaslot@seznam.cz"
+    }
+  ],
+  "config": {
+    "vendor-dir": "test-app/vendor"
+  },
+  "autoload": {
+    "classmap": [
+      "test-app/"
+    ]
+  },
+  "require-dev": {
+    "nette/nette": "^2.3",
+    "pipaslot/forms": "^1.0"
+  }
+}
