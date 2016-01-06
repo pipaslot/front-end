@@ -1,0 +1,6 @@
+bower_components/
+node_modules/
+test-app/log/
+test-app/temp/
+test-app/vendor/
+composer.lock

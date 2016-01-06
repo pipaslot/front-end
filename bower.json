@@ -9,8 +9,12 @@
     "jquery"
   ],
   "ignore": [
+    "bowel_components",
     "node_modules",
-    "test-app"
+    "test-app",
+    ".htaccess",
+    "composer.json",
+    "composer.lock"
   ],
   "dependencies": {
     "nette.ajax.js": "~2.1.0",
