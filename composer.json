@@ -26,5 +26,14 @@
   "require-dev": {
     "nette/nette": "^2.3",
     "pipaslot/forms": "^1.0"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php -r \"@mkdir(__DIR__.'/test-app/log');\"",
+      "php -r \"@mkdir(__DIR__.'/test-app/temp');\"",
+      "npm install",
+      "grunt",
+      "bower install"
+    ]
   }
 }
