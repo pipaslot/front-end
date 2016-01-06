@@ -12,9 +12,12 @@
     "bowel_components",
     "node_modules",
     "test-app",
+    ".gitignore",
     ".htaccess",
     "composer.json",
-    "composer.lock"
+    "composer.lock",
+    "index.php",
+    "pre-commit.sh"
   ],
   "dependencies": {
     "nette.ajax.js": "~2.1.0",
