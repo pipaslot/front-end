@@ -18,7 +18,7 @@
  *
  * Abort is called to if ESC is pressed
  */
-(function ($, document,pipas) {
+(function ($, document) {
     $.nette.ext('unique', false);
     $.nette.ext('unique', {
         init: function () {
@@ -85,4 +85,4 @@
             }
         }
     });
-})(jQuery, document,pipas);
+})(jQuery, document);

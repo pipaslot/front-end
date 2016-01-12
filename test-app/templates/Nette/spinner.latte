@@ -73,24 +73,34 @@
 
 <h2>Forms</h2>
 <div class="panel panel-default">
-	<div class="panel-body row">
-		<div class="col-md-4">
-			<h3>Spinner on body</h3>
-			<div n:snippet="formSpinnerBody">
-                {control formSpinnerBody}
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-4">
+				<h3>Spinner on body</h3>
+				<div n:snippet="formSpinnerBody">
+	                {control formSpinnerBody}
+	            </div>
+			</div>
+			<div class="col-md-4">
+				<h3>Spinner on snippet via form</h3>
+				<div n:snippet="formSpinnerSnippetViaForm">
+		            {control formSpinnerSnippetViaForm}
+		        </div>
+			</div>
+			<div class="col-md-4">
+				<h3>Spinner on snippet via button</h3>
+				<div n:snippet="formSpinnerSnippetViaButton">
+		            {control formSpinnerSnippetViaButton}
+		        </div>
+			</div>
+		</div>
+		<div class="row">
+            <div class="col-md-4">
+                <h3>No spinner</h3>
+                <div n:snippet="formNoSpinner">
+                    {control formNoSpinner}
+                </div>
             </div>
-		</div>
-		<div class="col-md-4">
-			<h3>Spinner on snippet via form</h3>
-			<div n:snippet="formSpinnerSnippetViaForm">
-	            {control formSpinnerSnippetViaForm}
-	        </div>
-		</div>
-		<div class="col-md-4">
-			<h3>Spinner on snippet via button</h3>
-			<div n:snippet="formSpinnerSnippetViaButton">
-	            {control formSpinnerSnippetViaButton}
-	        </div>
-		</div>
+        </div>
 	</div>
 </div>

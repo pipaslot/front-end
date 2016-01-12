@@ -120,7 +120,7 @@ class NettePresenter extends BasePresenter
 		$form->setDefaults(array(
 			"snippet" => "formSpinnerBody"
 		));
-		$form->onSubmit[] = array($this,"formSleep");
+		$form->onSubmit[] = array($this, "formSleep");
 		return $form;
 	}
 
@@ -134,9 +134,10 @@ class NettePresenter extends BasePresenter
 		$form->setDefaults(array(
 			"snippet" => $snippet
 		));
-		$form->onSubmit[] = array($this,"formSleep");
+		$form->onSubmit[] = array($this, "formSleep");
 		return $form;
 	}
+
 	protected function createComponentFormSpinnerSnippetViaButton()
 	{
 		$snippet = "formSpinnerSnippetViaButton";
@@ -147,11 +148,27 @@ class NettePresenter extends BasePresenter
 		$form->setDefaults(array(
 			"snippet" => $snippet
 		));
-		$form->onSubmit[] = array($this,"formSleep");
+		$form->onSubmit[] = array($this, "formSleep");
 		return $form;
 	}
-	public function formSleep(Form $form){
 
+	protected function createComponentFormNoSpinner()
+	{
+		$snippet = "formNoSpinner";
+		$form = $this->createForm();
+		$form->elementPrototype->class[] = "no-spinner";
+		$form['submit']->controlPrototype->addAttributes(array(
+			"data-spinner" => $this->getSnippetId($snippet)
+		));
+		$form->setDefaults(array(
+			"snippet" => $snippet
+		));
+		$form->onSubmit[] = array($this, "formSleep");
+		return $form;
+	}
+
+	public function formSleep(Form $form)
+	{
 		sleep(1);
 	}
 

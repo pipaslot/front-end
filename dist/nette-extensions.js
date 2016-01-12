@@ -168,6 +168,12 @@
                             settings.spinner.show = false;
                             return;
                         }
+                        if (settings.nette.form && settings.nette.form.hasClass("no-spinner")) {
+                            settings.spinner.show = false;
+                            return;
+                        }
+                        // Find no-spinner on form
+
                         // Try find data-spinner
                         var parent = $elm.data("spinner");//On element occurred dispatch (anchor o form button)
                         if (parent) {
@@ -318,7 +324,7 @@
  *
  * Abort is called to if ESC is pressed
  */
-(function ($, document,pipas) {
+(function ($, document) {
     $.nette.ext('unique', false);
     $.nette.ext('unique', {
         init: function () {
@@ -385,4 +391,4 @@
             }
         }
     });
-})(jQuery, document,pipas);
+})(jQuery, document);

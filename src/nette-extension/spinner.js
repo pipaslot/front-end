@@ -43,6 +43,12 @@
                             settings.spinner.show = false;
                             return;
                         }
+                        if (settings.nette.form && settings.nette.form.hasClass("no-spinner")) {
+                            settings.spinner.show = false;
+                            return;
+                        }
+                        // Find no-spinner on form
+
                         // Try find data-spinner
                         var parent = $elm.data("spinner");//On element occurred dispatch (anchor o form button)
                         if (parent) {
