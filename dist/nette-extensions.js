@@ -149,9 +149,6 @@
                     spinner.show("CTRL+F5");
                 }
             });
-            $(window).on("beforeunload", function () {
-                spinner.show("refreshDocument");
-            });
             // Force hide spinner after initialization
             spinner.cancel();
         },
