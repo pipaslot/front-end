@@ -170,7 +170,6 @@
                         }
                         // Try find data-spinner
                         var parent = $elm.data("spinner");//On element occurred dispatch (anchor o form button)
-                        console.log($elm, parent);
                         if (parent) {
                             settings.spinner.parent = parent;
                         } else if (settings.nette.form) {
