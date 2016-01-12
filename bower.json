@@ -9,14 +9,12 @@
     "jquery"
   ],
   "ignore": [
-    "bowel_components",
+    "demo",
     "node_modules",
-    "test-app",
+    ".bowerrc",
     ".gitignore",
-    ".htaccess",
     "composer.json",
     "composer.lock",
-    "index.php",
     "pre-commit.sh"
   ],
   "dependencies": {

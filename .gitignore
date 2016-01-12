@@ -1,6 +1,6 @@
 bower_components/
 node_modules/
-test-app/log/
-test-app/temp/
-test-app/vendor/
+demo/log/
+demo/temp/
+demo/vendor/
 composer.lock
