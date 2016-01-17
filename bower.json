@@ -8,6 +8,18 @@
     "javascript",
     "jquery"
   ],
+   "main": [
+    "dist/pipas.min.js",
+    "dist/pipas.min.css",
+    "dist/nette-extensions.min.js",
+    "dist/nette-init.min.js",
+    "dist/nette.min.css"
+  ],
+  "homepage": "https://github.com/pipaslot/front-end/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pipaslot/front-end.git"
+  },
   "ignore": [
     "demo",
     "node_modules",
