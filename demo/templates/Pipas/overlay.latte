@@ -1,0 +1,62 @@
+{var $title = "Overlay"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/../src/pipas/1overlay.js"></script>
+    <script>
+    function callDefault(){
+        var id = "first";
+        pipas.overlay.show(id);
+		setTimeout(function(){
+			pipas.overlay.hide(id);
+		}, 2000);
+    }
+    function callCustom(){
+        var id = "custom";
+        pipas.overlay.defaultElement('<div id="page-loader" class="fade in"><span class="spinner"></span></div>');
+        pipas.overlay.show(id);
+        setTimeout(function(){
+            pipas.overlay.hide(id);
+        }, 2000);
+    }
+    </script>
+{/define}
+
+{define styles}
+<style type="text/css">
+#page-loader {
+    background: #e6e8ec none repeat scroll 0 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1020;
+}
+#page-loader.fade.in {
+    display: block;
+}
+.spinner, .spinner-small {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #24b498 #fff #fff;
+    border-image: none;
+    border-radius: 100%;
+    border-style: solid;
+    border-width: 2px;
+    height: 40px;
+    left: 50%;
+    margin: -20px -20px 0 0;
+    position: absolute;
+    top: 50%;
+    width: 40px;
+}
+</style>
+{/define}
+
+
+{block #content}
+<a href="javascript:callDefault()" class="btn btn-default">default</a>
+<a href="javascript:callCustom()" class="btn btn-default">custom</a>
+

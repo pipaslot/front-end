@@ -8,6 +8,7 @@
 (function ($, pipas) {
     pipas.overlay = new function () {
         var inner = {
+            defaultElement: '<div class="pipas-overlay"></div>',
             parents: [],
             getSelector: function (id) {
                 return (id && id != "body") ? "#" + id : "body";
@@ -17,7 +18,7 @@
                 var $parent = $(parentSelector);
                 var $elm = $parent.find("> .pipas-overlay");
                 if (!$elm.length) {
-                    $elm = $('<div class="pipas-overlay"></div>');
+                    $elm = $(inner.defaultElement);
                     $parent.append($elm);
                 }
                 if ($parent.selector != "body") {
@@ -56,7 +57,7 @@
                 if (inner.parents.hasOwnProperty(par) && inner.parents[par].idList[id]) {
                     delete inner.parents[par].idList[id];
                     if (Object.keys(inner.parents[par].idList).length == 0) {
-                        if(inner.parents[par].elm)inner.parents[par].elm.remove();
+                        if (inner.parents[par].elm)inner.parents[par].elm.remove();
                         delete inner.parents[par];
                     } else {
                         inner.setReserved(inner.parents[par].elm, inner.parents[par].idList);
@@ -65,15 +66,27 @@
                 }
             }
         };
+
         /**
          * Cancel element despite of all allocated required
          * @param parent
          */
         this.cancel = function (parent) {
-            if(inner.parents[parent]) {
+            if (inner.parents[parent]) {
                 inner.parents[parent].elm.remove();
                 delete inner.parents[parent];
             }
+        };
+
+        /**
+         * Get/Set default html element
+         * @param html
+         * @returns {*}
+         */
+        this.defaultElement = function (html) {
+            if (html == undefined)return inner.defaultElement;
+            inner.defaultElement = html;
+            return this;
         }
     };
 })(jQuery, pipas);

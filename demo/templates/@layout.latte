@@ -17,18 +17,32 @@
         <div class="container">
              <a class="navbar-brand" href="#">Library tests</a>
              <ul class="nav navbar-nav">
-                <li><a class="no-ajax" n:href="Nette:init">Nette-init</a></li>
-                <li><a class="no-ajax" n:href="Nette:error">Nette-error</a></li>
-                <li><a class="no-ajax" n:href="Nette:message">Nette-message</a></li>
-                <li><a class="no-ajax" n:href="Nette:redirect">Nette-redirect</a></li>
-                <li><a class="no-ajax" n:href="Nette:spinner">Nette-spinner</a></li>
-                <li><a class="no-ajax" n:href="Nette:tableFixed">Nette-table-fixed</a></li>
-                <li><a class="no-ajax" n:href="Nette:unique">Nette-unique</a></li>
-            </ul>
+	             <li class="dropdown">
+	               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nette <span class="caret"></span></a>
+	               <ul class="dropdown-menu">
+	                  <li><a class="no-ajax" n:href="Nette:init">Init</a></li>
+	                  <li><a class="no-ajax" n:href="Nette:error">Error</a></li>
+	                  <li><a class="no-ajax" n:href="Nette:message">Message</a></li>
+	                  <li><a class="no-ajax" n:href="Nette:redirect">Redirect</a></li>
+	                  <li><a class="no-ajax" n:href="Nette:spinner">Spinner</a></li>
+	                  <li><a class="no-ajax" n:href="Nette:tableFixed">Table-fixed</a></li>
+	                  <li><a class="no-ajax" n:href="Nette:unique">Unique</a></li>
+	               </ul>
+	             </li>
+	             <li class="dropdown">
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pipas <span class="caret"></span></a>
+                   <ul class="dropdown-menu">
+                      <li><a class="no-ajax" n:href="Pipas:overlay">Overlay</a></li>
+                      <li><a class="no-ajax" n:href="Pipas:spinner">Spinner</a></li>
+                   </ul>
+                 </li>
+	           </ul>
+
         </div>
     </nav>
 
 	<div class="container" n:snippet="content">
+		{block styles}{/block}
 		<div class="flashMessages">
 			<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type">{$flash->message|noescape}</div>
 		</div>
