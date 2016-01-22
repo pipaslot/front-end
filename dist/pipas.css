@@ -37,25 +37,31 @@
         left: 0;
         width: 100%;
         height: 100%;
-        display: none;
+        display: block;
         position: absolute;
+        z-index: 1041;
     }
 
     body > .pipas-spinner {
         position: fixed;
     }
-    .pipas-spinner svg {
-        width: 40px;
-        height: 40px;
+
+    .pipas-spinner > * {
         position: absolute;
         left: 50%;
         top: 50%;
+        z-index: 1042;
+        display: block;
+    }
+
+    .pipas-spinner .pipas-spinner-svg {
+        width: 40px;
+        height: 40px;
         margin: -15px 0 0 -15px;
         padding: 8px;
         border: 2px solid #CCC;
         border-radius: 20px;
         background-color: #CCC;
-        z-index: 1041;
         -webkit-animation: spin 2s linear infinite;
         -moz-animation: spin 2s linear infinite;
         animation: spin 2s linear infinite;

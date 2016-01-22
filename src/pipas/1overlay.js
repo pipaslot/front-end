@@ -8,7 +8,7 @@
 (function ($, pipas) {
     pipas.overlay = new function () {
         var inner = {
-            defaultElement: '<div class="pipas-overlay"></div>',
+            defaultElement: $('<div>'),
             parents: [],
             getSelector: function (id) {
                 return (id && id != "body") ? "#" + id : "body";
@@ -18,7 +18,7 @@
                 var $parent = $(parentSelector);
                 var $elm = $parent.find("> .pipas-overlay");
                 if (!$elm.length) {
-                    $elm = $(inner.defaultElement);
+                    $elm = inner.defaultElement.clone().addClass('pipas-overlay');
                     $parent.append($elm);
                 }
                 if ($parent.selector != "body") {
@@ -80,12 +80,12 @@
 
         /**
          * Get/Set default html element
-         * @param html
+         * @param jqueryObject|string
          * @returns {*}
          */
-        this.defaultElement = function (html) {
-            if (html == undefined)return inner.defaultElement;
-            inner.defaultElement = html;
+        this.defaultElement = function (jqueryObject) {
+            if (jqueryObject == undefined)return inner.defaultElement;
+            inner.defaultElement = 'string' == typeof jqueryObject ? $(jqueryObject) : jqueryObject;
             return this;
         }
     };
