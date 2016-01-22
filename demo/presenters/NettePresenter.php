@@ -175,4 +175,10 @@ class NettePresenter extends BasePresenter
 	/******************************* table-fixedHeader **************************************/
 
 	/******************************* Unique **************************************/
+
+	/******************************* Missing snippet **************************************/
+	public function actionMissingSnippet2()
+	{
+		$this->redrawControl("undefinedOnPrevious");
+	}
 }

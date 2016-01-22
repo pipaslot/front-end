@@ -1,0 +1,35 @@
+{var $title = "Missing snippet"}
+{define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/nette-extension/missingSnippet.js"></script>
+{/define}
+
+
+{define snippetText}
+	<div class="panel-body">
+		{ifset $redrawSnippets[$name]}
+			<p>time: {date("H:i:s")}</p>
+			<p>ajax: {if $presenter->isAjax()}ANO{else}NE{/if}</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend, arcu eu pretium sagittis,
+				diam nulla scelerisque urna, sed scelerisque dui lorem eu ligula. In hac habitasse platea dictumst. Duis
+				tincidunt arcu placerat, ultricies orci ut, semper lacus. Proin eu cursus urna, ut tincidunt odio.
+				Maecenas et dolor non felis mattis tempor. Sed nisi mi, faucibus sit amet malesuada et, malesuada a
+				nulla. Aliquam erat volutpat. Etiam ultricies sollicitudin quam, sed sagittis eros interdum vitae.
+				Pellentesque pretium nunc non accumsan congue.</p>
+		{/ifset}
+	</div>
+{/define}
+
+
+{block #content}
+<p>
+	Redirection if in response are defined snippets, which does not exest on current page
+</p>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a n:href="invalidate! text1" class="btn btn-default">Existing snippet</a>
+		<a n:href="missingSnippet2" class="btn btn-default">No snippet -> redirect</a>
+	</div>
+	{snippet text1}
+		{include snippetText name=>text1}
+	{/snippet}
+</div>
