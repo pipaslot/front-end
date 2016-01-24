@@ -1,0 +1,41 @@
+{var $title = "Default"}
+
+{define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/pipas.js"></script>
+	<script>
+		pipas.basePath = {$basePath};
+		function call1() {
+			var url = "data/test1.js";
+			pipas.get(url, function () {
+				console.log("loaded:", url, "arguments:", arguments);
+			});
+		}
+		function call2() {
+			var url = ["/data/test2.js", "/data/test2.css"];
+			pipas.get(url, function () {
+				console.log("loaded:", url, "arguments:", arguments);
+			});
+		}
+		function call3() {
+			var url = ["/data/style1.css", "/data/test2.css"];
+			pipas.getUniqueStyle(url, function () {
+				console.log("loaded:", url, "arguments:", arguments);
+			});
+		}
+		function call4() {
+			var url = ["/data/style2.css"];
+			pipas.getUniqueStyle(url, function () {
+				console.log("loaded:", url, "arguments:", arguments);
+			});
+		}
+	</script>
+{/define}
+
+
+{block #content}
+<p>Loading of libraries with caching. Test with console</p>
+<a href="javascript:call1()" class="btn btn-default">Load one</a>
+<a href="javascript:call2()" class="btn btn-default">Load multiple</a>
+<p>Using pipas.getUniquetyle load list of styles. On second calling previous are removed ad replaced by current</p>
+<a href="javascript:call3()" class="btn btn-default">Load an change body style 1</a>
+<a href="javascript:call4()" class="btn btn-default">Load an change body style 2</a>
