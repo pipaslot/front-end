@@ -8,6 +8,9 @@ namespace App;
  */
 class PipasPresenter extends BasePresenter
 {
-
+	public function handleSleep($id = 3)
+	{
+		sleep(intval($id));
+	}
 
 }

@@ -2,28 +2,31 @@
 
 {define scripts}
 	<script type="text/javascript" src="{$basePath}/../src/pipas.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/utils.js"></script>
 	<script>
 		pipas.basePath = {$basePath};
 		function call1() {
 			var url = "data/test1.js";
 			pipas.get(url, function () {
 				console.log("loaded:", url, "arguments:", arguments);
+				test1()
 			});
 		}
 		function call2() {
-			var url = ["/data/test2.js", "/data/test2.css"];
+			var url = ["data/test2.js", "data/test2.css",{link sleep!}];
 			pipas.get(url, function () {
 				console.log("loaded:", url, "arguments:", arguments);
+				test2()
 			});
 		}
 		function call3() {
-			var url = ["/data/style1.css", "/data/test2.css"];
+			var url = ["data/style1.css", "data/test2.css"];
 			pipas.getUniqueStyle(url, function () {
 				console.log("loaded:", url, "arguments:", arguments);
 			});
 		}
 		function call4() {
-			var url = ["/data/style2.css"];
+			var url = ["data/style2.css"];
 			pipas.getUniqueStyle(url, function () {
 				console.log("loaded:", url, "arguments:", arguments);
 			});

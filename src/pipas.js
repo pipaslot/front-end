@@ -16,8 +16,8 @@ var pipas = new function () {
             return url;
         },
         appendBasePath: function (url) {
-            var trimmed = url.replace(/^[\\\/]?/, '');
-            return that.basePath + "/" + trimmed;
+            var trimmed = url.replace(/^\/|\/$/g, '');
+            return url == trimmed ? that.basePath + "/" + trimmed : url;
         },
         hasExtension: function (path, extension) {
             var questionMark = path.indexOf("?");
@@ -57,18 +57,9 @@ var pipas = new function () {
             }
 
         });
-        $.when(XHRs).then(function () {
+        $.when.apply($, XHRs).done(function () {
             callback.apply(context, XHRs);
         });
-    };
-    /**
-     * Load files from paths and run callbacks. Is ca
-     * @param {string|Array}urlList
-     * @param callback
-     * @param context Callback context
-     */
-    this.getOnce = function (urlList, callback, context) {
-
     };
     /**
      * Load temporary style. If is called again, old loaded style will be removed

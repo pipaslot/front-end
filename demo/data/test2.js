@@ -2,6 +2,8 @@
  Empty test js file
  */
 function test2() {
+    console.log("test2");
+    return;
     /*! jQuery v2.1.4 | (c) 2005, 2015 jQuery Foundation, Inc. | jquery.org/license */
     !function (a, b) {
         "object" == typeof module && "object" == typeof module.exports ? module.exports = a.document ? b(a, !0) : function (a) {
