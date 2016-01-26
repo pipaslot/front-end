@@ -42,23 +42,41 @@ var pipas = new function () {
      * @param context Callback context
      */
     this.get = function (urlList, callback, context) {
-        var xhr, XHRs = [];
+        var xhr, requests = [], args = [];
         $.each(inner.prepareUrls(urlList), function (i, url) {
             if (inner.history.hasOwnProperty(url)) {
-                XHRs.push(inner.history[url]);
+                requests.push(inner.history[url]);
+                if (inner.history[url].readyState) {
+                    //Only for xhrs
+                    args.push(inner.history[url]);
+                }
             } else if (inner.hasExtension(url, "js")) {
                 xhr = $.getScript(url);
-                XHRs.push(xhr);
+                requests.push(xhr);
+                args.push(xhr);
                 inner.history[url] = xhr;
+            } else if (inner.hasExtension(url, "css")) {
+                var dfd = $.Deferred();
+                $(document.createElement('link')).attr({
+                    href: url,
+                    type: 'text/css',
+                    rel: 'stylesheet'
+                }).appendTo('head')
+                    .on("load", function () {
+                        dfd.resolve("and");
+                    });
+                requests.push(dfd);
+                //Deferred is not passed to callback as argument
+                inner.history[url] = dfd;
             } else {
                 xhr = $.get(url);
-                XHRs.push(xhr);
+                requests.push(xhr);
+                args.push(xhr);
                 inner.history[url] = xhr;
             }
-
         });
-        $.when.apply($, XHRs).done(function () {
-            callback.apply(context, XHRs);
+        $.when.apply($, requests).done(function () {
+            callback.apply(context, args);
         });
     };
     /**
