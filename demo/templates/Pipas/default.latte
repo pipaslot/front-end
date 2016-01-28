@@ -4,7 +4,7 @@
 	<script type="text/javascript" src="{$basePath}/../src/pipas.js"></script>
 	<script type="text/javascript" src="{$basePath}/../src/pipas/utils.js"></script>
 	<script>
-		pipas.basePath = {$basePath};
+		pipas.basePath({$basePath});
 		function call1() {
 			var url = "data/test1.js";
 			pipas.get(url, function () {

@@ -17,7 +17,7 @@ var pipas = new function () {
         },
         appendBasePath: function (url) {
             var trimmed = url.replace(/^\/|\/$/g, '');
-            return url == trimmed ? that.basePath + "/" + trimmed : url;
+            return url == trimmed ? that.basePath() + "/" + trimmed : url;
         },
         hasExtension: function (path, extension) {
             var questionMark = path.indexOf("?");
@@ -27,14 +27,19 @@ var pipas = new function () {
             return (path.substring(path.length - extension.length) == extension);
         },
         history: {},
-        uniqueStyles: []
+        uniqueStyles: [],
+        basePath: "",
+        locale: null
     };
     /**
-     * Base path into www root
+     * Get or Set base path into www root
+     * @param setter
      * @type {string}
      */
-    this.basePath = "";
-
+    this.basePath = function (setter) {
+        if (setter != undefined)inner.basePath = setter;
+        return inner.basePath
+    };
     /**
      * Load files from paths and run callbacks. Use caching
      * @param {string|Array}urlList
@@ -102,6 +107,15 @@ var pipas = new function () {
 
         });
     };
+    /**
+     * Get or Set document locale
+     * @param setter
+     * @returns {null|string}
+     */
+    this.locale = function (setter) {
+        if (setter != undefined)inner.locale = setter;
+        return inner.locale || navigator.language || navigator.userLanguage
+    }
 };
 
 
