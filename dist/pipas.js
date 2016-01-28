@@ -2,74 +2,11 @@
  * Namespace for objects of pipas package
  */
 var pipas = new function () {
-    var that = this;
     var inner = {
-        prepareUrls: function (url, subDirectory) {
-            if (!url)console.error("url is not defined. Expected string or array");
-
-            if (typeof url == "string") {
-                return [inner.appendBasePath(url, subDirectory)];
-            }
-            $.each(url, function (i, val) {
-                url[i] = inner.appendBasePath(val, subDirectory);
-            });
-            return url;
-        },
-        appendBasePath: function (url, subDirectory) {
-            var trimmed = url.replace(/^\/|\/$/g, '');
-            if (url != trimmed && subDirectory == undefined)return url;//Absolute path is ignored
-            return that.basePath() + "/" + (subDirectory == undefined ? "" : subDirectory + "/") + trimmed;
-        },
-        hasExtension: function (path, extension) {
-            var questionMark = path.indexOf("?");
-            if (questionMark >= 0) {
-                path = path.substring(0, questionMark);
-            }
-            return (path.substring(path.length - extension.length) == extension);
-        },
-        loadUrlsFromArray: function (urlList, callback, context) {
-            var xhr, requests = [], args = [];
-            $.each(urlList, function (i, url) {
-                if (inner.history.hasOwnProperty(url)) {
-                    requests.push(inner.history[url]);
-                    if (inner.history[url].readyState) {
-                        //Only for xhrs
-                        args.push(inner.history[url]);
-                    }
-                } else if (inner.hasExtension(url, "js")) {
-                    xhr = $.getScript(url);
-                    requests.push(xhr);
-                    args.push(xhr);
-                    inner.history[url] = xhr;
-                } else if (inner.hasExtension(url, "css")) {
-                    var dfd = $.Deferred();
-                    $(document.createElement('link')).attr({
-                        href: url,
-                        type: 'text/css',
-                        rel: 'stylesheet'
-                    }).appendTo('head')
-                        .on("load", function () {
-                            dfd.resolve("and");
-                        });
-                    requests.push(dfd);
-                    //Deferred is not passed to callback as argument
-                    inner.history[url] = dfd;
-                } else {
-                    xhr = $.get(url);
-                    requests.push(xhr);
-                    args.push(xhr);
-                    inner.history[url] = xhr;
-                }
-            });
-            $.when.apply($, requests).done(function () {
-                callback.apply(context, args);
-            });
-        },
-        history: {},
-        uniqueStyles: [],
         basePath: "",
-        bowerDirectory: "bower_components",
-        locale: null
+        locale: null,
+        history: {},
+        uniqueStyles: []
     };
     /**
      * Get or Set base path into www root
@@ -80,7 +17,34 @@ var pipas = new function () {
         if (setter != undefined)inner.basePath = setter;
         return inner.basePath
     };
+    /**
+     * Applied basePath to url. If second parameter is defined, passed path is added between base path and url as sub-directory. Absolute path is ignored if second parameter is empty
+     * @param url
+     * @param directory
+     * @type {String}
+     */
+    this.applyBasePath = function (url, directory) {
+        var trimmed = url.replace(/^\/|\/$/g, '');
+        if (url != trimmed && directory == undefined)return url;//Absolute path is ignored
+        return pipas.basePath() + "/" + (directory == undefined ? "" : directory.replace(/^\/|\/$/g, '') + "/") + trimmed;
+    };
+    /**
+     * Apply method applyBasePath for each passed urls
+     * @param {Array|String} urlList
+     * @param {String} directory
+     * @type {Array}
+     */
+    this.applyBasePathForList = function (urlList, directory) {
+        if (!urlList)throw new Error("url is not defined. Expected string or array");
 
+        if (typeof urlList == "string") {
+            return [pipas.applyBasePath(urlList, directory)];
+        }
+        $.each(urlList, function (i, val) {
+            urlList[i] = pipas.applyBasePath(val, directory);
+        });
+        return urlList;
+    };
     /**
      * Get or Set document locale
      * @param setter
@@ -90,29 +54,7 @@ var pipas = new function () {
         if (setter != undefined)inner.locale = setter;
         return inner.locale || navigator.language || navigator.userLanguage
     };
-    /**
-     *
-     * @param path
-     * @returns {string}
-     */
-    this.bowerDirectory = function (path) {
-        if (path != undefined) {
-            inner.bowerDirectory = path.replace(/^\/|\/$/g, '');
-        }
-        return inner.bowerDirectory;
-    };
-    /**
-     * Load files from paths and run callbacks. Use caching
-     * @param {string|Array}urlList
-     * @param callback
-     * @param context Callback context
-     */
-    this.get = function (urlList, callback, context) {
-        inner.loadUrlsFromArray(inner.prepareUrls(urlList), callback, context);
-    };
-    this.getBower = function (urlList, callback, context) {
-        inner.loadUrlsFromArray(inner.prepareUrls(urlList, inner.bowerDirectory), callback, context);
-    };
+
     /**
      * Load temporary style. If is called again, old loaded style will be removed
      * @param {String} urlList
@@ -125,16 +67,75 @@ var pipas = new function () {
         }
         inner.uniqueStyles = [];
 
-        $.each(inner.prepareUrls(urlList), function (i, url) {
-            style = document.createElement('link');
+        $.each(this.applyBasePathForList(urlList), function (i, url) {
+            var style = document.createElement('link');
             style.rel = 'stylesheet';
             style.type = 'text/css';
             style.href = url;
             style.media = 'all';
             inner.uniqueStyles[url] = style;
             head.appendChild(style);
-
         });
+    };
+    /**
+     * Loads all dependencies defined in url list. After finishing is called callback with custom context. Is applied caching. BasePath is not applied.
+     * @param {Array}urlList
+     * @param callback
+     * @param context
+     */
+    this.getDependencies = function (urlList, callback, context) {
+        var hasExtension = function (path, extension) {
+            var questionMark = path.indexOf("?");
+            if (questionMark >= 0) {
+                path = path.substring(0, questionMark);
+            }
+            return (path.substring(path.length - extension.length) == extension);
+        };
+        var xhr, requests = [], args = [];
+        $.each(urlList, function (i, url) {
+            if (inner.history.hasOwnProperty(url)) {
+                requests.push(inner.history[url]);
+                if (inner.history[url].readyState) {
+                    //Only for xhrs
+                    args.push(inner.history[url]);
+                }
+            } else if (hasExtension(url, "js")) {
+                xhr = $.getScript(url);
+                requests.push(xhr);
+                args.push(xhr);
+                inner.history[url] = xhr;
+            } else if (hasExtension(url, "css")) {
+                var dfd = $.Deferred();
+                $(document.createElement('link')).attr({
+                    href: url,
+                    type: 'text/css',
+                    rel: 'stylesheet'
+                }).appendTo('head')
+                    .on("load", function () {
+                        dfd.resolve("and");
+                    });
+                requests.push(dfd);
+                //Deferred is not passed to callback as argument
+                inner.history[url] = dfd;
+            } else {
+                xhr = $.get(url);
+                requests.push(xhr);
+                args.push(xhr);
+                inner.history[url] = xhr;
+            }
+        });
+        $.when.apply($, requests).done(function () {
+            callback.apply(context, args);
+        });
+    };
+    /**
+     * Load files from paths and run callbacks. Use caching. base path is applied too.
+     * @param {Array|String}urlList
+     * @param callback
+     * @param context Callback context
+     */
+    this.get = function (urlList, callback, context) {
+        this.getDependencies(this.applyBasePathForList(urlList), callback, context);
     };
 };
 
@@ -230,6 +231,41 @@ var pipas = new function () {
             inner.defaultElement = 'string' == typeof jqueryObject ? $(jqueryObject) : jqueryObject;
             return this;
         }
+    };
+})(jQuery, pipas);
+/**
+ * Bower dependency loading
+ *
+ * @copyright Copyright (c) 2015 Petr štipek
+ * @license MIT
+ */
+(function ($, pipas) {
+    pipas.bower = new function () {
+        var inner = {
+            directory: "bower_components"
+        };
+
+        /**
+         * Get / Set path to bower from document root
+         * @param path
+         * @returns {string}
+         */
+        this.directory = function (path) {
+            if (path != undefined) {
+                inner.directory = path.replace(/^\/|\/$/g, '');
+            }
+            return inner.directory;
+        };
+        /**
+         * Load files from paths and run callbacks. Use caching
+         * @param {string|Array}urlList
+         * @param callback
+         * @param context Callback context
+         */
+        this.get = function (urlList, callback, context) {
+            pipas.getDependencies(pipas.applyBasePathForList(urlList, inner.directory), callback, context);
+        };
+
     };
 })(jQuery, pipas);
 /**
@@ -449,7 +485,7 @@ var pipas = new function () {
 (function (history, pipas) {
     pipas.url = {
         stateTypeName: "pipasAjax",
-        creanedParameters: ["_fid"],
+        cleanedParameters: ["_fid"],
         history: [],
         baseUrl: "/",
         /**
@@ -458,9 +494,9 @@ var pipas = new function () {
          * @returns {string}
          */
         clean: function (url) {
-            for (var key in this.creanedParameters) {
+            for (var key in this.cleanedParameters) {
 
-                url = this.remove(url, this.creanedParameters[key]);
+                url = this.remove(url, this.cleanedParameters[key]);
             }
             return url;
         },
@@ -532,8 +568,8 @@ var pipas = new function () {
         },
         /**
          * Change current url address to defined
-         * @param {type} url
-         * @returns {undefined}
+         * @param {string} url
+         * @returns {null}
          */
         changeTo: function (url) {
             if (!url) {
@@ -549,7 +585,7 @@ var pipas = new function () {
             if (history && history.pushState) {
 
                 if (history.state && history.state.url && history.state.url === url)
-                    return;
+                    return null;
                 history.pushState({
                     type: this.stateTypeName,
                     url: url
@@ -558,6 +594,7 @@ var pipas = new function () {
             else {
                 console.error("an not write URL");
             }
+            return null;
         },
         /**
          * finds the parameter value in the data, which are acquired from GET
@@ -570,7 +607,7 @@ var pipas = new function () {
             if (typeof getData === 'string' && typeof param === 'string') {
                 var pair;
                 var b = getData.split("&");
-                for (i in b) {
+                for (var i in b) {
                     pair = b[i].split("=");
                     if (pair[0] === param) {
                         return pair[1];
@@ -594,7 +631,7 @@ var pipas = new function () {
         /**
          * Gets parameters from URL as array
          * @param {string} url
-         * @returns {array} asociativní pole
+         * @returns {Array} asociativní pole
          */
         separeParams: function (url) {
             var list = [];
@@ -608,7 +645,7 @@ var pipas = new function () {
                         pair = pairs[i].split("=");
                         if (pair[1]) {
                             if (pair[0].indexOf("[]") !== -1) {
-                                //parametrem je pole, tak se z 'param[]' udělá 'param[cislo]'
+                                //parameter is number, then from 'param[]' will be 'param[number]'
                                 pair[0] = pair[0].substring(0, pair[0].length - 2) + "[" + ai + "]";
                                 ai++;
                             }
@@ -620,8 +657,8 @@ var pipas = new function () {
             return list;
         },
         /**
-         * oint parameters to GET string
-         * @param {array} params
+         * Join parameters to GET string
+         * @param {Array} params
          * @returns {string}
          */
         joinParams: function (params) {
@@ -660,8 +697,8 @@ var pipas = new function () {
     pipas.utils = {
         /**
          * Make clone of object
-         * @param {mixed} object
-         * @returns {mixed}
+         * @param {Object} object
+         * @returns {Object}
          */
         clone: function (object) {
             if (object) {

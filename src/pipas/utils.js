@@ -8,8 +8,8 @@
     pipas.utils = {
         /**
          * Make clone of object
-         * @param {mixed} object
-         * @returns {mixed}
+         * @param {Object} object
+         * @returns {Object}
          */
         clone: function (object) {
             if (object) {

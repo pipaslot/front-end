@@ -2,6 +2,7 @@
 
 {define scripts}
 	<script type="text/javascript" src="{$basePath}/../src/pipas.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/bower.js"></script>
 	<script type="text/javascript" src="{$basePath}/../src/pipas/utils.js"></script>
 	<script>
 		pipas.basePath({$basePath});
@@ -33,7 +34,7 @@
 		}
 		function call5() {
 			var url = ["bootstrap/dist/js/bootstrap.js"];
-			pipas.getBower(url, function () {
+			pipas.bower.get(url, function () {
 				console.log("loaded:", url, "arguments:", arguments);
 			});
 		}

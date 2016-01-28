@@ -7,7 +7,7 @@
 (function (history, pipas) {
     pipas.url = {
         stateTypeName: "pipasAjax",
-        creanedParameters: ["_fid"],
+        cleanedParameters: ["_fid"],
         history: [],
         baseUrl: "/",
         /**
@@ -16,9 +16,9 @@
          * @returns {string}
          */
         clean: function (url) {
-            for (var key in this.creanedParameters) {
+            for (var key in this.cleanedParameters) {
 
-                url = this.remove(url, this.creanedParameters[key]);
+                url = this.remove(url, this.cleanedParameters[key]);
             }
             return url;
         },
@@ -90,8 +90,8 @@
         },
         /**
          * Change current url address to defined
-         * @param {type} url
-         * @returns {undefined}
+         * @param {string} url
+         * @returns {null}
          */
         changeTo: function (url) {
             if (!url) {
@@ -107,7 +107,7 @@
             if (history && history.pushState) {
 
                 if (history.state && history.state.url && history.state.url === url)
-                    return;
+                    return null;
                 history.pushState({
                     type: this.stateTypeName,
                     url: url
@@ -116,6 +116,7 @@
             else {
                 console.error("an not write URL");
             }
+            return null;
         },
         /**
          * finds the parameter value in the data, which are acquired from GET
@@ -128,7 +129,7 @@
             if (typeof getData === 'string' && typeof param === 'string') {
                 var pair;
                 var b = getData.split("&");
-                for (i in b) {
+                for (var i in b) {
                     pair = b[i].split("=");
                     if (pair[0] === param) {
                         return pair[1];
@@ -152,7 +153,7 @@
         /**
          * Gets parameters from URL as array
          * @param {string} url
-         * @returns {array} asociativní pole
+         * @returns {Array} asociativní pole
          */
         separeParams: function (url) {
             var list = [];
@@ -166,7 +167,7 @@
                         pair = pairs[i].split("=");
                         if (pair[1]) {
                             if (pair[0].indexOf("[]") !== -1) {
-                                //parametrem je pole, tak se z 'param[]' udělá 'param[cislo]'
+                                //parameter is number, then from 'param[]' will be 'param[number]'
                                 pair[0] = pair[0].substring(0, pair[0].length - 2) + "[" + ai + "]";
                                 ai++;
                             }
@@ -178,8 +179,8 @@
             return list;
         },
         /**
-         * oint parameters to GET string
-         * @param {array} params
+         * Join parameters to GET string
+         * @param {Array} params
          * @returns {string}
          */
         joinParams: function (params) {
