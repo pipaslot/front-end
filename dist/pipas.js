@@ -27,7 +27,8 @@ var pipas = new function () {
             return (path.substring(path.length - extension.length) == extension);
         },
         history: {},
-        uniqueStyles: []
+        uniqueStyles: [],
+        locale: null
     };
     /**
      * Base path into www root
@@ -102,6 +103,15 @@ var pipas = new function () {
 
         });
     };
+    /**
+     * Get or Set document locale
+     * @param setter
+     * @returns {null|string}
+     */
+    this.locale = function (setter) {
+        if (setter != undefined)inner.locale = setter;
+        return inner.locale || navigator.language || navigator.userLanguage
+    }
 };
 
 
