@@ -4,20 +4,21 @@
 var pipas = new function () {
     var that = this;
     var inner = {
-        prepareUrls: function (url) {
+        prepareUrls: function (url, subDirectory) {
             if (!url)console.error("url is not defined. Expected string or array");
 
             if (typeof url == "string") {
-                return [inner.appendBasePath(url)];
+                return [inner.appendBasePath(url, subDirectory)];
             }
             $.each(url, function (i, val) {
-                url[i] = inner.appendBasePath(val);
+                url[i] = inner.appendBasePath(val, subDirectory);
             });
             return url;
         },
-        appendBasePath: function (url) {
+        appendBasePath: function (url, subDirectory) {
             var trimmed = url.replace(/^\/|\/$/g, '');
-            return url == trimmed ? that.basePath() + "/" + trimmed : url;
+            if (url != trimmed && subDirectory == undefined)return url;//Absolute path is ignored
+            return that.basePath() + "/" + (subDirectory == undefined ? "" : subDirectory + "/") + trimmed;
         },
         hasExtension: function (path, extension) {
             var questionMark = path.indexOf("?");
@@ -26,9 +27,48 @@ var pipas = new function () {
             }
             return (path.substring(path.length - extension.length) == extension);
         },
+        loadUrlsFromArray: function (urlList, callback, context) {
+            var xhr, requests = [], args = [];
+            $.each(urlList, function (i, url) {
+                if (inner.history.hasOwnProperty(url)) {
+                    requests.push(inner.history[url]);
+                    if (inner.history[url].readyState) {
+                        //Only for xhrs
+                        args.push(inner.history[url]);
+                    }
+                } else if (inner.hasExtension(url, "js")) {
+                    xhr = $.getScript(url);
+                    requests.push(xhr);
+                    args.push(xhr);
+                    inner.history[url] = xhr;
+                } else if (inner.hasExtension(url, "css")) {
+                    var dfd = $.Deferred();
+                    $(document.createElement('link')).attr({
+                        href: url,
+                        type: 'text/css',
+                        rel: 'stylesheet'
+                    }).appendTo('head')
+                        .on("load", function () {
+                            dfd.resolve("and");
+                        });
+                    requests.push(dfd);
+                    //Deferred is not passed to callback as argument
+                    inner.history[url] = dfd;
+                } else {
+                    xhr = $.get(url);
+                    requests.push(xhr);
+                    args.push(xhr);
+                    inner.history[url] = xhr;
+                }
+            });
+            $.when.apply($, requests).done(function () {
+                callback.apply(context, args);
+            });
+        },
         history: {},
         uniqueStyles: [],
         basePath: "",
+        bowerDirectory: "bower_components",
         locale: null
     };
     /**
@@ -40,6 +80,27 @@ var pipas = new function () {
         if (setter != undefined)inner.basePath = setter;
         return inner.basePath
     };
+
+    /**
+     * Get or Set document locale
+     * @param setter
+     * @returns {null|string}
+     */
+    this.locale = function (setter) {
+        if (setter != undefined)inner.locale = setter;
+        return inner.locale || navigator.language || navigator.userLanguage
+    };
+    /**
+     *
+     * @param path
+     * @returns {string}
+     */
+    this.bowerDirectory = function (path) {
+        if (path != undefined) {
+            inner.bowerDirectory = path.replace(/^\/|\/$/g, '');
+        }
+        return inner.bowerDirectory;
+    };
     /**
      * Load files from paths and run callbacks. Use caching
      * @param {string|Array}urlList
@@ -47,42 +108,10 @@ var pipas = new function () {
      * @param context Callback context
      */
     this.get = function (urlList, callback, context) {
-        var xhr, requests = [], args = [];
-        $.each(inner.prepareUrls(urlList), function (i, url) {
-            if (inner.history.hasOwnProperty(url)) {
-                requests.push(inner.history[url]);
-                if (inner.history[url].readyState) {
-                    //Only for xhrs
-                    args.push(inner.history[url]);
-                }
-            } else if (inner.hasExtension(url, "js")) {
-                xhr = $.getScript(url);
-                requests.push(xhr);
-                args.push(xhr);
-                inner.history[url] = xhr;
-            } else if (inner.hasExtension(url, "css")) {
-                var dfd = $.Deferred();
-                $(document.createElement('link')).attr({
-                    href: url,
-                    type: 'text/css',
-                    rel: 'stylesheet'
-                }).appendTo('head')
-                    .on("load", function () {
-                        dfd.resolve("and");
-                    });
-                requests.push(dfd);
-                //Deferred is not passed to callback as argument
-                inner.history[url] = dfd;
-            } else {
-                xhr = $.get(url);
-                requests.push(xhr);
-                args.push(xhr);
-                inner.history[url] = xhr;
-            }
-        });
-        $.when.apply($, requests).done(function () {
-            callback.apply(context, args);
-        });
+        inner.loadUrlsFromArray(inner.prepareUrls(urlList), callback, context);
+    };
+    this.getBower = function (urlList, callback, context) {
+        inner.loadUrlsFromArray(inner.prepareUrls(urlList, inner.bowerDirectory), callback, context);
     };
     /**
      * Load temporary style. If is called again, old loaded style will be removed
@@ -107,15 +136,6 @@ var pipas = new function () {
 
         });
     };
-    /**
-     * Get or Set document locale
-     * @param setter
-     * @returns {null|string}
-     */
-    this.locale = function (setter) {
-        if (setter != undefined)inner.locale = setter;
-        return inner.locale || navigator.language || navigator.userLanguage
-    }
 };
 
 

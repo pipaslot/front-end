@@ -31,6 +31,12 @@
 				console.log("loaded:", url, "arguments:", arguments);
 			});
 		}
+		function call5() {
+			var url = ["bootstrap/dist/js/bootstrap.js"];
+			pipas.getBower(url, function () {
+				console.log("loaded:", url, "arguments:", arguments);
+			});
+		}
 	</script>
 {/define}
 
@@ -42,3 +48,5 @@
 <p>Using pipas.getUniquetyle load list of styles. On second calling previous are removed ad replaced by current</p>
 <a href="javascript:call3()" class="btn btn-default">Load an change body style 1</a>
 <a href="javascript:call4()" class="btn btn-default">Load an change body style 2</a>
+<p>Bower library loading</p>
+<a href="javascript:call5()" class="btn btn-default">Load bower library</a>
