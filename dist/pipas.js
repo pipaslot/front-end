@@ -51,20 +51,33 @@ var pipas = (function ($) {
             return inner.basePath
         };
         /**
-         * Define dependency
+         * Define dependency. Usable for application customization
          * @param name
          * @param sources
          * @returns {pipas}
          */
         this.define = function (name, sources) {
-            if (inner.map.hasOwnProperty(name))throw new Error("Can not override dependency '" + name + "'.");
+            if (inner.map.hasOwnProperty(name)) {
+                throw new Error("Can not override dependency '" + name + "'.");
+            }
 
             inner.map[name] = {
                 src: inner.toArray(sources)
             };
             return this;
         };
+        /**
+         * Define default dependency, if does not exist. Otherwise is ignored. Usable for runtime initializations
+         * @param name
+         * @param sources
+         */
+        this.defineDefault = function (name, sources) {
+            try {
+                this.define(name, sources)
+            } catch (error) {
 
+            }
+        };
 
         /**
          * Applied basePath to url. If second parameter is defined, passed path is added between base path and url as sub-directory. Absolute path is ignored if second parameter is empty
@@ -89,8 +102,14 @@ var pipas = (function ($) {
         this.applyBasePathForList = function (urlList, directory) {
             if (!urlList)throw new Error("url is not defined. Expected string or array");
             var newList = [];
-            $.each(inner.toArray(urlList), function (i, val) {
-                newList[i] = pipas.applyBasePath(val, directory);
+            $.each(inner.toArray(urlList), function (i, url) {
+                var trimmed = url.replace(/^\/|\/$/g, '');
+                if (url != trimmed) {
+                    if (directory != undefined)throw new Error("Path '" + url + "' must be relative type (without backslash on beginning)");
+                    newList[i] = url;//Absolute path is ignored
+                } else {
+                    newList[i] = pipas.basePath() + "/" + (directory == undefined ? "" : directory.replace(/^\/|\/$/g, '') + "/") + trimmed;
+                }
             });
             return newList;
         };
