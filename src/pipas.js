@@ -25,7 +25,10 @@ var pipas = new function () {
      */
     this.applyBasePath = function (url, directory) {
         var trimmed = url.replace(/^\/|\/$/g, '');
-        if (url != trimmed && directory == undefined)return url;//Absolute path is ignored
+        if (url != trimmed) {
+            if (directory != undefined)throw new Error("Path '" + url + "' must be relative type (without backslash on beginning)");
+            return url;//Absolute path is ignored
+        }
         return pipas.basePath() + "/" + (directory == undefined ? "" : directory.replace(/^\/|\/$/g, '') + "/") + trimmed;
     };
     /**
@@ -40,10 +43,11 @@ var pipas = new function () {
         if (typeof urlList == "string") {
             return [pipas.applyBasePath(urlList, directory)];
         }
+        var newList = [];
         $.each(urlList, function (i, val) {
-            urlList[i] = pipas.applyBasePath(val, directory);
+            newList[i] = pipas.applyBasePath(val, directory);
         });
-        return urlList;
+        return newList;
     };
     /**
      * Get or Set document locale
