@@ -38,6 +38,12 @@
 				console.log("loaded:", url, "arguments:", arguments);
 			});
 		}
+		function call6() {
+			var url = ["nonsense"];
+			pipas.bower.get(url, function () {
+				console.log("loaded:", url, "arguments:", arguments);
+			});
+		}
 	</script>
 {/define}
 
@@ -51,3 +57,4 @@
 <a href="javascript:call4()" class="btn btn-default">Load an change body style 2</a>
 <p>Bower library loading</p>
 <a href="javascript:call5()" class="btn btn-default">Load bower library</a>
+<a href="javascript:call6()" class="btn btn-default">Failing loading logged to console as error</a>

@@ -128,9 +128,13 @@ var pipas = new function () {
                 inner.history[url] = xhr;
             }
         });
-        $.when.apply($, requests).done(function () {
-            callback.apply(context, args);
-        });
+        $.when.apply($, requests)
+            .done(function () {
+                callback.apply(context, args);
+            })
+            .fail(function () {
+                console.error("Cannot load dependencies: ", urlList, "Failing report: ", arguments);
+            });
     };
     /**
      * Load files from paths and run callbacks. Use caching. base path is applied too.
