@@ -5,6 +5,10 @@
  * @license MIT
  */
 (function ($, pipas) {
+    /**
+     * @deprecated
+     * @type {bower}
+     */
     pipas.bower = new function () {
         var inner = {
             directory: "bower_components"

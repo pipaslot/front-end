@@ -6,6 +6,12 @@
 	<script type="text/javascript" src="{$basePath}/../src/pipas/utils.js"></script>
 	<script>
 		pipas.basePath({$basePath});
+		pipas.define("nette.ajax.js","bower_components/nette.ajax.js/nette.ajax.js");
+		pipas.define("bootstrap",[
+			"bower_components/bootstrap/dist/js/bootstrap.js",
+			"bower_components/bootstrap/dist/css/bootstrap.css",
+			"bower_components/bootstrap/dist/css/bootstrap-theme.css"
+		]);
 		function call1() {
 			var url = "data/test1.js";
 			pipas.get(url, function () {
@@ -40,7 +46,13 @@
 		}
 		function call6() {
 			var url = ["nonsense"];
-			pipas.bower.get(url, function () {
+			pipas.get(url, function () {
+				console.log("loaded:", url, "arguments:", arguments);
+			});
+		}
+		function call7() {
+			var url = ["bootstrap","nette.ajax.js"];
+			pipas.get(url, function () {
 				console.log("loaded:", url, "arguments:", arguments);
 			});
 		}
@@ -58,3 +70,4 @@
 <p>Bower library loading</p>
 <a href="javascript:call5()" class="btn btn-default">Load bower library</a>
 <a href="javascript:call6()" class="btn btn-default">Failing loading logged to console as error</a>
+<a href="javascript:call7()" class="btn btn-default">Load bootstrap</a>
