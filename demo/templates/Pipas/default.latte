@@ -6,12 +6,12 @@
 	<script type="text/javascript" src="{$basePath}/../src/pipas/utils.js"></script>
 	<script>
 		pipas.basePath({$basePath});
-		pipas.define("nette.ajax.js","bower_components/nette.ajax.js/nette.ajax.js");
+		pipas.define("nette.ajax.js","bower_components/nette.ajax.js/nette.ajax.js","nette.ajax");
 		pipas.define("bootstrap",[
 			"bower_components/bootstrap/dist/js/bootstrap.js",
 			"bower_components/bootstrap/dist/css/bootstrap.css",
 			"bower_components/bootstrap/dist/css/bootstrap-theme.css"
-		]);
+		],["bootstrap2","bootstrap2"]);
 		function call1() {
 			var url = "data/test1.js";
 			pipas.get(url, function () {
@@ -56,6 +56,15 @@
 				console.log("loaded:", url, "arguments:", arguments);
 			});
 		}
+		function call8() {
+			var url = ["bootstrap2","nette.ajax"];
+			pipas.get(url, function () {
+				console.log("loaded:", url, "arguments:", arguments);
+			});
+		}
+		function call9() {
+			pipas.define("nette.ajax.js2","bower_components/nette.ajax.js/nette.ajax.js2","nette.ajax");
+		}
 	</script>
 {/define}
 
@@ -71,3 +80,5 @@
 <a href="javascript:call5()" class="btn btn-default">Load bower library</a>
 <a href="javascript:call6()" class="btn btn-default">Failing loading logged to console as error</a>
 <a href="javascript:call7()" class="btn btn-default">Load bootstrap</a>
+<a href="javascript:call8()" class="btn btn-default">Load via aliases</a>
+<a href="javascript:call9()" class="btn btn-default">Fail during overriding existing alias</a>

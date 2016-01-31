@@ -9,20 +9,23 @@ var pipas = (function ($) {
             history: {},
             uniqueStyles: [],
             map: [],
+            aliases: {},
             toArray: function (sources) {
                 var list = [];
-                if (typeof sources == "string") {
-                    list.push(sources);
-                } else {
-                    $.each(sources, function (i, val) {
-                        list.push(val);
-                    });
+                if (sources != undefined) {
+                    if (typeof sources == "string") {
+                        list.push(sources);
+                    } else {
+                        $.each(sources, function (i, val) {
+                            list.push(val);
+                        });
+                    }
                 }
                 return list;
             },
             expandMapping: function (urls) {
                 var list = [];
-                $.each(this.toArray(urls), function (key, val) {
+                $.each(this.applyAliases(this.toArray(urls)), function (key, val) {
                     if (inner.map.hasOwnProperty(val)) {
                         for (var i in inner.map[val].src) {
                             list.push(inner.map[val].src[i]);
@@ -31,6 +34,18 @@ var pipas = (function ($) {
                         list.push(val);
                     }
                 });
+                return list;
+            },
+            applyAliases: function (urls) {
+                var value, list = [];
+                for (var i in urls) {
+                    value = urls[i];
+                    if (inner.aliases.hasOwnProperty(value)) {
+                        list.push(inner.aliases[value]);
+                    } else {
+                        list.push(value);
+                    }
+                }
                 return list;
             },
             hasExtension: function (path, extension) {
@@ -56,11 +71,20 @@ var pipas = (function ($) {
          * @param sources
          * @returns {pipas}
          */
-        this.define = function (name, sources) {
+        this.define = function (name, sources, aliases) {
             if (inner.map.hasOwnProperty(name)) {
                 throw new Error("Can not override dependency '" + name + "'.");
             }
-
+            var value, aliasArray = inner.toArray(aliases);
+            for (var key in aliasArray) {
+                value = aliasArray[key];
+                if (inner.aliases.hasOwnProperty(value)) {
+                    if (inner.aliases[value] != name)throw new Error("Alias '" + value + "' already exist form '" + inner.aliases[value] + "'");
+                }
+                else {
+                    inner.aliases[value] = name;
+                }
+            }
             inner.map[name] = {
                 src: inner.toArray(sources)
             };
