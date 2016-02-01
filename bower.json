@@ -23,10 +23,13 @@
   "ignore": [
     "demo",
     "node_modules",
+    "src",
     ".bowerrc",
     ".gitignore",
     "composer.json",
     "composer.lock",
+    "Gruntfile.js",
+    "package.json",
     "pre-commit.sh"
   ],
   "dependencies": {
