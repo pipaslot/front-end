@@ -12,7 +12,7 @@ var pipas = (function ($) {
             aliases: {},
             toArray: function (sources) {
                 var list = [];
-                if (sources != undefined) {
+                if (sources != undefined && sources != null) {
                     if (typeof sources == "string") {
                         list.push(sources);
                     } else {
@@ -23,30 +23,42 @@ var pipas = (function ($) {
                 }
                 return list;
             },
-            expandMapping: function (urls) {
-                var list = [];
-                $.each(this.applyAliases(this.toArray(urls)), function (key, val) {
-                    if (inner.map.hasOwnProperty(val)) {
-                        for (var i in inner.map[val].src) {
-                            list.push(inner.map[val].src[i]);
-                        }
+            /**
+             * Resolve list of dependencies and returns their definitions
+             * @param dependencies
+             * @returns {Array}
+             */
+            resolveList: function (dependencies) {
+                var required = inner.toArray(dependencies);
+                var list = [], resolved;
+                var unresolved = {
+                    src: []
+                };
+                for (var i in required) {
+                    resolved = inner.resolve(required[i]);
+                    if (resolved) {
+                        list.push(resolved);
                     } else {
-                        list.push(val);
-                    }
-                });
-                return list;
-            },
-            applyAliases: function (urls) {
-                var value, list = [];
-                for (var i in urls) {
-                    value = urls[i];
-                    if (inner.aliases.hasOwnProperty(value)) {
-                        list.push(inner.aliases[value]);
-                    } else {
-                        list.push(value);
+                        //if is not resolved, appends fictive dependency contains only sources
+                        unresolved.src.push(required[i]);
                     }
                 }
+                list.push(unresolved);
                 return list;
+            },
+            /**
+             * Resolve single dependency and return its definition, otherwise error is thrown
+             * @param dependency
+             * @return {object}
+             * @throw Error
+             */
+            resolve: function (dependency) {
+                //Try apply alias
+                if (inner.aliases.hasOwnProperty(dependency)) {
+                    dependency = inner.aliases[dependency];
+                }
+                if (inner.map.hasOwnProperty(dependency))return inner.map[dependency];
+                return null;
             },
             hasExtension: function (path, extension) {
                 var questionMark = path.indexOf("?");
@@ -67,16 +79,18 @@ var pipas = (function ($) {
         };
         /**
          * Define dependency. Usable for application customization
-         * @param name
-         * @param sources
+         * @param name Dependency name
+         * @param sources Source files (js, css)
+         * @param dependencies (required dependency)
+         * @param aliases
          * @returns {pipas}
          */
-        this.define = function (name, sources, aliases) {
+        this.define = function (name, sources, dependencies, aliases) {
             if (inner.map.hasOwnProperty(name)) {
                 throw new Error("Can not override dependency '" + name + "'.");
             }
-            var value, aliasArray = inner.toArray(aliases);
-            for (var key in aliasArray) {
+            var key, value, aliasArray = inner.toArray(aliases);
+            for (key in aliasArray) {
                 value = aliasArray[key];
                 if (inner.aliases.hasOwnProperty(value)) {
                     if (inner.aliases[value] != name)throw new Error("Alias '" + value + "' already exist form '" + inner.aliases[value] + "'");
@@ -85,8 +99,15 @@ var pipas = (function ($) {
                     inner.aliases[value] = name;
                 }
             }
+            //Dependencies
+            var required = inner.toArray(dependencies);
+            for (key in required) {
+                if (!inner.resolve(required[key]))throw new Error("Required dependency '" + required[key] + "' has not been defined.");
+            }
             inner.map[name] = {
-                src: inner.toArray(sources)
+                name: name,
+                src: inner.toArray(sources),
+                req: required
             };
             return this;
         };
@@ -219,13 +240,30 @@ var pipas = (function ($) {
                 });
         };
         /**
-         * Load files from paths and run callbacks. Use caching. base path is applied too.
+         * Load files from paths and run callbacks. Use caching. Base path is applied too.
          * @param {Array|String}urlList
          * @param callback
          * @param context Callback context
          */
         this.get = function (urlList, callback, context) {
-            this.getDependencies(this.applyBasePathForList(inner.expandMapping(urlList)), callback, context, urlList);
+            var i, u, resolved = inner.resolveList(urlList);
+            var srcs = [];
+            var reqs = [];
+            for (i in resolved) {
+                for (u in resolved[i].src) {
+                    srcs.push(this.applyBasePath(resolved[i].src[u]));
+                }
+                for (u in resolved[i].req) {
+                    reqs.push(resolved[i].req[u]);
+                }
+            }
+            if (reqs.length > 0) {
+                this.get(reqs, function () {
+                    this.getDependencies(srcs, callback, context, urlList);
+                }, this);
+            } else {
+                this.getDependencies(srcs, callback, context, urlList);
+            }
         };
     };
 })(jQuery);
