@@ -1,6 +1,6 @@
-bower_components/
-node_modules/
+demo/bower_components/
 demo/log/
 demo/temp/
 demo/vendor/
+node_modules/
 composer.lock
