@@ -268,4 +268,7 @@ var pipas = (function ($) {
     };
 })(jQuery);
 
+var define = define || pipas.define;
+var require = require || pipas.get;
+
 
