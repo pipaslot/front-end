@@ -416,15 +416,18 @@ var require = require || pipas.get;
             getContainer: function (identifier) {
                 return $(identifier ? "#" + identifier : "body");
             },
-            getElement: function ($container) {
-                var $elm = $container.find("> .pipas-message");
+            getElement: function ($container, title) {
+                var titleHtml = '', $elm = $container.find("> .pipas-message");
+                if (title && title != '') {
+                    titleHtml = '<div class="modal-header">'
+                        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">' + title + '</h4>'
+                        + '</div>'
+                }
                 if (!$elm.length) {
                     $elm = $('<div class="modal pipas-message" role="dialog">'
                         + '<div class="modal-dialog modal-sm"><div class="modal-content">'
-                        + '<div class="modal-header">'
-                        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                        + '<h4 class="modal-title">Notifications</h4>'
-                        + '</div>'
+                        + titleHtml
                         + '<div class="modal-body"></div>'
                         + '</div>'
                         + '</div></div>');
@@ -432,27 +435,27 @@ var require = require || pipas.get;
                 }
                 return $elm
             },
-            supported:["info","success","danger","warning"]
+            supported: ["info", "success", "danger", "warning"]
         };
 
-        this.showError = function (message, container) {
-            this.show(message, "danger", container);
+        this.showError = function (message, container, title) {
+            this.show(message, "danger", container, title);
         };
-        this.showInfo = function (message, container) {
-            this.show(message, "info", container);
+        this.showInfo = function (message, container, title) {
+            this.show(message, "info", container, title);
         };
-        this.showSuccess = function (message, container) {
-            this.show(message, "success", container);
+        this.showSuccess = function (message, container, title) {
+            this.show(message, "success", container, title);
         };
-        this.showWarning = function (message, container) {
-            this.show(message, "warning", container);
+        this.showWarning = function (message, container, title) {
+            this.show(message, "warning", container, title);
         };
-        this.show = function (message, messageClass, container) {
-             if (messageClass === "error")messageClass = "danger";
-            else if (inner.supported.indexOf(messageClass)<0)messageClass = "info";
+        this.show = function (message, messageClass, container, title) {
+            if (messageClass === "error")messageClass = "danger";
+            else if (inner.supported.indexOf(messageClass) < 0)messageClass = "info";
 
             var $cnt = inner.getContainer(container);
-            var $elm = inner.getElement($cnt);
+            var $elm = inner.getElement($cnt, title);
 
             var $content = $elm.find(".modal-body");
             overlay.show("message", container);

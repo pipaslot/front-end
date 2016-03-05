@@ -47,7 +47,7 @@
             var that = this;
             for (var key in this.mapping) {
                 $elm.find(key).each(function () {
-                    message.show($(this).html(), that.mapping[key], container);
+                    message.show($(this).html(), that.mapping[key], container, $(this).parent().attr('title'));
                     $(this).remove();
                 });
             }
