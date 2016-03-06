@@ -9,9 +9,18 @@
 {/define}
 
 {block #content}
+<p>
+	Use next selectors to setup modal dialog
+	<ul>
+		<li><code>.model-ajax</code> - as Standard</li>
+		<li><code>.modal-ajax-sm</code> - as Small</li>
+		<li><code>.modal-ajax-lg</code> - as Large</li>
+	</ul>
+</p>
 
 <a n:href="modalContent" class="btn btn-default modal-ajax-sm" title="Small">Open small</a>
 <a n:href="modalContent" class="btn btn-default modal-ajax" title="Medium">Open standard</a>
 <a n:href="modalContent" class="btn btn-default modal-ajax-lg" title="Large">Open large</a>
 <a n:href="modalContent" class="btn btn-default modal-ajax">No-title</a>
 <a n:href="modalForm" class="btn btn-default modal-ajax">Modal Form</a>
+<a n:href="modalFail" class="btn btn-default modal-ajax">Auto close after fail</a>

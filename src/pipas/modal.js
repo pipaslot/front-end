@@ -1,5 +1,5 @@
 /**
- * Modal element
+ * Modal dialog
  *
  * @copyright Copyright (c) 2016 Petr štipek
  * @license MIT
@@ -51,7 +51,7 @@
         this.setTitle = function (html) {
             html = html ? html.trim() : '';
             this.element().find('.modal-title').html(html);
-            var header = this.element().find('.modal-header')
+            var header = this.element().find('.modal-header');
             if (html) {
                 header.show();
             }
@@ -120,7 +120,7 @@
          */
         this.isVisible = function () {
             return this.element().is(':visible');
-        }
+        };
         /**
          * @returns {pipas.modal}
          */

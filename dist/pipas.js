@@ -577,7 +577,7 @@ var require = require || pipas.get;
     };
 })(jQuery, window, pipas.overlay);
 /**
- * Modal element
+ * Modal dialog
  *
  * @copyright Copyright (c) 2016 Petr štipek
  * @license MIT
@@ -629,7 +629,7 @@ var require = require || pipas.get;
         this.setTitle = function (html) {
             html = html ? html.trim() : '';
             this.element().find('.modal-title').html(html);
-            var header = this.element().find('.modal-header')
+            var header = this.element().find('.modal-header');
             if (html) {
                 header.show();
             }
@@ -698,7 +698,7 @@ var require = require || pipas.get;
          */
         this.isVisible = function () {
             return this.element().is(':visible');
-        }
+        };
         /**
          * @returns {pipas.modal}
          */

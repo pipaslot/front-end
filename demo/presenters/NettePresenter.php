@@ -58,30 +58,6 @@ class NettePresenter extends BasePresenter
 		return $form;
 	}
 
-	public function renderModalContent()
-	{
-		sleep(2);
-	}
-
-	public function actionModalClose()
-	{
-		$this->terminate();
-	}
-
-	protected function createComponentModalForm()
-	{
-		$form = new Form();
-		$form->addText("name", "Name");
-		$form->addSubmit("submit", "Send")
-			->getControlPrototype()->class[] = 'btn btn-primary';
-
-		$form->addSubmit("save", "Save");
-		$form->onSubmit[] = function (Form $form) {
-			$form->addError("Expected error message");
-		};
-		return $form;
-	}
-
 	/******************************* Error **************************************/
 	public function handleErrorException()
 	{

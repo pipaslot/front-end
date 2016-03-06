@@ -8,15 +8,16 @@
  */
 
 (/**
- * @param jQuery
- * @param pipas.modal
+ * @param {jQuery} $
+ * @param {pipas.modal} modal
  */
     function ($, modal) {
     $.nette.ext('modal-ajax', {
         prepare: function (settings) {
             settings.modalAjax = {
                 enabled: false,
-                moveButtons: false
+                wasOpen: false,
+                previousTitle: ""
             };
             if (settings.nette && settings.nette.el) {
                 var $elm = settings.nette.el;
@@ -35,7 +36,9 @@
                     }
                     if (settings.modalAjax.enabled) {
                         var that = this;
-                        modal.setTitle($elm.attr("title"))
+                        settings.modalAjax.wasOpen = modal.isVisible();
+                        settings.modalAjax.previousTitle = modal.getTitle();
+                        if ($elm.attr("title"))modal.setTitle($elm.attr("title"))
                         modal.show();
                         modal.showSpinner();
                         modal.element().on('hide.bs.modal', function () {
@@ -61,6 +64,12 @@
                 if (!payload || payload.trim() == "") {
                     modal.hide();
                 }
+            }
+        },
+        error: function (jqXHR, status, error, settings) {
+            if (settings.modalAjax.enabled) {
+                modal.setTitle(settings.modalAjax.previousTitle);
+                if (!settings.modalAjax.wasOpen)modal.hide();
             }
         },
         complete: function (jqXHR, status, settings, netteAjax) {

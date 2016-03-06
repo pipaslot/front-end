@@ -1,0 +1,12 @@
+{var $title = "Modal integrations"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/../dist/nette-extensions.js"></script>
+{/define}
+
+{block #content}
+
+<a n:href="modalContent" class="btn btn-default modal-ajax" title="Medium">Open standard</a>
+<a n:href="modalForm" class="btn btn-default modal-ajax">Modal Form</a>
+<a n:href="modalFail" class="btn btn-default modal-ajax">Auto close after fail</a>
+<a n:href="snippets" class="btn btn-default modal-ajax">snippet response</a>
