@@ -3,14 +3,28 @@
  */
 (function (message) {
     $.nette.ext('error', {
+        prepare: function (settings) {
+            this.init(settings);
+        },
         error: function (jqXHR, status, error, settings) {
             if (status != "abort" && jqXHR.readyState != 0) {
                 message.showError("Link has failed to load.");
                 console.log(arguments);
             }
         },
-        success: function(payload){
-            if(payload=="") message.showWarning("No response received");
+        success: function (payload, status, jqXHR, settings) {
+            if (payload == "" && settings.error.showWarning) message.showWarning("No response received");
+        }
+    }, {
+        defaults: {
+            showWarning: true
+        },
+        init: function (settings) {
+            settings.error = $.extend({}, this.defaults, settings.error)
+        },
+        ignoreWarning: function (settings) {
+            this.init(settings);
+            settings.error.showWarning = false;
         }
     });
 })(pipas.message);
@@ -36,13 +50,18 @@
         }
     }, {
         mapping: {
+            ".flashMessage": "info",
+            ".flashMessageDanger": "danger",
+            ".flashMessageInfo": "info",
+            ".flashMessageSuccess": "success",
+            ".flashMessageWarning": "warning",
             ".flashMessages .alert-error": "danger",
             ".flashMessages .alert-danger": "danger",
             ".flashMessages .alert-info": "info",
             ".flashMessages .alert-success": "success",
             ".flashMessages .alert-warning": "warning",
             "form ul.error li": "danger",
-            "form .alert-danger": "danger",
+            "form .alert-danger": "danger"
         },
         parseElement: function ($elm, container) {
             var that = this;
@@ -61,14 +80,24 @@
  */
 (function () {
     $.nette.ext('missingSnippet', {
+        prepare: function (settings) {
+            settings.missingSnippetEnabled = settings.missingSnippetEnabled || true;
+        },
         success: function (payload, status, jqXHR, settings) {
-            if (payload.snippets) {
+            if (payload.snippets && settings.missingSnippetEnabled) {
                 for (var name in payload.snippets) {
                     if ($("#" + name).length == 0) {
                         document.location.href = settings.url;
                     }
                 }
             }
+        }
+    }, {
+        disable: function (settings) {
+            settings.missingSnippetEnabled = false;
+        },
+        enable: function (settings) {
+            settings.missingSnippetEnabled = true;
         }
     });
 })();
@@ -79,48 +108,46 @@
  *
  * classes:
  *  - modal-ajax:       Cause open response at modal
- *  - modal-ajax-lg:    Opens large dialog
- *  - modal-ajax-sm:    Opens small dialog
+ *  - modal-ajax-lg:    Resize to large dialog
+ *  - modal-ajax-md:    Resize to medium dialog
+ *  - modal-ajax-sm:    Resize to small dialog
  */
 
-(/**
- * @param {jQuery} $
- * @param {pipas.modal} modal
- */
-    function ($, modal) {
+(function ($, modal, messages) {
     $.nette.ext('modal-ajax', {
         prepare: function (settings) {
-            settings.modalAjax = {
-                enabled: false,
-                wasOpen: false,
-                previousTitle: ""
-            };
-            if (settings.nette && settings.nette.el) {
-                var $elm = settings.nette.el;
-                if ($elm) {
-                    if ($elm.hasClass("modal-ajax")) {
-                        settings.modalAjax.enabled = true;
-                        modal.setSizeMedium()
-                    } else if ($elm.hasClass("modal-ajax-sm")) {
-                        settings.modalAjax.enabled = true;
-                        modal.setSizeSmall()
-                    } else if ($elm.hasClass("modal-ajax-lg")) {
-                        settings.modalAjax.enabled = true;
-                        modal.setSizeLarge()
-                    } else {
-                        if ($elm.parents('#' + modal.id).length > 0)settings.modalAjax.enabled = true;
-                    }
-                    if (settings.modalAjax.enabled) {
-                        var that = this;
-                        settings.modalAjax.wasOpen = modal.isVisible();
-                        settings.modalAjax.previousTitle = modal.getTitle();
-                        if ($elm.attr("title"))modal.setTitle($elm.attr("title"))
-                        modal.show();
-                        modal.showSpinner();
-                        modal.element().on('hide.bs.modal', function () {
-                            if (that.jqXHR)that.jqXHR.abort();
-                        });
-                    }
+            this.init(settings);
+            var $elm;
+            if (settings.nette && ($elm = settings.nette.el)) {
+                if ($elm.hasClass("modal-ajax") || $elm.parents('#' + modal.id).length > 0)  settings.modalAjax.enabled = true;
+
+                if (settings.modalAjax.enabled) {
+                    if ($elm.hasClass("modal-ajax-md")) modal.setSizeMedium();
+                    else if ($elm.hasClass("modal-ajax-sm"))modal.setSizeSmall();
+                    else if ($elm.hasClass("modal-ajax-lg"))modal.setSizeLarge();
+
+                    if ($elm.attr("title"))modal.setTitle($elm.attr("title"));
+                    //disable redirect extension
+                    settings.redirect = false;
+                    //disable spinner extension
+                    var spinner = this.ext("spinner");
+                    if (spinner)spinner.disable(settings);
+                    //disable missing snippet extension
+                    var snippets = this.ext("missingSnippet");
+                    if (snippets)snippets.disable(settings);
+                    //ignore warning if empty response is received
+                    var error = this.ext("error");
+                    if (error)error.ignoreWarning(settings);
+
+                    //prepare modal
+                    var that = this;
+                    settings.modalAjax.wasOpen = modal.isVisible();
+                    settings.modalAjax.previousTitle = modal.getTitle();
+                    modal.show();
+                    modal.showSpinner();
+                    modal.element().on('hide.bs.modal', function () {
+                        if (that.jqXHR)that.jqXHR.abort();
+                    });
                 }
             }
         },
@@ -132,13 +159,71 @@
         },
         success: function (payload, status, jqXHR, settings) {
             if (settings.modalAjax.enabled) {
-                modal.setBody(payload);
-                modal.moveButtons();
-                //If is defined message extension, tried to parse messages
-                var message = this.ext('message');
-                if (message)message.parseElement(modal.element());
-                if (!payload || payload.trim() == "") {
+                if (typeof payload == 'string') {
+                    var documentPattern = /^<[\!]?(doctype|html)[^>]*>/i;
+                    if (documentPattern.test(payload)) {
+                        alert("Can not load content from url: " + settings.url + " as modal, because is returning HTML page, but only clipping is expected");
+                        //Hide if body is empty
+                        if (modal.getBody().trim() == "")modal.hide();
+                    } else {
+                        modal.setBody(payload);
+                        modal.moveButtons();
+                    }
+                } else if (payload && payload.snippets) {
+                    var title, body, i;
+                    for (i in this.snippetMap.title) {
+                        if ((title = payload.snippets[this.snippetMap.title[i]])) {
+                            modal.setTitle(title);
+                            break;
+                        }
+                    }
+                    for (i in this.snippetMap.body) {
+                        if ((body = payload.snippets[this.snippetMap.body[i]])) {
+                            modal.setBody(body);
+                            modal.moveButtons();
+                            break;
+                        }
+                    }
+                    //Parse messages from payload
+                } else if (payload) {
+
+                }
+
+                if (payload.message) {
+                    messages.showInfo(payload.message);
+                    modal.hide()
+                }
+                else if (payload[0] && $.isArray(payload) && typeof payload[0] == 'string') {
+                    messages.showInfo(payload[0]);
+                    modal.hide()
+                }
+                if (payload.messageInfo) {
+                    messages.showInfo(payload.messageInfo);
+                    modal.hide()
+                }
+                if (payload.messageError) {
+                    messages.showError(payload.messageError);
+                    modal.hide()
+                }
+                if (payload.messageWarning) {
+                    messages.showWarning(payload.messageWarning);
+                    modal.hide()
+                }
+                if (payload.messageSuccess) {
+                    messages.showSuccess(payload.messageSuccess);
+                    modal.hide()
+                }
+
+
+                // Close dialog if is received empty response
+                if (!payload || $.isEmptyObject(payload) || (typeof payload == 'string' && payload.trim() == "")) {
                     modal.hide();
+                }
+                //Parse messages from body and if after that is body empty, close modal
+                var message = this.ext('message');
+                if (message && modal.getBody().trim() != "") {
+                    message.parseElement(modal.element());
+                    if (modal.getBody().trim() == "")modal.hide();
                 }
             }
         },
@@ -156,11 +241,28 @@
             }
         }
     }, {
-        id: null,
-        jqXHR: null
+        defaults: {
+            enabled: false,
+            wasOpen: false,
+            previousTitle: ""
+        },
+        init: function (settings) {
+            settings.modalAjax = $.extend({}, this.defaults, settings.modalAjax)
+        },
+        jqXHR: null,
+        snippetMap: {
+            title: [
+                "snippet--modalTitle"
+            ],
+            body: [
+                "snippet--modalContent",
+                "snippet--modal"
+            ]
+        }
+
     });
 
-})(jQuery, pipas.modal);
+})(jQuery, pipas.modal, pipas.message);
 /*
  * Support for nette $this->redirect()
  *
@@ -259,7 +361,7 @@
             spinner.cancel();
         },
         prepare: function (settings) {
-            settings.spinner = $.extend({}, this.defaults, settings.spinner);
+            this.init(settings);
             if (!settings.spinner.id) {
                 settings.spinner.id = "spinner-" + Math.floor((Math.random() * 1000) + 1);
             }
@@ -305,7 +407,16 @@
             show: true,
             parent: null,
             id: null
+        },
+        init: function (settings) {
+            settings.spinner = $.extend({}, this.defaults, settings.spinner)
+        },
+        disable: function (settings) {
+            this.init(settings);
+            settings.spinner.show = false;
+            return this;
         }
+
     });
 })(jQuery, document, window, pipas.spinner);
 
@@ -492,6 +603,10 @@
                 }
                 delete this.XHRs[identifier];
             }
+        },
+        setAsUnique: function (settings) {
+            settings.unique = true;
+            return this;
         }
     });
 })(jQuery, document);

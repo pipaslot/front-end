@@ -469,6 +469,7 @@ var require = require || pipas.get;
  */
 (function ($, window, overlay) {
     pipas.message = new function () {
+        var that = this;
         var inner = {
             getContainer: function (identifier) {
                 return $(identifier ? "#" + identifier : "body");
@@ -492,7 +493,66 @@ var require = require || pipas.get;
                 }
                 return $elm
             },
-            supported: ["info", "success", "danger", "warning"]
+            supported: ["info", "success", "danger", "warning"],
+            show: function (message, messageClass, container, title) {
+                if (messageClass === "error")messageClass = "danger";
+                else if (inner.supported.indexOf(messageClass) < 0)messageClass = "info";
+
+                var $cnt = inner.getContainer(container);
+                var $elm = inner.getElement($cnt, title);
+
+                var $content = $elm.find(".modal-body");
+                overlay.show("message", container);
+
+                // message type wrapper
+                if ($content.find("> ." + messageClass + "s").length == 0) {
+                    $content.append($("<div class='message-group " + messageClass + "s'></div>"));
+                }
+                //write message
+                var strong = messageClass == "danger" ? "Error" : messageClass.charAt(0).toUpperCase() + messageClass.slice(1);
+                var $existing = $content.find("> ." + messageClass + "s .alert span").filter(function () {
+                    return $(this).text() == message;
+                });
+                if ($existing.length > 0) {
+                    $existing.each(function () {
+                        var $alert = $(this).parent();
+                        var $badge = $alert.find("span.badge");
+                        if ($badge.length > 0) {
+                            $badge.text(parseInt($badge.text()) + 1);
+                        } else {
+                            $alert.find("strong").after(' <span class="badge">2</span> ');
+                        }
+                    });
+                } else {
+                    $content.find("> ." + messageClass + "s").append($("<div class='alert alert-" + messageClass + "'><strong>" + strong + "!</strong> <span>" + message + "</span></div>"));
+                }
+
+                // Check height overflow
+                var height = $(window).height();
+                if ($content.height() > height) {
+                    $content.height(height - 150);
+                }
+
+                if (!$elm.is(":visible")) {
+                    $elm.fadeIn();
+                }
+
+
+                var hideCallback = function () {
+                    that.hide(container);
+                };
+                // Close event
+                $(".pipas-message")
+                    .off("click", hideCallback)
+                    .on("click", hideCallback);
+                //Enter key
+                $(document).on("keydown", function (event) {
+                    if (event.keyCode == 13) {
+                        $(".pipas-message button").trigger('click');
+                    }
+                });
+                return $elm;
+            }
         };
 
         this.showError = function (message, container, title) {
@@ -508,63 +568,14 @@ var require = require || pipas.get;
             this.show(message, "warning", container, title);
         };
         this.show = function (message, messageClass, container, title) {
-            if (messageClass === "error")messageClass = "danger";
-            else if (inner.supported.indexOf(messageClass) < 0)messageClass = "info";
-
-            var $cnt = inner.getContainer(container);
-            var $elm = inner.getElement($cnt, title);
-
-            var $content = $elm.find(".modal-body");
-            overlay.show("message", container);
-
-            // message type wrapper
-            if ($content.find("> ." + messageClass + "s").length == 0) {
-                $content.append($("<div class='message-group " + messageClass + "s'></div>"));
-            }
-            //write message
-            var strong = messageClass == "danger" ? "Error" : messageClass.charAt(0).toUpperCase() + messageClass.slice(1);
-            var $existing = $content.find("> ." + messageClass + "s .alert span").filter(function () {
-                return $(this).text() == message;
-            });
-            if ($existing.length > 0) {
-                $existing.each(function () {
-                    var $alert = $(this).parent();
-                    var $badge = $alert.find("span.badge");
-                    if ($badge.length > 0) {
-                        $badge.text(parseInt($badge.text()) + 1);
-                    } else {
-                        $alert.find("strong").after(' <span class="badge">2</span> ');
-                    }
+            if ($.isArray(message)) {
+                $.each(message, function (index, value) {
+                    inner.show(value, messageClass, container, title);
                 });
-            } else {
-                $content.find("> ." + messageClass + "s").append($("<div class='alert alert-" + messageClass + "'><strong>" + strong + "!</strong> <span>" + message + "</span></div>"));
             }
-
-            // Check height overflow
-            var height = $(window).height();
-            if ($content.height() > height) {
-                $content.height(height - 150);
+            else {
+                inner.show(message, messageClass, container, title);
             }
-
-            if (!$elm.is(":visible")) {
-                $elm.fadeIn();
-            }
-
-            var that = this;
-            var hideCallback = function () {
-                that.hide(container);
-            };
-            // Close event
-            $(".pipas-message")
-                .off("click", hideCallback)
-                .on("click", hideCallback);
-            //Enter key
-            $(document).on("keydown", function (event) {
-                if (event.keyCode == 13) {
-                    $(".pipas-message button").trigger('click');
-                }
-            });
-            return $elm;
         };
         this.hide = function (container) {
             var $cnt = inner.getContainer(container);
@@ -611,6 +622,7 @@ var require = require || pipas.get;
                     that.setBody();
                     that.setTitle();
                     that.hideSpinner();
+                    that.setSizeMedium();
                     overlay.hide(that.id + "overlay");
                 });
             }

@@ -83,6 +83,10 @@
                 }
                 delete this.XHRs[identifier];
             }
+        },
+        setAsUnique: function (settings) {
+            settings.unique = true;
+            return this;
         }
     });
 })(jQuery, document);

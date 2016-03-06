@@ -10,30 +10,28 @@ use Nette\Application\UI\Form;
  */
 class ModalPresenter extends BasePresenter
 {
-
-
-	public function renderModalContent()
+	public function renderContent()
 	{
-		sleep(2);
+		sleep(1);
 	}
 
-	public function actionModalClose()
+	public function actionClose()
 	{
 		$this->terminate();
 	}
 
-	public function actionModalFail()
+	public function actionFail()
 	{
 		$this->error("Must fail");
 	}
 
-	public function actionSnippet()
+	public function actionSnippets()
 	{
-		$this->redrawControl('title');
-		$this->redrawControl('content');
+		$this->redrawControl('modalTitle');
+		$this->redrawControl('modalContent');
 	}
 
-	protected function createComponentModalForm()
+	protected function createComponentForm()
 	{
 		$form = new Form();
 		$form->addText("name", "Name");
@@ -45,6 +43,31 @@ class ModalPresenter extends BasePresenter
 			$form->addError("Expected error message");
 		};
 		return $form;
+	}
+
+	public function handleJsonMessage()
+	{
+		$this->sendJson(["Message passed by method \$this->sendJson(['My message']) at presenter"]);
+	}
+
+	public function handlePayloadMessage()
+	{
+		$this->payload->message = "Message passed by methods \$this->payload->message = 'My message' and \$this->sendPayload(); at presenter";
+		$this->payload->messageInfo = "Custom info";
+		$this->payload->messageError = "Custom error";
+		$this->payload->messageWarning = "Custom warning";
+		$this->payload->messageSuccess = "Custom success";
+		$this->sendPayload();
+	}
+
+	public function handlePayloadMessages()
+	{
+		$this->payload->message = ["Message passed by methods \$this->payload->message = 'My message' and \$this->sendPayload(); at presenter"];
+		$this->payload->messageInfo = ["Custom info"];
+		$this->payload->messageError = ["Custom error"];
+		$this->payload->messageWarning = ["Custom warning"];
+		$this->payload->messageSuccess = ["Custom success twice", "Custom success twice"];
+		$this->sendPayload();
 	}
 
 }

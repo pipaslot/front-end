@@ -30,12 +30,13 @@ $(function () {
                 .on('click', ':submit', rh);
 
             //Form select with class "submit"
+            var formChangeCb = function (e) {
+                $(this).parents("form").submit();
+                e.preventDefault();
+            };
             $('form:not(.no-ajax) select.submit')
-                .off('change')
-                .on('change', function (e) {
-                    $(this).parents("form").submit();
-                    e.preventDefault();
-                });
+                .off('change', formChangeCb)
+                .on('change', formChangeCb);
         });
     }
 });

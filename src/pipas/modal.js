@@ -33,6 +33,7 @@
                     that.setBody();
                     that.setTitle();
                     that.hideSpinner();
+                    that.setSizeMedium();
                     overlay.hide(that.id + "overlay");
                 });
             }

@@ -28,7 +28,7 @@
             spinner.cancel();
         },
         prepare: function (settings) {
-            settings.spinner = $.extend({}, this.defaults, settings.spinner);
+            this.init(settings);
             if (!settings.spinner.id) {
                 settings.spinner.id = "spinner-" + Math.floor((Math.random() * 1000) + 1);
             }
@@ -74,7 +74,16 @@
             show: true,
             parent: null,
             id: null
+        },
+        init: function (settings) {
+            settings.spinner = $.extend({}, this.defaults, settings.spinner)
+        },
+        disable: function (settings) {
+            this.init(settings);
+            settings.spinner.show = false;
+            return this;
         }
+
     });
 })(jQuery, document, window, pipas.spinner);
 
