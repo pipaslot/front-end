@@ -23,7 +23,8 @@
             ".flashMessages .alert-info": "info",
             ".flashMessages .alert-success": "success",
             ".flashMessages .alert-warning": "warning",
-            "form .alert-danger": "danger"
+            "form ul.error li": "danger",
+            "form .alert-danger": "danger",
         },
         parseElement: function ($elm, container) {
             var that = this;

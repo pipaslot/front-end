@@ -1,7 +1,7 @@
 {var $title = "Spinner"}
 
 {define scripts}
-    <script type="text/javascript" src="{$basePath}/../src/pipas/1overlay.js"></script>
+    <script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
     <script>
     var defaultOverlay = pipas.overlay.defaultElement();
     var defaultSpinner = pipas.spinner.defaultElement();
@@ -20,7 +20,7 @@
         pipas.spinner.defaultElement('<span class="spinner"></span>');
         pipas.spinner.show(id);
         setTimeout(function(){
-        //    pipas.spinner.hide(id);
+            pipas.spinner.hide(id);
         }, 1500);
     }
     </script>

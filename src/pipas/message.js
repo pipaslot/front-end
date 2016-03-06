@@ -106,7 +106,7 @@
         this.hide = function (container) {
             var $cnt = inner.getContainer(container);
             var $elm = inner.getElement($cnt);
-            overlay.hide("message", container);
+            overlay.hide("message");
             $elm.remove();
         };
 

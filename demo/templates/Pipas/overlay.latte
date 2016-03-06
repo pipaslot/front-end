@@ -1,7 +1,7 @@
 {var $title = "Overlay"}
 
 {define scripts}
-    <script type="text/javascript" src="{$basePath}/../src/pipas/1overlay.js"></script>
+    <script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
     <script>
     var defaultOverlay = pipas.overlay.defaultElement();
     function callDefault(){
@@ -19,6 +19,20 @@
         setTimeout(function(){
             pipas.overlay.hide(id);
         }, 1500);
+    }
+    function callTwo(){
+        var id1 = "twice1";
+        pipas.overlay.defaultElement(defaultOverlay);
+        pipas.overlay.show(id1);
+        setTimeout(function(){
+            pipas.overlay.hide(id1);
+        }, 3000);
+        var id2 = "twice2";
+        pipas.overlay.defaultElement(defaultOverlay);
+        pipas.overlay.show(id2);
+        setTimeout(function(){
+            pipas.overlay.hide(id2);
+        }, 5000);
     }
     </script>
 {/define}
@@ -49,4 +63,5 @@
 {block #content}
 <a href="javascript:callDefault()" class="btn btn-default">default</a>
 <a href="javascript:callCustom()" class="btn btn-default">custom</a>
+<a href="javascript:callTwo()" class="btn btn-default">Twice</a>
 
