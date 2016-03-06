@@ -1,8 +1,16 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         concat: {
-            jsUrl: {
-                src: ['src/pipas.js', 'src/pipas/*.js'],
+            jsPipas: {
+                src: [
+                    'src/pipas.js',
+                    'src/pipas/overlay.js',
+                    'src/pipas/spinner.js', //require: overlay
+                    'src/pipas/message.js', //require: overlay
+                    'src/pipas/modal.js',   //require: spinner, message
+                    'src/pipas/bower.js',
+                    'src/pipas/url.js',
+                    'src/pipas/utils.js'],
                 dest: 'dist/pipas.js'
             },
             jsNetteExtensions: {
