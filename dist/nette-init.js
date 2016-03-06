@@ -4,6 +4,10 @@
  * - Forms without file upload
  * - Form submitted by select control with class "submit"
  *
+ * Important selectors
+ * - .no-ajax
+ * - form select.submit
+ *
  * Include this file after all extensions
  */
 $(function () {

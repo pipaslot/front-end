@@ -1,0 +1,17 @@
+{var $title = "Modal"}
+
+{define scripts}
+    <script type="text/javascript" src="{$basePath}/../src/pipas/message.js"></script>
+    <script type="text/javascript" src="{$basePath}/../src/nette-extension/message.js"></script>
+    <script type="text/javascript" src="{$basePath}/../src/pipas/spinner.js"></script>
+    <script type="text/javascript" src="{$basePath}/../src/pipas/modal.js"></script>
+    <script type="text/javascript" src="{$basePath}/../src/nette-extension/modal.js"></script>
+{/define}
+
+{block #content}
+
+<a n:href="modalContent" class="btn btn-default modal-ajax-sm" title="Small">Open small</a>
+<a n:href="modalContent" class="btn btn-default modal-ajax" title="Medium">Open standard</a>
+<a n:href="modalContent" class="btn btn-default modal-ajax-lg" title="Large">Open large</a>
+<a n:href="modalContent" class="btn btn-default modal-ajax">No-title</a>
+<a n:href="modalForm" class="btn btn-default modal-ajax">Modal Form</a>
