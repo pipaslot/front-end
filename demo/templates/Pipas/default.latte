@@ -69,7 +69,7 @@
 			pipas.define("test1","data/test1.js");
 			pipas.define("test2","data/test2.js","test1");
             var url = ["test2"];
-            pipas.get(url, function () {
+            pipas.require(url, function () {
                 console.log("loaded:", url, "arguments:", arguments);
             });
         }

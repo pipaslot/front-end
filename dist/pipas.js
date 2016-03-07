@@ -265,11 +265,15 @@ var pipas = (function ($) {
                 this.getDependencies(srcs, callback, context, urlList);
             }
         };
+        /**
+         * Load files from paths and run callbacks. Use caching. Base path is applied too.
+         * @param {Array|String}urlList
+         * @param callback
+         * @param context Callback context
+         */
+        this.require = this.get;
     };
 })(jQuery);
-
-var define = define || pipas.define;
-var require = require || pipas.get;
 
 
 
