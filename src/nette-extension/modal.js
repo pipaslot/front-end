@@ -79,34 +79,36 @@
                             break;
                         }
                     }
-                    //Parse messages from payload
+                    //Parse response from payload
                 } else if (payload) {
+                    if (payload.message) {
+                        messages.showInfo(payload.message);
+                        modal.hide()
+                    }
+                    else if (payload[0] && $.isArray(payload) && typeof payload[0] == 'string') {
+                        messages.showInfo(payload[0]);
+                        modal.hide()
+                    }
+                    if (payload.messageInfo) {
+                        messages.showInfo(payload.messageInfo);
+                        modal.hide()
+                    }
+                    if (payload.messageError) {
+                        messages.showError(payload.messageError);
+                        modal.hide()
+                    }
+                    if (payload.messageWarning) {
+                        messages.showWarning(payload.messageWarning);
+                        modal.hide()
+                    }
+                    if (payload.messageSuccess) {
+                        messages.showSuccess(payload.messageSuccess);
+                        modal.hide()
+                    }
 
-                }
-
-                if (payload.message) {
-                    messages.showInfo(payload.message);
-                    modal.hide()
-                }
-                else if (payload[0] && $.isArray(payload) && typeof payload[0] == 'string') {
-                    messages.showInfo(payload[0]);
-                    modal.hide()
-                }
-                if (payload.messageInfo) {
-                    messages.showInfo(payload.messageInfo);
-                    modal.hide()
-                }
-                if (payload.messageError) {
-                    messages.showError(payload.messageError);
-                    modal.hide()
-                }
-                if (payload.messageWarning) {
-                    messages.showWarning(payload.messageWarning);
-                    modal.hide()
-                }
-                if (payload.messageSuccess) {
-                    messages.showSuccess(payload.messageSuccess);
-                    modal.hide()
+                    if (payload.refresh) {
+                        location.reload();
+                    }
                 }
 
 

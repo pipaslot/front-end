@@ -70,4 +70,10 @@ class ModalPresenter extends BasePresenter
 		$this->sendPayload();
 	}
 
+	public function handleRefresh()
+	{
+		$this->payload->refresh = true;
+		$this->sendPayload();
+	}
+
 }

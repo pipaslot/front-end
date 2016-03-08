@@ -18,4 +18,76 @@
 		<li><code>.modal-ajax-lg</code> - as Large</li>
 	</ul>
 </p>
+<h2>Accepted responses</h2>
+<p>
+	Modal supports two combianions of response as HTML snippet or JSON response
+</p>
+<h3>HTML</h3>
+<p>
+	Is accepted to receive only HTML snippet from page. If response starts with HTML or DOCTYPE tag, throws error.
+</p>
+<h3>JSON</h3>
+<p>
+	Can accept one of follow options or their combinaions
+</p>
+<h4>Message</h4>
+<code>
+{
+	<div style="padding-left:20px">
+		// Info message without key<br>
+		0: "Message",<br>
+		<br>
+		//default info message<br>
+		message: "Message",<br>
+		<br>
+		//default info message<br>
+		messageInfo: "Message",<br>
+		<br>
+		//default error message<br>
+		messageError: "Message",<br>
+		<br>
+		//default warning message<br>
+		messageWarning: "Message",<br>
+		<br>
+		//default success message<br>
+		messageSuccess: "Message"
+	</div>
+}
+</code>
+<h4>Event</h4>
+<code>
+{
+	<div style="padding-left:20px">
+		// Call page refresh<br>
+		refresh: true
+	</div>
+}
+</code>
+<h4>Snippet</h4>
+<p>
+	You can send modal title and body via JSON snippet properties specified by their ID. Mapping of snippets is stored at <code>nette.ext('modal').snippetMap.title</code>
+	and <code>nette.ext('modal').snippetMap.body</code> You can extend that list by your own id. Default map contains:<br>
+	<code>
+    {
+        <div style="padding-left:20px">
+        snippetMap: {
+            <div style="padding-left:20px">
+             title: [
+                <div style="padding-left:20px">
+                    "snippet--modalTitle"
+                </div>
+             ],
+             body: [
+                 <div style="padding-left:20px">
+                    "snippet--modalContent",<br>
+                    "snippet--modal"
+                 </div>
+             ]
+            </div>
+        }
+    	</div>
+    }
+    </code>
+</p>
+
 {include '_actions.latte'}
