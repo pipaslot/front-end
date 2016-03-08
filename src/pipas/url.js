@@ -9,7 +9,6 @@
         stateTypeName: "pipasAjax",
         cleanedParameters: ["_fid"],
         history: [],
-        baseUrl: "/",
         /**
          * Cleanse the URL from unnecessary parameters
          * @param {string} url

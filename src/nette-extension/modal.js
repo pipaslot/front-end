@@ -8,7 +8,7 @@
  *  - modal-ajax-sm:    Resize to small dialog
  */
 
-(function ($, modal, messages) {
+(function ($, modal, messages, pipasUrl) {
     $.nette.ext('modal-ajax', {
         prepare: function (settings) {
             this.init(settings);
@@ -43,6 +43,8 @@
                     modal.element().on('hide.bs.modal', function () {
                         if (that.jqXHR)that.jqXHR.abort();
                     });
+                    //Add to url information about modal mode
+                    settings.url = pipasUrl.append(settings.url, "_target", "modal");
                 }
             }
         },
@@ -159,4 +161,4 @@
 
     });
 
-})(jQuery, pipas.modal, pipas.message);
+})(jQuery, pipas.modal, pipas.message, pipas.url);
