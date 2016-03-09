@@ -720,6 +720,9 @@ var pipas = (function ($) {
          */
         this.hide = function () {
             this.element().modal('hide');
+            this.element().remove();
+            $elm = null;
+
             return this
         };
         /**

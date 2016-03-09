@@ -113,7 +113,7 @@
  *  - modal-ajax-sm:    Resize to small dialog
  */
 
-(function ($, modal, messages, pipasUrl) {
+(function ($, modal, messages, pipasUrl, pipasSpinner) {
     $.nette.ext('modal-ajax', {
         prepare: function (settings) {
             this.init(settings);
@@ -214,6 +214,8 @@
                     }
 
                     if (payload.refresh) {
+                        modal.hide();
+                        pipasSpinner.show("refreshFromModal", "body");
                         location.reload();
                     }
                 }
@@ -266,7 +268,7 @@
 
     });
 
-})(jQuery, pipas.modal, pipas.message, pipas.url);
+})(jQuery, pipas.modal, pipas.message, pipas.url, pipas.spinner);
 /*
  * Support for nette $this->redirect()
  *
