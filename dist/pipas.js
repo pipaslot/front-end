@@ -610,7 +610,8 @@ var pipas = (function ($) {
                     + '<div class="modal-dialog" role="document">'
                     + '<div class="modal-content">'
                     + '<div class="modal-header">'
-                    + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                    + '<span class="modal-header-button close" data-dismiss="modal" aria-label="Close"><span class="fa fa-close"></span></span>'
+                    + '<a href="#" class="modal-header-button refresh"><span class="fa fa-refresh"></span></a>'
                     + '<h4 class="modal-title" id="' + this.id + '-label"></h4>'
                     + '</div>'
                     + '<div class="modal-body"></div>'
@@ -759,6 +760,23 @@ var pipas = (function ($) {
             //Button close
             $footer.append(createButton("Close", true));
         };
+        /**
+         * Set url for header refresh button
+         * @returns {pipas.modal}
+         */
+        this.setRefreshUrl = function (url) {
+            //Cut prefix http://domain-name.com/
+            url = url.replace(/.*?:\/\/[^\/]+/g, "");
+            this.element().find('.modal-header .refresh').attr('href', url);
+            return this;
+        };
+        /**
+         * Get url for header refresh button
+         * @returns {string}
+         */
+        this.getRefreshUrl = function () {
+            return this.element().find('.modal-header .refresh').attr('href');
+        }
     };
 })(jQuery, pipas, pipas.spinner, pipas.overlay);
 /**

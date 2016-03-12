@@ -1,0 +1,15 @@
+.modal-header .modal-header-button {
+    float: right;
+    color: #000000;
+    opacity: 0.2;
+    margin-left: 10px;
+    line-height: 1;
+}
+
+.modal-header .refresh[href='#'] {
+    display: none;
+}
+
+.modal-header .close {
+    font-size: 17px;
+}

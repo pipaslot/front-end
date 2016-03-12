@@ -161,6 +161,7 @@
         },
         success: function (payload, status, jqXHR, settings) {
             if (settings.modalAjax.enabled) {
+                modal.setRefreshUrl(pipasUrl.remove(settings.url, '_target'));
                 if (typeof payload == 'string') {
                     var documentPattern = /^<[\!]?(doctype|html)[^>]*>/i;
                     if (documentPattern.test(payload)) {

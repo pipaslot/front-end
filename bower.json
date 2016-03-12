@@ -8,7 +8,7 @@
     "javascript",
     "jquery"
   ],
-   "main": [
+  "main": [
     "dist/pipas.min.js",
     "dist/pipas.min.css",
     "dist/nette-extensions.min.js",
@@ -35,6 +35,7 @@
   "dependencies": {
     "bootstrap": "~3.3.6",
     "nette.ajax.js": "~2.1.0",
-    "jquery": ">=1.7.0"
+    "jquery": ">=1.7.0",
+    "components-font-awesome": "^4.5.0"
   }
 }
