@@ -2,4 +2,3 @@
 
 grunt
 git add dist
-git commit
