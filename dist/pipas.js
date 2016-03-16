@@ -260,16 +260,16 @@ var pipas = (function ($) {
                     reqs.push(resolved[i].req[u]);
                 }
             }
-            var initCallback = function(){
+            var initCallback = function () {
                 // Call init callback once after first get and then run finall callback
                 for (i in resolved) {
                     var initCb = resolved[i].initCb;
-                    if(typeof initCb==="function"){
-                        resolved[i].initCb.apply(context,arguments);
+                    if (typeof initCb === "function") {
+                        resolved[i].initCb.apply(context, arguments);
                         resolved[i].initCb = null;
                     }
                 }
-                callback.apply(context,arguments)
+                callback.apply(context, arguments)
             };
             if (reqs.length > 0) {
                 this.get(reqs, function () {
@@ -618,19 +618,23 @@ var pipas = (function ($) {
             return '<button type="button" class="btn btn-default" ' + (closing ? 'data-dismiss="modal"' : '') + '>' + title + '</button>';
         };
         this.id = 'modal-' + Math.round(Math.random() * 10000);
+        this.text = {
+            close: 'Close',
+            refresh: 'Refresh'
+        };
         this.element = function () {
             if (!$elm) {
                 $elm = $('<div class="modal fade" id="' + this.id + '" tabindex="-1" role="dialog" aria-labelledby="' + this.id + '-label">'
                     + '<div class="modal-dialog" role="document">'
                     + '<div class="modal-content">'
                     + '<div class="modal-header">'
-                    + '<span class="modal-header-button close" data-dismiss="modal" aria-label="Close"><span class="fa fa-close"></span></span>'
-                    + '<a href="#" class="modal-header-button refresh"><span class="fa fa-refresh"></span></a>'
+                    + '<span class="modal-header-button close" data-dismiss="modal" aria-label="' + that.text.close + '"><span class="fa fa-close"></span></span>'
+                    + '<a href="#" class="modal-header-button refresh" title="' + that.text.refresh + '"><span class="fa fa-refresh"></span></a>'
                     + '<h4 class="modal-title" id="' + this.id + '-label"></h4>'
                     + '</div>'
                     + '<div class="modal-body"></div>'
                     + '<div class="modal-footer">'
-                    + createButton("Close", true)
+                    + createButton(that.text.close, true)
                     + '</div>'
                     + '</div>'
                     + '</div>'
@@ -772,7 +776,7 @@ var pipas = (function ($) {
                 });
             });
             //Button close
-            $footer.append(createButton("Close", true));
+            $footer.append(createButton(that.text.close, true));
         };
         /**
          * Set url for header refresh button
