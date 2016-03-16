@@ -68,6 +68,7 @@ var pipas = (function ($) {
                 return (path.substring(path.length - extension.length) == extension);
             }
         };
+
         /**
          * Get or Set base path into www root
          * @param setter
@@ -83,9 +84,10 @@ var pipas = (function ($) {
          * @param sources Source files (js, css)
          * @param dependencies (required dependency)
          * @param aliases
+         * @param initCallback Callback called after first require call. Intended for plugin initialization called
          * @returns {pipas}
          */
-        this.define = function (name, sources, dependencies, aliases) {
+        this.define = function (name, sources, dependencies, aliases, initCallback) {
             if (inner.map.hasOwnProperty(name)) {
                 throw new Error("Can not override dependency '" + name + "'.");
             }
@@ -107,7 +109,8 @@ var pipas = (function ($) {
             inner.map[name] = {
                 name: name,
                 src: inner.toArray(sources),
-                req: required
+                req: required,
+                initCb: initCallback
             };
             return this;
         };
@@ -257,12 +260,23 @@ var pipas = (function ($) {
                     reqs.push(resolved[i].req[u]);
                 }
             }
+            var initCallback = function(){
+                // Call init callback once after first get and then run finall callback
+                for (i in resolved) {
+                    var initCb = resolved[i].initCb;
+                    if(typeof initCb==="function"){
+                        resolved[i].initCb.apply(context,arguments);
+                        resolved[i].initCb = null;
+                    }
+                }
+                callback.apply(context,arguments)
+            };
             if (reqs.length > 0) {
                 this.get(reqs, function () {
-                    this.getDependencies(srcs, callback, context, urlList);
+                    this.getDependencies(srcs, initCallback, context, urlList);
                 }, this);
             } else {
-                this.getDependencies(srcs, callback, context, urlList);
+                this.getDependencies(srcs, initCallback, context, urlList);
             }
         };
         /**
