@@ -71,10 +71,16 @@
         };
         /**
          * Cancel element despite of all allocated required
-         * @param {string} parent
+         * @param {string|null} parent If is empty, remove all parents
          * @returns Element
          */
         this.cancel = function (parent) {
+            if (parent == null) {
+                for (var i in inner.parents) {
+                    inner.parents[i].elm.remove();
+                    delete inner.parents[i];
+                }
+            }
             if (inner.parents[parent]) {
                 inner.parents[parent].elm.remove();
                 delete inner.parents[parent];

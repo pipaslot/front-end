@@ -19,9 +19,11 @@
             $(document).on('keydown keyup', function (e) {
                 if (e.which === 116) {
                     spinner.show("F5");
+                    location.reload();
                 }
                 if (e.which === 82 && e.ctrlKey) {
                     spinner.show("CTRL+F5");
+                    location.reload(true);
                 }
             });
             // Force hide spinner after initialization
