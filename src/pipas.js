@@ -261,7 +261,7 @@ var pipas = (function ($) {
                 }
             }
             var initCallback = function () {
-                // Call init callback once after first get and then run finall callback
+                // Call init callback once after first get and then run final callback
                 for (i in resolved) {
                     var initCb = resolved[i].initCb;
                     if (typeof initCb === "function") {
@@ -269,7 +269,7 @@ var pipas = (function ($) {
                         resolved[i].initCb = null;
                     }
                 }
-                callback.apply(context, arguments)
+                if (callback)callback.apply(context, arguments)
             };
             if (reqs.length > 0) {
                 this.get(reqs, function () {
