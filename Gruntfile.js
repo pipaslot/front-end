@@ -6,6 +6,7 @@ module.exports = function (grunt) {
                     'src/pipas.js',
                     'src/pipas/overlay.js',
                     'src/pipas/spinner.js', //require: overlay
+                    'src/pipas/progress.js', //require: overlay
                     'src/pipas/message.js', //require: overlay
                     'src/pipas/modal.js',   //require: spinner, message
                     'src/pipas/bower.js',

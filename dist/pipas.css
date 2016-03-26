@@ -47,6 +47,42 @@
     }
 }
 @media screen {
+    .pipas-progress {
+        position: absolute;
+        z-index: 1102;
+
+        height: 100%;
+        width: 100%;
+        display: block;
+        top: 0;
+        left: 0;
+    }
+
+    body > .pipas-progress {
+        position: fixed;
+    }
+
+    .pipas-progress .wrapper {
+        position: relative;
+        left: 35%;
+        top: 50%;
+        width: 30%;
+    }
+
+    .pipas-progress .label {
+        color: white;
+        margin-bottom: 5px;
+        text-align: center;
+        text-shadow: 1px 1px 2px #888;
+        width: 100%;
+        display: block;
+    }
+
+    .pipas-progress .bar {
+        width: 100%;
+    }
+}
+@media screen {
     .pipas-spinner {
         top: 0;
         left: 0;

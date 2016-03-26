@@ -1,0 +1,53 @@
+{var $title = "Spinner"}
+
+{define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/pipas/progress.js"></script>
+	<script type="text/javascript">
+		function callShow(parent) {
+			var progress = pipas.progress.show("id", 100, parent);
+			progress.onSuccess.push(function () {
+				console.log("success", arguments);
+			});
+			setTimeout(function () {
+				progress.setLabel("Inicializace");
+				progress.setValue(30);
+			}, 500);
+			setTimeout(function () {
+				progress.setLabel("Načtání");
+				progress.setValue(55);
+			}, 1000);
+			setTimeout(function () {
+				progress.setValue(70);
+			}, 1500);
+			setTimeout(function () {
+				progress.setLabel("Úprava");
+				progress.setValue(90);
+			}, 2000);
+			setTimeout(function () {
+				progress.setValue(95);
+			}, 2500);
+			setTimeout(function () {
+				progress.setLabel("Zprácování");
+				progress.setValue(100);
+			}, 3000);
+		}
+
+	</script>
+{/define}
+
+{block #content}
+<a href="javascript:callShow()" class="btn btn-default">Show</a>
+<a href="javascript:callShow('showProgressHere')" class="btn btn-default">At div</a>
+
+<p id="showProgressHere">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis nibh nibh. Sed pulvinar, nisi ac mattis
+	fringilla,
+	libero risus tempor dolor, nec convallis erat risus in ligula. In porta turpis at purus volutpat fringilla. Ut et mi
+	commodo,
+	egestas nulla viverra, vestibulum purus. Donec ut euismod lacus. Aenean sed nisi tortor. Pellentesque metus
+	libero,<br><br><br>
+	tincidunt non commodo vitae, mattis non sapien. Suspendisse eu tellus augue. Suspendisse fermentum enim lacus, non
+	suscipit turpis consectetur at. Phasellus molestie aliquet nisi, vel vulputate magna bibendum vel. Vivamus eleifend
+	volutpat odio a pellentesque. Integer fringilla eu purus in tincidunt. Donec quis nisi ac lectus tincidunt placerat.
+</p>
+
