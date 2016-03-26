@@ -1,0 +1,34 @@
+{var $rand = rand(0,10000)}
+
+<p class="p-{$rand}">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis nibh nibh. Sed pulvinar, nisi ac mattis
+	fringilla,
+	libero risus tempor dolor, nec convallis erat risus in ligula. In porta turpis at purus volutpat fringilla. Ut et mi
+	commodo,
+	egestas nulla viverra, vestibulum purus. Donec ut euismod lacus. Aenean sed nisi tortor.
+	<span class="toBeRed" style="color:blue">This text should be colored via javascript to red.</span>Pellentesque metus
+	libero,
+	tincidunt non commodo vitae, mattis non sapien. Suspendisse eu tellus augue. Suspendisse fermentum enim lacus, non
+	suscipit turpis consectetur at. Phasellus molestie aliquet nisi, vel vulputate magna bibendum vel. Vivamus eleifend
+	volutpat odio a pellentesque. Integer fringilla eu purus in tincidunt. Donec quis nisi ac lectus tincidunt placerat.
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis nibh nibh. Sed pulvinar, nisi ac mattis
+	fringilla,
+	libero risus tempor dolor, nec convallis erat risus in ligula. In porta turpis at purus volutpat fringilla. Ut et mi
+	commodo,
+	egestas nulla viverra, vestibulum purus. Donec ut euismod lacus. Aenean sed nisi tortor.
+	<span class="toBeRed" style="color:blue">This text should be colored via javascript to red.</span>Pellentesque metus
+	libero,
+	tincidunt non commodo vitae, mattis non sapien. Suspendisse eu tellus augue. Suspendisse fermentum enim lacus, non
+	suscipit turpis consectetur at. Phasellus molestie aliquet nisi, vel vulputate magna bibendum vel. Vivamus eleifend
+	volutpat odio a pellentesque. Integer fringilla eu purus in tincidunt. Donec quis nisi ac lectus tincidunt placerat.
+</p>
+<script type="text/javascript">
+	var random = {$rand};
+	$(".p-" + random + " .toBeRed").css("color", "red");
+	setTimeout(function () {
+		$.nette.ajax({
+			url: {link this},
+			redirect: false
+		});
+	}, 1000);
+</script>

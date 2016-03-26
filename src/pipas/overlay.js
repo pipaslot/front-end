@@ -40,6 +40,7 @@
          * @returns {*}
          */
         this.show = function (id, parent) {
+            if (!parent)parent = "body";
             var $elm = inner.getOverlay(parent);
             var data = inner.parents[parent] || {idList: {}, elm: $elm};
             data.idList[id] = id;
