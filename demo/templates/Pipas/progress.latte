@@ -4,7 +4,7 @@
 	<script type="text/javascript" src="{$basePath}/../src/pipas/progress.js"></script>
 	<script type="text/javascript">
 		function callShow(parent) {
-			var progress = pipas.progress.show("id", 100, parent);
+			var progress = pipas.progress.show(100, parent);
 			progress.onSuccess.push(function () {
 				console.log("success", arguments);
 			});
