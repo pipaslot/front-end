@@ -512,32 +512,42 @@ var pipas = (function ($) {
                 }
                 return $spinner;
             },
-            factory: function (id, _elm, _max) {
-                var max = parseInt(_max ? _max : 100);
+            factory: function (id, _elm) {
+                var val = 0;
+                var max = 100;
                 var percent = 0;
                 var label = "&nbsp;";
                 this.elm = _elm;
-
                 _elm.find(".bar").attr("value", 0).attr("max", max);
                 this.setValue = function (value) {
-                    var val = parseInt(value);
+                    val = parseInt(value);
                     percent = Math.round(value / max * 100);
                     this.elm.find(".bar").stop().animate({
                         value: val,
                         max: max
                     });
                     this.setLabel();
-                    if (val >= max) {
+                    if (this.isSuccess()) {
                         for (var i in this.onSuccess) {
                             var cb = this.onSuccess[i];
                             cb();
                         }
                         this.close();
                     }
+                    return this;
+                };
+                this.setMaximum = function (_max) {
+                    max = parseInt(_max ? _max : 100);
+                    _elm.find(".bar").attr("max", max);
+                    return this;
                 };
                 this.setLabel = function (_label) {
                     label = _label ? _label : label;
                     this.elm.find(".label").html(label + " " + percent + "%").show();
+                    return this;
+                };
+                this.isSuccess = function () {
+                    return val >= max;
                 };
                 /**
                  * List of callbacks called after success
@@ -557,14 +567,14 @@ var pipas = (function ($) {
          * @param parent
          * @returns {inner.factory}
          */
-        this.show = function (max, parent) {
+        this.show = function (parent) {
             var id = "progress-" + Math.round(Math.random() * 10000);
             if (!parent)parent = "body";
             if (inner.parents.hasOwnProperty(parent)) {
                 inner.parents[parent].close();
             }
             var $elm = inner.createProgress(parent);
-            var obj = new inner.factory(id, $elm, max ? max : 100);
+            var obj = new inner.factory(id, $elm);
 
             inner.parents[parent] = obj;
             pipas.overlay.show(id, parent);

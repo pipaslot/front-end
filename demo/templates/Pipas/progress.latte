@@ -1,22 +1,23 @@
-{var $title = "Spinner"}
+{var $title = "Progress"}
 
 {define scripts}
 	<script type="text/javascript" src="{$basePath}/../src/pipas/progress.js"></script>
 	<script type="text/javascript">
 		function callShow(parent) {
-			var progress = pipas.progress.show(100, parent);
+			var progress = pipas.progress.show(parent);
+			progress.setMaximum(100);
 			progress.onSuccess.push(function () {
 				console.log("success", arguments);
 			});
 			setTimeout(function () {
-				progress.setLabel("Inicializace");
 				progress.setValue(30);
 			}, 500);
 			setTimeout(function () {
-				progress.setLabel("Načtání");
+				progress.setLabel("Inicializace");
 				progress.setValue(55);
 			}, 1000);
 			setTimeout(function () {
+				progress.setLabel("Načtání");
 				progress.setValue(70);
 			}, 1500);
 			setTimeout(function () {
