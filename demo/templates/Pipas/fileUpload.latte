@@ -3,9 +3,14 @@
 {define scripts}
 	<script type="text/javascript" src="{$basePath}/../src/pipas/fileUpload.js"></script>
 	<script>
-		pipas.fileUpload("#uploadFile",{link uploadFile!}, function () {
+		var control = pipas.fileUpload("#uploadFile",{link uploadFile!});
+		control.onUpload.push(function () {
 			console.log("Upload success");
-		},{link getUploadStatus!})
+		});
+		control.onSuccess.push(function () {
+			console.log("processingd success");
+		});
+		control.processingStatusUrl = {link getUploadStatus!};
 	</script>
 {/define}
 
