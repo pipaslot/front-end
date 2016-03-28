@@ -76,4 +76,10 @@ class ModalPresenter extends BasePresenter
 		$this->sendPayload();
 	}
 
+	public function handleFileUpload()
+	{
+		echo "1";
+		$this->terminate();
+	}
+
 }

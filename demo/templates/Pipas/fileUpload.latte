@@ -1,9 +1,9 @@
 {var $title = "File upload"}
 
 {define scripts}
-	<script type="text/javascript" src="{$basePath}/../src/pipas/fileUpload.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/upload.js"></script>
 	<script>
-		var control = pipas.fileUpload("#uploadFile",{link uploadFile!});
+		var control = pipas.upload.create("#uploadFile",{link uploadFile!});
 		control.onUpload.push(function () {
 			console.log("Upload success");
 		});
@@ -17,7 +17,6 @@
 
 {block #content}
 <form method="post" enctype="multipart/form-data">
-
 	<input type="file" id="uploadFile" name="files[]" multiple>
 </form>
 

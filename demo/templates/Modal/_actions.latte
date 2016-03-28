@@ -1,3 +1,4 @@
+{var $rand = rand(0,1000)}
 <a n:href="content" class="btn btn-default modal-ajax modal-ajax-sm" title="Small">Open small</a>
 <a n:href="content" class="btn btn-default modal-ajax modal-ajax-md" title="Medium">Open medium</a>
 <a n:href="content" class="btn btn-default modal-ajax modal-ajax-lg" title="Large">Open large</a>
@@ -10,3 +11,11 @@
 <a n:href="payloadMessages!" class="btn btn-default modal-ajax">Messages from payload</a>
 <a n:href="refresh!" class="btn btn-default modal-ajax">Refresh from response</a>
 <a n:href="javascript" class="btn btn-default modal-ajax">Javascript at modal</a>
+<input name="upload[]" id="uploadControl{$rand}" type="file" multiple>
+
+
+<script type="text/javascript">
+	$(function () {
+		pipas.upload.create("#uploadControl" +{$rand},{link fileUpload!});
+	});
+</script>

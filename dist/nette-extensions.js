@@ -351,6 +351,13 @@
  *      }
  * });
  *
+ * OR shortly
+ *
+ * $.nette.ajax({
+ *          spinner: false
+ *      }
+ * });
+ *
  * For disabling spinner on html elements appends class 'no-spinner' to anchor element: <a href="ajax/request" class="no-spinner" data-spinner="parent identifier">
  */
 (function ($, document, window, spinner) {
@@ -418,7 +425,9 @@
             id: null
         },
         init: function (settings) {
-            settings.spinner = $.extend({}, this.defaults, settings.spinner)
+            var isFalse = settings.spinner === false;
+            settings.spinner = $.extend({}, this.defaults, settings.spinner);
+            if (isFalse)settings.spinner.show = false;
         },
         disable: function (settings) {
             this.init(settings);

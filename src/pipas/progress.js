@@ -12,15 +12,25 @@
         var max = 100;
         var percent = 0;
         var label = "&nbsp;";
+        var oldAnimate = null;
         this.elm = _elm;
-        _elm.find(".bar").attr("value", 0).attr("max", max);
+        var bar = _elm.find(".bar");
+        bar.attr("value", 0).attr("max", max);
         this.setValue = function (value) {
             val = parseInt(value);
-            percent = Math.round(value / max * 100);
-            this.elm.find(".bar").stop().animate({
-                value: val,
-                max: max
-            });
+            if (isNaN(val))val = 0;
+            percent = max > 0 ? Math.round(val / max * 100) : 0;
+            if (val >= 0 && max >= 0) {
+                bar.stop();
+                if (oldAnimate) {
+                    bar.attr("value", oldAnimate.value).attr("max", oldAnimate.max);
+                }
+                oldAnimate = {
+                    value: val,
+                    max: max
+                };
+                bar.animate(oldAnimate);
+            }
             this.setLabel();
             if (this.isSuccess()) {
                 for (var i in this.onSuccess) {
