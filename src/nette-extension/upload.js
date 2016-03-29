@@ -37,7 +37,6 @@
                     });
                 }
                 if ($elm.attr("data-upload-on-success")) {
-                    console.log("re")
                     control.onSuccess.push(function () {
                         eval($elm.attr("data-upload-on-success"));
                     });

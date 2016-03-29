@@ -815,7 +815,7 @@ var pipas = (function ($) {
                     var ajaxData = new FormData();
                     ajaxData.append('action', 'uploadImages');
                     var iterator = 0;
-                    var inputName = self.element.attr("name") ? self.element.attr("name") : "photo";
+                    var inputName = self.element.attr("name") ? self.element.attr("name").replace(/[[\]]/g, '') : "photo";
                     $.each(self.element, function (i, obj) {
                         $.each(obj.files, function (j, file) {
                             ajaxData.append(inputName + '[' + iterator + ']', file);
