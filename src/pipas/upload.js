@@ -21,6 +21,10 @@
             return new pipas.upload.UploadControl(fileInputSelector, uploadUrl);
         },
         UploadControl: function (elementSelector, uploadUrl) {
+            /** @type {Array} Callback called after upload */
+            this.onUpload = [];
+            /** @type {Array} Callback called after processing */
+            this.onSuccess = [];
             var self = this;
             var uploadProgress, processingProgress;
             var callSuccess = function () {
@@ -59,14 +63,21 @@
                     }
                 });
             };
+            /**
+             * Detach attached event to element
+             */
+            this.destroy = function () {
+                this.element.off('change', onChange);
+            };
             var onChange = function () {
                 if (self.element.get(0).files.length > 0) {
                     var ajaxData = new FormData();
                     ajaxData.append('action', 'uploadImages');
                     var iterator = 0;
+                    var inputName = self.element.attr("name") ? self.element.attr("name") : "photo";
                     $.each(self.element, function (i, obj) {
                         $.each(obj.files, function (j, file) {
-                            ajaxData.append('photo[' + iterator + ']', file);
+                            ajaxData.append(inputName + '[' + iterator + ']', file);
                             iterator++;
                         })
                     });
@@ -118,10 +129,6 @@
             this.element = $(elementSelector);
             if (this.element.length > 1)throw new Error("Passed selector is not unique. Found " + this.element.length + " similar elements.")
             this.element.off('change', onChange).on('change', onChange);
-            /** @type {Array} Callback called after upload */
-            this.onUpload = [];
-            /** @type {Array} Callback called after processing */
-            this.onSuccess = [];
             /** @type {string} url for obtaining processing status */
             this.processingStatusUrl = null;
             var modalId = this.element.closest(".modal").attr("id");

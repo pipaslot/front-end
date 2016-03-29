@@ -25,11 +25,12 @@
 	                  <li><a class="no-ajax" n:href="Nette:init">Init</a></li>
 	                  <li><a class="no-ajax" n:href="Nette:error">Error</a></li>
 	                  <li><a class="no-ajax" n:href="Nette:message">Message</a></li>
+		               <li><a class="no-ajax" n:href="Nette:missingSnippet">Missing snippet</a></li>
 	                  <li><a class="no-ajax" n:href="Nette:redirect">Redirect</a></li>
 	                  <li><a class="no-ajax" n:href="Nette:spinner">Spinner</a></li>
 	                  <li><a class="no-ajax" n:href="Nette:tableFixed">Table-fixed</a></li>
 		               <li><a class="no-ajax" n:href="Nette:unique">Unique</a></li>
-		               <li><a class="no-ajax" n:href="Nette:missingSnippet">Missing snippet</a></li>
+		               <li><a class="no-ajax" n:href="Nette:upload">Upload</a></li>
 	               </ul>
 	             </li>
 	             <li class="dropdown">
@@ -55,7 +56,7 @@
 
 	<div class="container" n:snippet="content">
 		{block styles}{/block}
-		<div class="flashMessages">
+		<div n:snippet="flashMessages" class="flashMessages">
 			<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type">{$flash->message|noescape}</div>
 		</div>
 		{ifset $title}<h1>{$title}</h1>{/ifset}

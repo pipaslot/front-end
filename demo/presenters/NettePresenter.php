@@ -181,4 +181,19 @@ class NettePresenter extends BasePresenter
 	{
 		$this->redrawControl("undefinedOnPrevious");
 	}
+
+	/******************************* Upload **************************************/
+	public function handleFileUpload()
+	{
+		foreach ($this->request->files as $name => $fileList) {
+			$this->flashMessage($name . ": " . count($fileList));
+		}
+		$this->redrawControl("flashMessages");
+	}
+
+	public function handleGetUploadStatus()
+	{
+		echo rand(10, 110);
+		exit;
+	}
 }

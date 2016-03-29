@@ -1,0 +1,35 @@
+{var $title = "Upload"}
+
+{define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/nette-extension/upload.js"></script>
+{/define}
+
+
+
+{block #content}
+<p>
+	Minimal requirements is element <code> < input type="file" data-upload-url="upload-script-url.php" /> </code>
+</p>
+<p>
+	Custom attributes:
+	<br><code>data-upload-status-url</code> - Url for obtaining of upload processing status
+	<br><code>data-upload-on-upload</code> - Javascript callback after uploading
+	<br><code>data-upload-on-success</code> - Javascript callback after uploading and finishes processing
+</p>
+
+<h2>Single file upload</h2>
+<p>
+	<input type="file" data-upload-url="{link fileUpload!}">
+</p>
+<h2>Multi file upload</h2>
+<p>
+	<input type="file" data-upload-url="{link fileUpload!}" multiple>
+</p>
+<h2>Custom attributes</h2>
+<p>
+	It call two callback after upload and after success
+</p>
+<p>
+	<input type="file" data-upload-url="{link fileUpload!}" multiple data-upload-on-upload="alert('Upload successful')"
+	       data-upload-status-url="{link getUploadStatus!}" data-upload-on-success="alert('Processing successful')">
+</p>
