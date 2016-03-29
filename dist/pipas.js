@@ -890,6 +890,17 @@ var pipas = (function ($) {
         var createButton = function (title, closing) {
             return '<button type="button" class="btn btn-default" ' + (closing ? 'data-dismiss="modal"' : '') + '>' + title + '</button>';
         };
+        var doHide = function () {
+            if ($elm) {
+                that.setBody();
+                that.setTitle();
+                that.hideSpinner();
+                that.setSizeMedium();
+                overlay.hide(that.id + "overlay");
+                $elm.remove();
+            }
+            $elm = null;
+        };
         this.id = 'modal-' + Math.round(Math.random() * 10000);
         this.text = {
             close: 'Close',
@@ -914,13 +925,7 @@ var pipas = (function ($) {
                     + '</div>');
                 $('body').append($elm);
 
-                $elm.on('hide.bs.modal', function () {
-                    that.setBody();
-                    that.setTitle();
-                    that.hideSpinner();
-                    that.setSizeMedium();
-                    overlay.hide(that.id + "overlay");
-                });
+                $elm.on('hide.bs.modal', doHide);
             }
             return $elm;
         };
@@ -1011,9 +1016,7 @@ var pipas = (function ($) {
          * @returns {pipas.modal}
          */
         this.hide = function () {
-            this.element().modal('hide');
-            this.element().remove();
-            $elm = null;
+            doHide();
 
             return this
         };
