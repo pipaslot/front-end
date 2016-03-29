@@ -29,7 +29,7 @@
             var uploadProgress, processingProgress;
             var callSuccess = function () {
                 for (var i in self.onSuccess) {
-                    self.onSuccess[i].call(self);
+                    self.onSuccess[i].call(this, self);
                 }
             };
             var getStatus = function () {
@@ -102,7 +102,7 @@
                                         uploadProgress.setValue(e.loaded);
                                         if (uploadProgress.isSuccess()) {
                                             for (var i in self.onUpload) {
-                                                self.onUpload[i].call(self);
+                                                self.onUpload[i].call(this, self);
                                             }
                                             getStatus();
                                         }

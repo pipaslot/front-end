@@ -31,5 +31,11 @@
 </p>
 <p>
 	<input type="file" data-upload-url="{link fileUpload!}" multiple data-upload-on-upload="alert('Upload successful')"
-	       data-upload-status-url="{link getUploadStatus!}" data-upload-on-success="alert('Processing successful')">
+	       data-upload-status-url="{link getUploadStatus!}" data-upload-on-success="onProcessingSuccessful">
 </p>
+<script type="text/javascript">
+	function onProcessingSuccessful(e) {
+		alert('Processing successful');
+		console.log(e);
+	}
+</script>

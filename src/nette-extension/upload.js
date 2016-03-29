@@ -7,8 +7,8 @@
  * Attributes:
  * data-upload-url - Upload script
  * data-upload-status-url - Url for obtaining of upload processing status
- * data-upload-on-upload - Javascript callback after uploading
- * data-upload-on-success - Javascript callback after uploading and finishes processing
+ * data-upload-on-upload - Javascript called after uploading
+ * data-upload-on-success - Javascript called after uploading and finishes processing
  */
 (function ($, upload) {
     $.nette.ext('upload', {
@@ -33,12 +33,19 @@
                 }
                 if ($elm.attr("data-upload-on-upload")) {
                     control.onUpload.push(function () {
-                        eval($elm.attr("data-upload-on-upload"));
+                        var res = eval($elm.attr("data-upload-on-upload"));
+                        if (typeof res == 'function') {
+                            res.apply(this, arguments);
+                        }
                     });
                 }
                 if ($elm.attr("data-upload-on-success")) {
                     control.onSuccess.push(function () {
-                        eval($elm.attr("data-upload-on-success"));
+                        var res = eval($elm.attr("data-upload-on-success"));
+                        if (typeof res == 'function') {
+                            console.log(arguments);
+                            res.apply(this, arguments);
+                        }
                     });
                 }
                 self.registered[id] = control;
