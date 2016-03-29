@@ -86,8 +86,10 @@
         },
         init: function (settings) {
             var isFalse = settings.spinner === false;
+            var isTrue = settings.spinner === true;
             settings.spinner = $.extend({}, this.defaults, settings.spinner);
             if (isFalse)settings.spinner.show = false;
+            if (isTrue)settings.spinner.show = true;
         },
         disable: function (settings) {
             this.init(settings);

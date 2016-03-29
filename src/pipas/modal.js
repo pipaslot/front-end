@@ -187,6 +187,16 @@
          */
         this.getRefreshUrl = function () {
             return this.element().find('.modal-header .refresh').attr('href');
+        };
+
+        /**
+         * Check if passed element is at modal
+         * @param element
+         * @returns {boolean}
+         */
+        this.containsElement = function (element) {
+            console.log($(element).closest(".modal").length);
+            return $(element).closest(".modal").length > 0 ? true : false;
         }
     };
 })(jQuery, pipas, pipas.spinner, pipas.overlay);

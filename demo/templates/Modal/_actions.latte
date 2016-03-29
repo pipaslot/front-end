@@ -11,11 +11,24 @@
 <a n:href="payloadMessages!" class="btn btn-default modal-ajax">Messages from payload</a>
 <a n:href="refresh!" class="btn btn-default modal-ajax">Refresh from response</a>
 <a n:href="javascript" class="btn btn-default modal-ajax">Javascript at modal</a>
+<h2>Upload control</h2>
 <input name="upload[]" id="uploadControl{$rand}" type="file" multiple>
-
-
 <script type="text/javascript">
 	$(function () {
 		pipas.upload.create("#uploadControl" +{$rand},{link fileUpload!});
+	});
+</script>
+
+<h2>Element contains</h2>
+<p>
+<div id="isAtModal1-{$rand}">todo</div>
+<div id="isAtModal2-{$rand}"></div>
+<div id="isAtModal3-{$rand}"></div>
+</p>
+<script type="text/javascript">
+	$(function () {
+		$("#isAtModal1-" +{$rand}).text("This element " + (pipas.modal.containsElement(document.getElementById("isAtModal1-" +{$rand})) ? "is " : "is NOT ") + " at modal dialog.");
+		$("#isAtModal2-" +{$rand}).text("This element " + (pipas.modal.containsElement("#isAtModal2-" +{$rand}) ? "is " : "is NOT ") + " at modal dialog.");
+		$("#isAtModal3-" +{$rand}).text("This element " + (pipas.modal.containsElement($("#isAtModal3-" +{$rand})) ? "is " : "is NOT ") + " at modal dialog.");
 	});
 </script>
