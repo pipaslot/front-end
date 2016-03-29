@@ -108,12 +108,17 @@
                         messages.showSuccess(payload.messageSuccess);
                         modal.hide()
                     }
-
-                    if (payload.refresh) {
+                    if (payload.redirect) {
+                        modal.hide();
+                        pipasSpinner.show("redirectFromModal", "body");
+                        pipas.url.changeTo(payload.redirect);
+                    }
+                    else if (payload.refresh) {
                         modal.hide();
                         pipasSpinner.show("refreshFromModal", "body");
                         location.reload();
                     }
+
                 }
 
 

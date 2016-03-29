@@ -82,4 +82,9 @@ class ModalPresenter extends BasePresenter
 		$this->terminate();
 	}
 
+	public function handleRedirect()
+	{
+		$this->redirect("redirectedPage");
+	}
+
 }

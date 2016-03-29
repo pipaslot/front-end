@@ -43,7 +43,6 @@
                     control.onSuccess.push(function () {
                         var res = eval($elm.attr("data-upload-on-success"));
                         if (typeof res == 'function') {
-                            console.log(arguments);
                             res.apply(this, arguments);
                         }
                     });

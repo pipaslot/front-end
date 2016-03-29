@@ -156,10 +156,10 @@
          * Move forms from body to footer
          */
         this.moveButtons = function () {
-            var $elm = this.element();
-            var $footer = $elm.find('.modal-footer');
+            var elm = this.element();
+            var $footer = elm.find('.modal-footer');
             $footer.empty();
-            $elm.find(".modal-body form input[type='submit']").each(function () {
+            elm.find(".modal-body form input[type='submit']").each(function () {
                 var $formButton = $(this).hide();
                 var $button = $(createButton($formButton.val()));
                 $button.addClass($formButton.attr('class'));
@@ -195,7 +195,6 @@
          * @returns {boolean}
          */
         this.containsElement = function (element) {
-            console.log($(element).closest(".modal").length);
             return $(element).closest(".modal").length > 0 ? true : false;
         }
     };

@@ -213,12 +213,17 @@
                         messages.showSuccess(payload.messageSuccess);
                         modal.hide()
                     }
-
-                    if (payload.refresh) {
+                    if (payload.redirect) {
+                        modal.hide();
+                        pipasSpinner.show("redirectFromModal", "body");
+                        pipas.url.changeTo(payload.redirect);
+                    }
+                    else if (payload.refresh) {
                         modal.hide();
                         pipasSpinner.show("refreshFromModal", "body");
                         location.reload();
                     }
+
                 }
 
 
@@ -676,7 +681,6 @@
                     control.onSuccess.push(function () {
                         var res = eval($elm.attr("data-upload-on-success"));
                         if (typeof res == 'function') {
-                            console.log(arguments);
                             res.apply(this, arguments);
                         }
                     });
