@@ -12,4 +12,10 @@
 
 .modal-header .close {
     font-size: 17px;
+    margin-top: 2px;
+}
+
+.modal-header .refresh {
+    font-size: 14px;
+    margin-top: 4px;
 }
