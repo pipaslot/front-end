@@ -237,6 +237,13 @@
                     message.parseElement(modal.element());
                     if (modal.getBody().trim() == "")modal.hide();
                 }
+                
+                //rerun nette form
+                if (window.Nette) {
+                    modal.element().find('form').each(function () {
+                        window.Nette.initForm(this);
+                    });
+                }
             }
         },
         error: function (jqXHR, status, error, settings) {
