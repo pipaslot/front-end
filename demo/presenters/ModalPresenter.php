@@ -34,13 +34,18 @@ class ModalPresenter extends BasePresenter
 	protected function createComponentForm()
 	{
 		$form = new Form();
-		$form->addText("name", "Name");
+		$form->addText("name", "Name-required")
+			->setRequired();
+		$form->addTextArea("description", "Description");
 		$form->addSubmit("submit", "Send")
 			->getControlPrototype()->class[] = 'btn btn-primary';
 
 		$form->addSubmit("save", "Save");
 		$form->onSubmit[] = function (Form $form) {
 			$form->addError("Expected error message");
+		};
+		$form->onSuccess[] = function () {
+			$this->sendJson(array('message' => 'Saved'));
 		};
 		return $form;
 	}

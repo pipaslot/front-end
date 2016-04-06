@@ -144,7 +144,6 @@
                     settings.modalAjax.wasOpen = modal.isVisible();
                     settings.modalAjax.previousTitle = modal.getTitle();
                     modal.show();
-                    modal.showSpinner();
                     modal.element().on('hide.bs.modal', function () {
                         if (that.jqXHR)that.jqXHR.abort();
                     });
@@ -157,6 +156,11 @@
             if (settings.modalAjax.enabled) {
                 if (this.jqXHR)this.jqXHR.abort();// Abort previous jqXHR
                 this.jqXHR = jqXHR;
+            }
+        },
+        start: function (jqXHR, settings) {
+            if (settings.modalAjax.enabled) {
+                modal.showSpinner();
             }
         },
         success: function (payload, status, jqXHR, settings) {
