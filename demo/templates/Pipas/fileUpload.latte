@@ -3,12 +3,18 @@
 {define scripts}
 	<script type="text/javascript" src="{$basePath}/../src/pipas/upload.js"></script>
 	<script>
+		pipas.upload.onUpload.push(function () {
+			console.log("Global on upload");
+		});
+		pipas.upload.onSuccess.push(function () {
+			console.log("Global on upload success");
+		});
 		var control = pipas.upload.create("#uploadFile",{link uploadFile!});
 		control.onUpload.push(function () {
 			console.log("Upload success");
 		});
 		control.onSuccess.push(function () {
-			console.log("processingd success");
+			console.log("processing success");
 		});
 		control.processingStatusUrl = {link getUploadStatus!};
 	</script>

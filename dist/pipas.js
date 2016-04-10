@@ -752,6 +752,10 @@ var pipas = (function ($) {
             upload: "Upload",
             processing: "Processing"
         },
+        /** @type {Array} Callback called after all uploads */
+        onUpload: [],
+        /** @type {Array} Callback called after all processing */
+        onSuccess: [],
         /**
          *
          * @param fileInputSelector
@@ -770,13 +774,27 @@ var pipas = (function ($) {
             this.onSuccess = [];
             var self = this;
             var uploadProgress, processingProgress;
+            var callUpload = function () {
+                var i;
+                for (i in self.onUpload) {
+                    self.onUpload[i].call(this, self);
+                }
+                //call global events
+                for (i in pipas.upload.onUpload) {
+                    pipas.upload.onUpload[i].call(this, self);
+                }
+            };
             var callSuccess = function () {
                 //reset file input
-                var file = self.element[0];
+                var i, file = self.element[0];
                 file.value = file.defaultValue;
                 // Fire on success callbacks
-                for (var i in self.onSuccess) {
+                for (i in self.onSuccess) {
                     self.onSuccess[i].call(this, self);
+                }
+                //call global events
+                for (i in pipas.upload.onSuccess) {
+                    pipas.upload.onSuccess[i].call(this, self);
                 }
             };
             var getStatus = function () {
@@ -848,9 +866,7 @@ var pipas = (function ($) {
                                         uploadProgress.setMaximum(e.total);
                                         uploadProgress.setValue(e.loaded);
                                         if (uploadProgress.isSuccess()) {
-                                            for (var i in self.onUpload) {
-                                                self.onUpload[i].call(this, self);
-                                            }
+                                            callUpload();
                                             getStatus();
                                         }
                                     }
