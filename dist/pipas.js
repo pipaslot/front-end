@@ -762,6 +762,8 @@ var pipas = (function ($) {
             return new pipas.upload.UploadControl(fileInputSelector, uploadUrl);
         },
         UploadControl: function (elementSelector, uploadUrl) {
+            this.element = $(elementSelector);
+            if (this.element.length > 1)throw new Error("Passed selector is not unique. Found " + this.element.length + " similar elements.");
             /** @type {Array} Callback called after upload */
             this.onUpload = [];
             /** @type {Array} Callback called after processing */
@@ -769,6 +771,10 @@ var pipas = (function ($) {
             var self = this;
             var uploadProgress, processingProgress;
             var callSuccess = function () {
+                //reset file input
+                var file = self.element[0];
+                file.value = file.defaultValue;
+                // Fire on success callbacks
                 for (var i in self.onSuccess) {
                     self.onSuccess[i].call(this, self);
                 }
@@ -867,8 +873,6 @@ var pipas = (function ($) {
                 }
                 else console.log("No file selected");
             };
-            this.element = $(elementSelector);
-            if (this.element.length > 1)throw new Error("Passed selector is not unique. Found " + this.element.length + " similar elements.")
             this.element.off('change', onChange).on('change', onChange);
             /** @type {string} url for obtaining processing status */
             this.processingStatusUrl = null;
