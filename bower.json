@@ -9,11 +9,11 @@
     "jquery"
   ],
   "main": [
-    "dist/pipas.min.js",
-    "dist/pipas.min.css",
-    "dist/nette-extensions.min.js",
-    "dist/nette-init.min.js",
-    "dist/nette.min.css"
+    "dist/pipas.js",
+    "dist/nette-extensions.js",
+    "dist/nette-init.js",
+    "dist/pipas.css",
+    "dist/nette.css"
   ],
   "homepage": "https://github.com/pipaslot/front-end/",
   "repository": {
@@ -33,9 +33,9 @@
     "pre-commit.sh"
   ],
   "dependencies": {
-    "bootstrap": "~3.3.6",
-    "nette.ajax.js": "~2.1.0",
-    "jquery": ">=1.7.0",
+    "bootstrap": "~3.3",
+    "nette.ajax.js": "~2.1",
+    "jquery": "~1.9",
     "components-font-awesome": "^4.5.0",
     "nette-live-form-validation": "^1.6.2"
   }
