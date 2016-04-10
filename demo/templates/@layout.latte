@@ -1,75 +1,75 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="author" content="Petr Štipek, p.stipek@email.cz">
-		<title>{ifset $title}{$title} | {/ifset}Front-end</title>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Petr Štipek, p.stipek@email.cz">
+	<title>{ifset $title}{$title} | {/ifset}Front-end</title>
 
-        <link rel="stylesheet" href="{$basePath}/bower_components/components-font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="{$basePath}/bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="{$basePath}/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="{$basePath}/../dist/pipas.css">
-		<script type="text/javascript" src="{$basePath}/bower_components/jquery/jquery.min.js"></script>
-	</head>
+	<link rel="stylesheet" href="{$basePath}/bower_components/components-font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{$basePath}/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{$basePath}/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="{$basePath}/../dist/pipas.css">
+	<script type="text/javascript" src="{$basePath}/bower_components/jquery/jquery.min.js"></script>
+</head>
 
-	<body style="padding-top:50px">
-	<nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-             <a class="navbar-brand" href="#">Library tests</a>
-             <ul class="nav navbar-nav">
-	             <li class="dropdown">
+<body style="padding-top:50px">
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<a class="navbar-brand" href="#">Library tests</a>
+		<ul class="nav navbar-nav">
+			<li class="dropdown">
 	               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nette <span class="caret"></span></a>
-	               <ul class="dropdown-menu">
-	                  <li><a class="no-ajax" n:href="Nette:init">Init</a></li>
-	                  <li><a class="no-ajax" n:href="Nette:error">Error</a></li>
-	                  <li><a class="no-ajax" n:href="Nette:message">Message</a></li>
-		               <li><a class="no-ajax" n:href="Nette:missingSnippet">Missing snippet</a></li>
-	                  <li><a class="no-ajax" n:href="Nette:redirect">Redirect</a></li>
-	                  <li><a class="no-ajax" n:href="Nette:spinner">Spinner</a></li>
-	                  <li><a class="no-ajax" n:href="Nette:tableFixed">Table-fixed</a></li>
-		               <li><a class="no-ajax" n:href="Nette:unique">Unique</a></li>
-		               <li><a class="no-ajax" n:href="Nette:upload">Upload</a></li>
-	               </ul>
-	             </li>
-	             <li class="dropdown">
+				<ul class="dropdown-menu">
+					<li><a class="no-ajax" n:href="Nette:init">Init</a></li>
+					<li><a class="no-ajax" n:href="Nette:error">Error</a></li>
+					<li><a class="no-ajax" n:href="Nette:message">Message</a></li>
+					<li><a class="no-ajax" n:href="Nette:missingSnippet">Missing snippet</a></li>
+					<li><a class="no-ajax" n:href="Nette:redirect">Redirect</a></li>
+					<li><a class="no-ajax" n:href="Nette:spinner">Spinner</a></li>
+					<li><a class="no-ajax" n:href="Nette:tableFixed">Table-fixed</a></li>
+					<li><a class="no-ajax" n:href="Nette:unique">Unique</a></li>
+					<li><a class="no-ajax" n:href="Nette:upload">Upload</a></li>
+				</ul>
+			</li>
+			<li class="dropdown">
                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pipas <span class="caret"></span></a>
-                   <ul class="dropdown-menu">
-	                   <li><a class="no-ajax" n:href="Pipas:default">Default</a></li>
-	                   <li><a class="no-ajax" n:href="Pipas:fileUpload">File upload</a></li>
-	                   <li><a class="no-ajax" n:href="Pipas:overlay">Overlay</a></li>
-	                   <li><a class="no-ajax" n:href="Pipas:progress">Progress</a></li>
-                      <li><a class="no-ajax" n:href="Pipas:spinner">Spinner</a></li>
-                   </ul>
-                 </li>
-	             <li class="dropdown">
+				<ul class="dropdown-menu">
+					<li><a class="no-ajax" n:href="Pipas:default">Default</a></li>
+					<li><a class="no-ajax" n:href="Pipas:fileUpload">File upload</a></li>
+					<li><a class="no-ajax" n:href="Pipas:overlay">Overlay</a></li>
+					<li><a class="no-ajax" n:href="Pipas:progress">Progress</a></li>
+					<li><a class="no-ajax" n:href="Pipas:spinner">Spinner</a></li>
+				</ul>
+			</li>
+			<li class="dropdown">
                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Modal <span class="caret"></span></a>
-                   <ul class="dropdown-menu">
-	                   <li><a class="no-ajax" n:href="Modal:">Default functionality</a></li>
-	                   <li><a class="no-ajax" n:href="Modal:integration">Integration</a></li>
-                   </ul>
-                 </li>
-	           </ul>
-        </div>
-    </nav>
-
-	<div class="container" n:snippet="content">
-		{block styles}{/block}
-		<div n:snippet="flashMessages" class="flashMessages">
-			<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type">{$flash->message|noescape}</div>
-		</div>
-		{ifset $title}<h1>{$title}</h1>{/ifset}
-		{include content}
+				<ul class="dropdown-menu">
+					<li><a class="no-ajax" n:href="Modal:">Default functionality</a></li>
+					<li><a class="no-ajax" n:href="Modal:integration">Integration</a></li>
+				</ul>
+			</li>
+		</ul>
 	</div>
-    <script type="text/javascript" src="{$basePath}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="{$basePath}/bower_components/nette.ajax.js/nette.ajax.js"></script>
-	<script type="text/javascript"
-	        src="{$basePath}/bower_components/nette-live-form-validation/live-form-validation.js"></script>
-    <script type="text/javascript" src="{$basePath}/../dist/pipas.js"></script>
-    <script type="text/javascript">pipas.basePath({$basePath})</script>
-    {block scripts}
-    {/block}
-    <script type="text/javascript" src="{$basePath}/../dist/nette-init.js"></script>
+</nav>
+
+<div class="container" n:snippet="content">
+	{block styles}{/block}
+	<div n:snippet="flashMessages" class="flashMessages">
+		<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type">{$flash->message|noescape}</div>
+	</div>
+	{ifset $title}<h1>{$title}</h1>{/ifset}
+	{include content}
+</div>
+<script type="text/javascript" src="{$basePath}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{$basePath}/bower_components/nette.ajax.js/nette.ajax.js"></script>
+<script type="text/javascript"
+        src="{$basePath}/bower_components/nette-live-form-validation/live-form-validation.js"></script>
+<script type="text/javascript" src="{$basePath}/../dist/pipas.js"></script>
+<script type="text/javascript">pipas.basePath({$basePath})</script>
+{block scripts}
+{/block}
+<script type="text/javascript" src="{$basePath}/../dist/nette-init.js"></script>
 </body>
 </html>
