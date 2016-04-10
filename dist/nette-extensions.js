@@ -127,8 +127,6 @@
                     else if ($elm.hasClass("modal-ajax-lg"))modal.setSizeLarge();
 
                     if ($elm.attr("title"))modal.setTitle($elm.attr("title"));
-                    //disable redirect extension
-                    settings.redirect = false;
                     //disable spinner extension
                     var spinner = this.ext("spinner");
                     if (spinner)spinner.disable(settings);
@@ -193,6 +191,15 @@
                     }
                     //Parse response from payload
                 } else if (payload) {
+                    if (payload.redirect) {
+                        modal.hide();
+                    }
+                    else if (payload.refresh) {
+                        modal.hide();
+                        pipasSpinner.show("refreshFromModal", "body");
+                        location.reload();
+                    }
+                    //messages
                     if (payload.message) {
                         messages.showInfo(payload.message);
                         modal.hide()
@@ -217,16 +224,6 @@
                         messages.showSuccess(payload.messageSuccess);
                         modal.hide()
                     }
-                    if (payload.redirect) {
-                        modal.hide();
-                        pipasSpinner.show("redirectFromModal", "body");
-                        pipas.url.changeTo(payload.redirect);
-                    }
-                    else if (payload.refresh) {
-                        modal.hide();
-                        pipasSpinner.show("refreshFromModal", "body");
-                        location.reload();
-                    }
 
                 }
 
@@ -241,7 +238,7 @@
                     message.parseElement(modal.element());
                     if (modal.getBody().trim() == "")modal.hide();
                 }
-                
+
                 //rerun nette form
                 if (window.Nette) {
                     modal.element().find('form').each(function () {
@@ -318,6 +315,7 @@
             });
         },
         prepare: function (settings) {
+            console.log(settings, "prepare")
             if (settings.redirect == undefined)settings.redirect = true;
             if (settings.nette && settings.nette.el) {
                 var $elm = settings.nette.el;
@@ -326,31 +324,41 @@
             }
         },
         success: function (payload, status, jqXHR, settings) {
-            if (settings.redirect === false)return true;
-            if (typeof payload === "string" && this.startsWith(payload.trim(), "<!DOCTYPE html")) {
-                //if is returned pure html, document must be hard redirected to target url
-                document.location.href = settings.url;
-            }
-            else if (payload.redirect) {
-                if (payload.noAjax && payload.noAjax === true) {
-                    //redirect without ajax
-                    document.location.href = payload.redirect;
-                    return false;
-                } else {
-                    //AJAX redirect
-                    $.nette.ajax({
-                        url: payload.redirect
-                    });
+            console.log(settings)
+            if (settings.redirect !== false) {
+                if (typeof payload === "string" && this.startsWith(payload.trim(), "<!DOCTYPE html")) {
+                    //if is returned pure html, document must be hard redirected to target url
+                    document.location.href = settings.url;
                 }
-                //enable url changes only for GET requests
-            } else if (settings.type == undefined || settings.type == "get") {
-                PipasUrl.changeTo(settings.url);
+                else if (payload.redirect) {
+                    if (payload.noAjax && payload.noAjax === true) {
+                        //redirect without ajax
+                        document.location.href = payload.redirect;
+                        return false;
+                    } else {
+                        //AJAX redirect
+                        $.nette.ajax({
+                            url: payload.redirect
+                        });
+                    }
+                    //enable url changes only for GET requests
+                } else if (settings.type == undefined || settings.type == "get") {
+                    PipasUrl.changeTo(settings.url);
+                }
             }
         }
     }, {
         startsWith: function (string, prefix) {
             var sliced = string.slice(0, prefix.length);
             return sliced.toLowerCase() == prefix.toLowerCase();
+        },
+        /**
+         * Enable for other extensions check if redirect is allowed
+         * @param settings
+         * @returns {boolean}
+         */
+        isEnabled: function (settings) {
+            return settings.redirect !== false;
         }
     });
 })(jQuery, document, pipas.url);

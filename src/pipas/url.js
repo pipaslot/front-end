@@ -90,7 +90,7 @@
         /**
          * Change current url address to defined
          * @param {string} url
-         * @returns {null}
+         * @returns {boolean} If current url is same as requested, returns false
          */
         changeTo: function (url) {
             if (!url) {
@@ -106,16 +106,18 @@
             if (history && history.pushState) {
 
                 if (history.state && history.state.url && history.state.url === url)
-                    return null;
+                    return false;
                 history.pushState({
                     type: this.stateTypeName,
                     url: url
                 }, null, url);
+
+                return true;
             }
             else {
-                console.error("an not write URL");
+                console.error("Can not write URL");
             }
-            return null;
+            return false;
         },
         /**
          * finds the parameter value in the data, which are acquired from GET

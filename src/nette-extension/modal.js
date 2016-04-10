@@ -22,8 +22,6 @@
                     else if ($elm.hasClass("modal-ajax-lg"))modal.setSizeLarge();
 
                     if ($elm.attr("title"))modal.setTitle($elm.attr("title"));
-                    //disable redirect extension
-                    settings.redirect = false;
                     //disable spinner extension
                     var spinner = this.ext("spinner");
                     if (spinner)spinner.disable(settings);
@@ -88,6 +86,15 @@
                     }
                     //Parse response from payload
                 } else if (payload) {
+                    if (payload.redirect) {
+                        modal.hide();
+                    }
+                    else if (payload.refresh) {
+                        modal.hide();
+                        pipasSpinner.show("refreshFromModal", "body");
+                        location.reload();
+                    }
+                    //messages
                     if (payload.message) {
                         messages.showInfo(payload.message);
                         modal.hide()
@@ -112,16 +119,6 @@
                         messages.showSuccess(payload.messageSuccess);
                         modal.hide()
                     }
-                    if (payload.redirect) {
-                        modal.hide();
-                        pipasSpinner.show("redirectFromModal", "body");
-                        pipas.url.changeTo(payload.redirect);
-                    }
-                    else if (payload.refresh) {
-                        modal.hide();
-                        pipasSpinner.show("refreshFromModal", "body");
-                        location.reload();
-                    }
 
                 }
 
@@ -136,7 +133,7 @@
                     message.parseElement(modal.element());
                     if (modal.getBody().trim() == "")modal.hide();
                 }
-                
+
                 //rerun nette form
                 if (window.Nette) {
                     modal.element().find('form').each(function () {
