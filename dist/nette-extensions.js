@@ -315,7 +315,6 @@
             });
         },
         prepare: function (settings) {
-            console.log(settings, "prepare")
             if (settings.redirect == undefined)settings.redirect = true;
             if (settings.nette && settings.nette.el) {
                 var $elm = settings.nette.el;
@@ -324,7 +323,6 @@
             }
         },
         success: function (payload, status, jqXHR, settings) {
-            console.log(settings)
             if (settings.redirect !== false) {
                 if (typeof payload === "string" && this.startsWith(payload.trim(), "<!DOCTYPE html")) {
                     //if is returned pure html, document must be hard redirected to target url
