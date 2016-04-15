@@ -90,13 +90,9 @@
         onRefresh: function (e) {
             if (e.which === 116) {
                 spinner.show("F5");
-                e.preventDefault();
-                location.reload();
             }
             if (e.which === 82 && e.ctrlKey) {
                 spinner.show("CTRL+F5");
-                e.preventDefault();
-                location.reload(true);
             }
         }
     });
