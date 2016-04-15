@@ -385,16 +385,7 @@
 (function ($, document, window, spinner) {
     $.nette.ext('spinner', {
         init: function () {
-            $(document).on('keydown keyup', function (e) {
-                if (e.which === 116) {
-                    spinner.show("F5");
-                    location.reload();
-                }
-                if (e.which === 82 && e.ctrlKey) {
-                    spinner.show("CTRL+F5");
-                    location.reload(true);
-                }
-            });
+            $(document).on('keydown keyup', this.onRefresh);
             // Force hide spinner after initialization
             spinner.cancel();
         },
@@ -457,8 +448,19 @@
             this.init(settings);
             settings.spinner.show = false;
             return this;
+        },
+        onRefresh: function (e) {
+            if (e.which === 116) {
+                spinner.show("F5");
+                e.preventDefault();
+                location.reload();
+            }
+            if (e.which === 82 && e.ctrlKey) {
+                spinner.show("CTRL+F5");
+                e.preventDefault();
+                location.reload(true);
+            }
         }
-
     });
 })(jQuery, document, window, pipas.spinner);
 
