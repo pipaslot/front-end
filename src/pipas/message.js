@@ -52,7 +52,8 @@
                     $content.append($("<div class='message-group " + messageClass + "s'></div>"));
                 }
                 //write message
-                var strong = messageClass == "danger" ? "Error" : messageClass.charAt(0).toUpperCase() + messageClass.slice(1);
+                var prefix = messageClass == "danger" ? "error" : messageClass.toLowerCase();
+                var prefixText = pipas.message.text[prefix];
                 var $existing = $content.find("> ." + messageClass + "s .alert span").filter(function () {
                     return $(this).text() == message;
                 });
@@ -67,7 +68,7 @@
                         }
                     });
                 } else {
-                    $content.find("> ." + messageClass + "s").append($("<div class='alert alert-" + messageClass + "'><strong>" + strong + "!</strong> <span>" + message + "</span></div>"));
+                    $content.find("> ." + messageClass + "s").append($("<div class='alert alert-" + messageClass + "'><strong>" + prefixText + "</strong> <span>" + message + "</span></div>"));
                 }
 
                 // Check height overflow
@@ -126,6 +127,16 @@
             overlay.hide("message");
             $elm.remove();
         };
+        /**
+         * Custom text translations
+         * @type {{error: string, info: string, warning: string, success: string}}
+         */
+        this.text = {
+            error: 'Error!',
+            info: 'Info!',
+            warning: 'Warning!',
+            success: 'Success!'
+        }
 
 
     };
