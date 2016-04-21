@@ -85,6 +85,29 @@ class NettePresenter extends BasePresenter
 		$this->redrawControl("flashes");
 	}
 
+	public function handleLoadJsonMessages()
+	{
+		$this->sendJson(array(
+			"messages" => array(
+				"info" => array(
+					"First twice",
+					"First twice"
+				),
+				"danger" => array(
+					"Second"
+				),
+				"success" => array(
+					"Three three times",
+					"Three three times",
+					"Three three times"
+				),
+				"warning" => array(
+					"Four"
+				)
+			)
+		));
+	}
+
 	/******************************* Redirect **************************************/
 	public function handleRedirectToPage2()
 	{

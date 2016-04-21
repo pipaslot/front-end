@@ -8,7 +8,13 @@
     pipas.message = new function () {
         var that = this;
         var inner = {
+            /**
+             * Expect string selector or jQuery object
+             * @param identifier
+             * @returns {object}
+             */
             getContainer: function (identifier) {
+                if ("object" == typeof identifier)return identifier;
                 return $(identifier ? "#" + identifier : "body");
             },
             getElement: function ($container, title) {

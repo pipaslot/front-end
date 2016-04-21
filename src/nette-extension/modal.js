@@ -96,6 +96,7 @@
                     }
                     //messages
                     if (payload.message) {
+                        console.log("payload.message is deprecated. Please use nette extension messages as payload.messages.info[]='my mesage'");
                         messages.showInfo(payload.message);
                         modal.hide()
                     }
@@ -104,18 +105,22 @@
                         modal.hide()
                     }
                     if (payload.messageInfo) {
+                        console.log("payload.messageInfo is deprecated. Please use nette extension messages as payload.messages.info[]='my mesage'");
                         messages.showInfo(payload.messageInfo);
                         modal.hide()
                     }
                     if (payload.messageError) {
+                        console.log("payload.messageError is deprecated. Please use nette extension messages as payload.messages.error[]='my mesage'");
                         messages.showError(payload.messageError);
                         modal.hide()
                     }
                     if (payload.messageWarning) {
+                        console.log("payload.messageWarning is deprecated. Please use nette extension messages as payload.messages.warning[]='my mesage'");
                         messages.showWarning(payload.messageWarning);
                         modal.hide()
                     }
                     if (payload.messageSuccess) {
+                        console.log("payload.messageSuccess is deprecated. Please use nette extension messages as payload.messages.success[]='my mesage'");
                         messages.showSuccess(payload.messageSuccess);
                         modal.hide()
                     }

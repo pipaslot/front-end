@@ -67,11 +67,23 @@ class ModalPresenter extends BasePresenter
 
 	public function handlePayloadMessages()
 	{
-		$this->payload->message = ["Message passed by methods \$this->payload->message = 'My message' and \$this->sendPayload(); at presenter"];
-		$this->payload->messageInfo = ["Custom info"];
-		$this->payload->messageError = ["Custom error"];
-		$this->payload->messageWarning = ["Custom warning"];
-		$this->payload->messageSuccess = ["Custom success twice", "Custom success twice"];
+		$this->payload->messages = array(
+			"info" => array(
+				"First twice",
+				"First twice"
+			),
+			"danger" => array(
+				"Second"
+			),
+			"success" => array(
+				"Three three times",
+				"Three three times",
+				"Three three times"
+			),
+			"warning" => array(
+				"Four"
+			)
+		);
 		$this->sendPayload();
 	}
 

@@ -15,6 +15,12 @@
                     this.parseElement($("#" + id));
                 }
             }
+            if (payload.messages) {
+                for (var type in payload.messages) {
+                    message.show(payload.messages[type], type);
+                }
+                delete payload.messages;
+            }
         }
     }, {
         mapping: {
