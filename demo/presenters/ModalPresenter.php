@@ -25,8 +25,9 @@ class ModalPresenter extends BasePresenter
 		$this->error("Must fail");
 	}
 
-	public function actionSnippets()
+	public function actionSnippets($useTitle = true)
 	{
+		$this->template->title = $useTitle ? "Snippet title" : "";
 		$this->redrawControl('modalTitle');
 		$this->redrawControl('modalContent');
 	}

@@ -116,6 +116,7 @@
  *  - modal-ajax-lg:    Resize to large dialog
  *  - modal-ajax-md:    Resize to medium dialog
  *  - modal-ajax-sm:    Resize to small dialog
+ *  - modal-ajax-no-header Show modal without header
  */
 
 (function ($, modal, messages, pipasUrl, pipasSpinner) {
@@ -130,6 +131,8 @@
                     if ($elm.hasClass("modal-ajax-md")) modal.setSizeMedium();
                     else if ($elm.hasClass("modal-ajax-sm"))modal.setSizeSmall();
                     else if ($elm.hasClass("modal-ajax-lg"))modal.setSizeLarge();
+
+                    if ($elm.hasClass("modal-ajax-no-header")) modal.setTitle("");
 
                     if ($elm.attr("title"))modal.setTitle($elm.attr("title"));
                     //disable spinner extension
@@ -186,7 +189,8 @@
                     var title, body, i;
                     for (i in this.snippetMap.title) {
                         if ((title = payload.snippets[this.snippetMap.title[i]])) {
-                            modal.setTitle(title);
+                            var titleTrimmed = title.trim();
+                            if (titleTrimmed)modal.setTitle(title);//ignore empty title
                             break;
                         }
                     }

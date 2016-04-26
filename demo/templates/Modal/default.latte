@@ -1,22 +1,23 @@
 {var $title = "Modal"}
 
 {define scripts}
-    <script type="text/javascript" src="{$basePath}/../src/pipas/message.js"></script>
-    <script type="text/javascript" src="{$basePath}/../src/nette-extension/message.js"></script>
-    <script type="text/javascript" src="{$basePath}/../src/pipas/spinner.js"></script>
-    <script type="text/javascript" src="{$basePath}/../src/pipas/modal.js"></script>
-    <script type="text/javascript" src="{$basePath}/../src/nette-extension/modal.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/message.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-extension/message.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/spinner.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/modal.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-extension/modal.js"></script>
 {/define}
 
 {block #content}
 <p>
 	Use next selectors to setup modal dialog
-	<ul>
-		<li><code>.modal-ajax</code> - Open at modal</li>
-		<li><code>.modal-ajax-sm</code> - as Small</li>
-		<li><code>.modal-ajax-md</code> - as Medium</li>
-		<li><code>.modal-ajax-lg</code> - as Large</li>
-	</ul>
+<ul>
+	<li><code>.modal-ajax</code> - Open at modal</li>
+	<li><code>.modal-ajax-sm</code> - as Small</li>
+	<li><code>.modal-ajax-md</code> - as Medium</li>
+	<li><code>.modal-ajax-lg</code> - as Large</li>
+	<li><code>.modal-ajax-no-header</code> - Hide header</li>
+</ul>
 </p>
 <h2>Request</h2>
 <p>
@@ -36,7 +37,7 @@
 </p>
 <h4>Message</h4>
 <code>
-{
+	{
 	<div style="padding-left:20px">
 		// Info message without key<br>
 		0: "Message",<br>
@@ -56,7 +57,7 @@
 		//default success message<br>
 		messageSuccess: "Message"
 	</div>
-}
+	}
 </code>
 <h4>Event</h4>
 <code>
@@ -71,29 +72,31 @@
 </code>
 <h4>Snippet</h4>
 <p>
-	You can send modal title and body via JSON snippet properties specified by their ID. Mapping of snippets is stored at <code>nette.ext('modal').snippetMap.title</code>
-	and <code>nette.ext('modal').snippetMap.body</code> You can extend that list by your own id. Default map contains:<br>
+	You can send modal title and body via JSON snippet properties specified by their ID. Mapping of snippets is stored
+	at <code>nette.ext('modal').snippetMap.title</code>
+	and <code>nette.ext('modal').snippetMap.body</code> You can extend that list by your own id. Default map
+	contains:<br>
 	<code>
-    {
-        <div style="padding-left:20px">
-        snippetMap: {
-            <div style="padding-left:20px">
-             title: [
-                <div style="padding-left:20px">
-                    "snippet--modalTitle"
-                </div>
-             ],
-             body: [
-                 <div style="padding-left:20px">
-                    "snippet--modalContent",<br>
-                    "snippet--modal"
-                 </div>
-             ]
-            </div>
-        }
-    	</div>
-    }
-    </code>
+		{
+		<div style="padding-left:20px">
+			snippetMap: {
+			<div style="padding-left:20px">
+				title: [
+				<div style="padding-left:20px">
+					"snippet--modalTitle"
+				</div>
+				],
+				body: [
+				<div style="padding-left:20px">
+					"snippet--modalContent",<br>
+					"snippet--modal"
+				</div>
+				]
+			</div>
+			}
+		</div>
+		}
+	</code>
 </p>
 
 {include '_actions.latte'}
