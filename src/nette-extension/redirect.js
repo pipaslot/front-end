@@ -72,6 +72,16 @@
          */
         isEnabled: function (settings) {
             return settings.redirect !== false;
+        },
+        /**
+         * Disable redirection
+         * @param settings
+         * @returns {*}
+         */
+        disable: function (settings) {
+            settings.redirect = false;
+            return settings;
         }
+
     });
 })(jQuery, document, pipas.url);

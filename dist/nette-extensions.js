@@ -141,6 +141,9 @@
                     //ignore warning if empty response is received
                     var error = this.ext("error");
                     if (error)error.ignoreWarning(settings);
+                    //disable page redirection after modal i opened
+                    var redirect = this.ext("redirect");
+                    if (redirect)redirect.disable(settings);
 
                     //prepare modal
                     var that = this;
@@ -367,7 +370,17 @@
          */
         isEnabled: function (settings) {
             return settings.redirect !== false;
+        },
+        /**
+         * Disable redirection
+         * @param settings
+         * @returns {*}
+         */
+        disable: function (settings) {
+            settings.redirect = false;
+            return settings;
         }
+
     });
 })(jQuery, document, pipas.url);
 /*
