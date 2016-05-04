@@ -24,7 +24,7 @@
 
                     if ($elm.hasClass("modal-ajax-no-header")) modal.setTitle("");
 
-                    if ($elm.attr("title"))modal.setTitle($elm.attr("title"));
+                    if ($elm.attr("title") && $elm.parents(".modal-header").length == 0)modal.setTitle($elm.attr("title"));
                     //disable spinner extension
                     var spinner = this.ext("spinner");
                     if (spinner)spinner.disable(settings);
