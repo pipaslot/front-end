@@ -7,7 +7,13 @@
             this.init(settings);
         },
         error: function (jqXHR, status, error, settings) {
-            if (status != "abort" && jqXHR.readyState != 0) {
+            if (jqXHR.statusText == 'abort') {
+                //ignored aborted
+            }
+            else if (jqXHR.readyState == 0) {
+                message.showError("Connection failed. Please check your internet connection.");
+            }
+            else {
                 message.showError("Link has failed to load.");
             }
         },

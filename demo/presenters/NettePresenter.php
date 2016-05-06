@@ -77,6 +77,7 @@ class NettePresenter extends BasePresenter
 	public function handleWait10Seconds()
 	{
 		sleep(10);
+		echo "ok";
 	}
 
 	/******************************* Message **************************************/
