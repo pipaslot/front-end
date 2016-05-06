@@ -45,11 +45,21 @@
 </p>
 
 <p class="row">
-	<div class="col-md-4">
-		<a n:href="wait10Seconds!" class="btn btn-default">Run long time request</a>
-		<a href="#" class="btn btn-default abort">Aborted request</a>
-	</div>
-	<div class="col-md-8">
-		No error is thrown during abort of current request
-	</div>
+<div class="col-md-4">
+	<a n:href="wait10Seconds!" class="btn btn-default">Run long time request</a>
+	<a href="#" class="btn btn-default abort">Aborted request</a>
+</div>
+<div class="col-md-8">
+	No error is thrown during abort of current request
+</div>
+</p>
+
+<p class="row">
+<div class="col-md-4">
+	<a n:href="error403!" class="btn btn-default">Error 403</a>
+	<a n:href="error404!" class="btn btn-default">Error 404</a>
+</div>
+<div class="col-md-8">
+	Error should be catch at production mode
+</div>
 </p>

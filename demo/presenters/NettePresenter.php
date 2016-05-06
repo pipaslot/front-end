@@ -6,6 +6,7 @@ namespace App;
 use Nette\Application\AbortException;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
+use Nette\Http\IResponse;
 
 /**
  * @author Petr Štipek <p.stipek@email.cz>
@@ -78,6 +79,16 @@ class NettePresenter extends BasePresenter
 	{
 		sleep(10);
 		echo "ok";
+	}
+
+	public function handleError403()
+	{
+		$this->error("Access denied", IResponse::S403_FORBIDDEN);
+	}
+
+	public function handleError404()
+	{
+		$this->error("Page not found", IResponse::S404_NOT_FOUND);
 	}
 
 	/******************************* Message **************************************/
