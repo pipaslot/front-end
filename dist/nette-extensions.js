@@ -7,7 +7,6 @@
             this.init(settings);
         },
         error: function (jqXHR, status, error, settings) {
-            console.log(jqXHR, status, error, settings);
             if (jqXHR.status == 403 || jqXHR.status == 404) {
                 message.showError(jqXHR.status + ' - ' + jqXHR.statusText);
             }
