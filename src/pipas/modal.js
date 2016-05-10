@@ -50,6 +50,13 @@
             return $elm;
         };
         /**
+         * @returns {$}
+         */
+        this.getContentElement = function () {
+            return this.element().find('.modal-content');
+        };
+
+        /**
          * @returns {string}
          */
         this.getTitle = function () {

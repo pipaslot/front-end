@@ -23,6 +23,11 @@
                     else if ($elm.hasClass("modal-ajax-lg"))modal.setSizeLarge();
 
                     if ($elm.hasClass("modal-ajax-no-header")) modal.setTitle("");
+                    modal.getContentElement().removeClass("modal-danger modal-warning modal-success");
+                    if ($elm.hasClass("modal-ajax-danger")) modal.getContentElement().addClass("modal-danger");
+                    else if ($elm.hasClass("modal-ajax-warning")) modal.getContentElement().addClass("modal-warning");
+                    else if ($elm.hasClass("modal-ajax-success")) modal.getContentElement().addClass("modal-success");
+
 
                     if ($elm.attr("title") && $elm.parents(".modal-header").length == 0)modal.setTitle($elm.attr("title"));
                     //disable spinner extension
