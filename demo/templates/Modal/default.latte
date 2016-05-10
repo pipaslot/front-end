@@ -1,9 +1,6 @@
 {var $title = "Modal"}
 
 {define scripts}
-	<script type="text/javascript" src="{$basePath}/../src/pipas/message.js"></script>
-	<script type="text/javascript" src="{$basePath}/../src/nette-extension/message.js"></script>
-	<script type="text/javascript" src="{$basePath}/../src/pipas/spinner.js"></script>
 	<script type="text/javascript" src="{$basePath}/../src/pipas/modal.js"></script>
 	<script type="text/javascript" src="{$basePath}/../src/nette-extension/modal.js"></script>
 {/define}
@@ -73,8 +70,8 @@
 <h4>Snippet</h4>
 <p>
 	You can send modal title and body via JSON snippet properties specified by their ID. Mapping of snippets is stored
-	at <code>nette.ext('modal').snippetMap.title</code>
-	and <code>nette.ext('modal').snippetMap.body</code> You can extend that list by your own id. Default map
+	at <code>nette.ext('pipas-modal').snippetMap.title</code>
+	and <code>nette.ext('pipas-modal').snippetMap.body</code> You can extend that list by your own id. Default map
 	contains:<br>
 	<code>
 		{

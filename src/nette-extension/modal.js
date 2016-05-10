@@ -36,7 +36,8 @@
                     if (error)error.ignoreWarning(settings);
                     //disable page redirection after modal i opened
                     var redirect = this.ext("redirect");
-                    if (redirect)redirect.disable(settings);
+                    //check if extension is defined and if is defined method disable what is used at override default nette extension
+                    if (redirect && redirect.disable)redirect.disable(settings);
 
                     //prepare modal
                     var that = this;
