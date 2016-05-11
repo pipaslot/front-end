@@ -5,7 +5,12 @@
 		{ifset $redrawSnippets[$name]}
 			<p>time: {date("H:i:s")}</p>
 			<p>ajax: {if $presenter->isAjax()}ANO{else}NE{/if}</p>
-		    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend, arcu eu pretium sagittis, diam nulla scelerisque urna, sed scelerisque dui lorem eu ligula. In hac habitasse platea dictumst. Duis tincidunt arcu placerat, ultricies orci ut, semper lacus. Proin eu cursus urna, ut tincidunt odio. Maecenas et dolor non felis mattis tempor. Sed nisi mi, faucibus sit amet malesuada et, malesuada a nulla. Aliquam erat volutpat. Etiam ultricies sollicitudin quam, sed sagittis eros interdum vitae. Pellentesque pretium nunc non accumsan congue.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend, arcu eu pretium sagittis,
+				diam nulla scelerisque urna, sed scelerisque dui lorem eu ligula. In hac habitasse platea dictumst. Duis
+				tincidunt arcu placerat, ultricies orci ut, semper lacus. Proin eu cursus urna, ut tincidunt odio.
+				Maecenas et dolor non felis mattis tempor. Sed nisi mi, faucibus sit amet malesuada et, malesuada a
+				nulla. Aliquam erat volutpat. Etiam ultricies sollicitudin quam, sed sagittis eros interdum vitae.
+				Pellentesque pretium nunc non accumsan congue.</p>
 		{/ifset}
 	</div>
 {/define}
@@ -22,6 +27,8 @@
 		<a n:href="invalidate! text1" class="btn btn-default">AJAX</a>
 		<a n:href="invalidate! text1" class="btn btn-default no-ajax">NO AJAX</a>
 		<a n:href="invalidate! text1" class="btn btn-default" target="_blank">NO AJAX to blank</a>
+		<a n:href="invalidate! text1" class="btn btn-default no-ajax no-ajax-remove">AJAX as Late initialized
+			element</a>
 	</div>
 	{snippet text1}
 		{include snippetText name=>text1}
@@ -31,24 +38,48 @@
 
 <h2>Forms</h2>
 <div class="panel panel-default">
-	<div class="panel-body row">
-		<div class="col-md-4">
-			<h3>NO-AJAX</h3>
-			<div n:snippet="formNoAjax">
-	            {control formNoAjax}
-	        </div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-6">
+				<h3>NO-AJAX</h3>
+				<div n:snippet="formNoAjax">
+					{control formNoAjax}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h3>AJAX</h3>
+				<div n:snippet="formAjax">
+					{control formAjax}
+				</div>
+			</div>
 		</div>
-		<div class="col-md-4">
-			<h3>AJAX</h3>
-			<div n:snippet="formAjax">
-                {control formAjax}
-            </div>
-		</div>
-		<div class="col-md-4">
-			<h3>AJAX submitting by select</h3>
-			<div n:snippet="formAjaxSelect">
-                {control formAjaxSelect}
-            </div>
+		<div class="row">
+			<div class="col-md-6">
+				<h3>AJAX submitting by select</h3>
+				<div n:snippet="formAjaxSelect">
+					{control formAjaxSelect}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h3>AJAX submitting by image</h3>
+				<div n:snippet="formAjaxImage">
+					{control formAjaxImage}
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(function () {
+		setTimeout(function () {
+			$(".no-ajax-remove").removeClass("no-ajax no-ajax-remove");
+			$.nette.load();
+		}, 1000);
+	})
+</script>
+<style type="text/css">
+	.no-ajax-remove {
+		color: red;
+	}
+</style>
