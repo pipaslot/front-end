@@ -1,11 +1,22 @@
 {var $title = "Default ajaxization"}
+{define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/nette-init.js"></script>
+{/define}
+{define styles}
+
+{/define}
 
 {define snippetText}
 	<div class="panel-body">
 		{ifset $redrawSnippets[$name]}
 			<p>time: {date("H:i:s")}</p>
 			<p>ajax: {if $presenter->isAjax()}ANO{else}NE{/if}</p>
-		    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend, arcu eu pretium sagittis, diam nulla scelerisque urna, sed scelerisque dui lorem eu ligula. In hac habitasse platea dictumst. Duis tincidunt arcu placerat, ultricies orci ut, semper lacus. Proin eu cursus urna, ut tincidunt odio. Maecenas et dolor non felis mattis tempor. Sed nisi mi, faucibus sit amet malesuada et, malesuada a nulla. Aliquam erat volutpat. Etiam ultricies sollicitudin quam, sed sagittis eros interdum vitae. Pellentesque pretium nunc non accumsan congue.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend, arcu eu pretium sagittis,
+				diam nulla scelerisque urna, sed scelerisque dui lorem eu ligula. In hac habitasse platea dictumst. Duis
+				tincidunt arcu placerat, ultricies orci ut, semper lacus. Proin eu cursus urna, ut tincidunt odio.
+				Maecenas et dolor non felis mattis tempor. Sed nisi mi, faucibus sit amet malesuada et, malesuada a
+				nulla. Aliquam erat volutpat. Etiam ultricies sollicitudin quam, sed sagittis eros interdum vitae.
+				Pellentesque pretium nunc non accumsan congue.</p>
 		{/ifset}
 	</div>
 {/define}
@@ -17,38 +28,47 @@
 	Cancellation ajaxizatio is done by inserting the class <code>no-ajax</code> element on the link or form.
 </p>
 <h2>Anchors</h2>
-<div class="panel panel-default">
-	<div class="panel-heading">
+
+<div class="card">
+	<div class="card-header">
 		<a n:href="invalidate! text1" class="btn btn-default">AJAX</a>
 		<a n:href="invalidate! text1" class="btn btn-default no-ajax">NO AJAX</a>
 		<a n:href="invalidate! text1" class="btn btn-default" target="_blank">NO AJAX to blank</a>
 	</div>
-	{snippet text1}
-		{include snippetText name=>text1}
-	{/snippet}
+	<div class="card-block">
+		{snippet text1}
+			{include snippetText name=>text1}
+		{/snippet}
+	</div>
 </div>
 
 
 <h2>Forms</h2>
-<div class="panel panel-default">
-	<div class="panel-body row">
-		<div class="col-md-4">
-			<h3>NO-AJAX</h3>
-			<div n:snippet="formNoAjax">
-	            {control formNoAjax}
-	        </div>
+<div class="card-group">
+	<div class="card card-block">
+		<h3 class="card-title">NO-AJAX</h3>
+		<div class="card-text" n:snippet="formNoAjax">
+			{control formNoAjax}
 		</div>
-		<div class="col-md-4">
-			<h3>AJAX</h3>
-			<div n:snippet="formAjax">
-                {control formAjax}
-            </div>
+	</div>
+	<div class="card card-block">
+		<h3 class="card-title">AJAX</h3>
+		<div class="card-text" n:snippet="formAjax">
+			{control formAjax}
 		</div>
-		<div class="col-md-4">
-			<h3>AJAX submitting by select</h3>
-			<div n:snippet="formAjaxSelect">
-                {control formAjaxSelect}
-            </div>
+	</div>
+</div>
+<div class="card-group">
+	<div class="card card-block">
+		<h3 class="card-title">AJAX submitting by select</h3>
+		<div class="card-text" n:snippet="formAjaxSelect">
+			{control formAjaxSelect}
+		</div>
+	</div>
+	<div class="card card-block">
+		<h3 class="card-text"></h3>
+		<div class="card-block">
+
 		</div>
 	</div>
 </div>

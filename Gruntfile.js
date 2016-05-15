@@ -1,9 +1,8 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         concat: {
-            jsPipas: {
-                src: [
-                    'src/pipas.js',
+            jsAll: {
+                src: ['src/pipas.js',
                     'src/pipas/overlay.js',
                     'src/pipas/spinner.js', //require: overlay
                     'src/pipas/progress.js',//require: overlay
@@ -12,24 +11,14 @@ module.exports = function (grunt) {
                     'src/pipas/modal.js',   //require: spinner, message
                     'src/pipas/bower.js',
                     'src/pipas/url.js',
-                    'src/pipas/utils.js'],
-                dest: 'dist/pipas.js'
+                    'src/pipas/utils.js',
+                    'src/nette-extension/*.js',
+                    'src/nette-init.js'],
+                dest: 'dist/front-end.js'
             },
-            jsNetteExtensions: {
-                src: ['src/nette-extension/*.js'],
-                dest: 'dist/nette-extensions.js'
-            },
-            jsNetteInit: {
-                src: ['src/nette-init.js'],
-                dest: 'dist/nette-init.js'
-            },
-            cssNette: {
-                src: 'src/nette-extension/*.css',
-                dest: 'dist/nette.css'
-            },
-            cssPipas: {
-                src: 'src/pipas/*.css',
-                dest: 'dist/pipas.css'
+            cssAll: {
+                src: ['src/nette-extension/*.css', 'src/pipas/*.css'],
+                dest: 'dist/front-end.css'
             }
         },
         uglify: {
