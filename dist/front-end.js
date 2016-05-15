@@ -1411,6 +1411,24 @@ var pipas = (function ($) {
                 return (JSON.parse(JSON.stringify(object)));
             }
             return object;
+        },
+        /**
+         * Make clone of object
+         * @param {Object} obj
+         * @returns {Object}
+         */
+        tryClone: function (obj) {
+            if (obj) {
+                var newObj = {};
+                for (var p in obj) {
+                    try {
+                        newObj[p] = JSON.parse(JSON.stringify(obj[p]));
+                    } catch (e) {
+                    }
+                }
+                return newObj;
+            }
+            return obj;
         }
     }
 })(pipas);
@@ -1592,7 +1610,7 @@ var pipas = (function ($) {
                         if (that.jqXHR)that.jqXHR.abort();
                     });
                     //Add to url information about modal mode
-                    settings.url = pipasUrl.append(settings.url, "_target", "modal");
+                    settings.url = that.applyUrlParams(settings.url);
                 }
             }
         },
@@ -1639,7 +1657,11 @@ var pipas = (function ($) {
                     //Parse response from payload
                 } else if (payload) {
                     if (payload.redirect) {
-                        modal.hide();
+                        var redirect = this.ext("redirect");
+                        //If redirection is forbidden, modal is closed
+                        if (redirect && !redirect.isEnabled(settings)) {
+                            modal.hide();
+                        }
                     }
                     else if (payload.refresh) {
                         modal.hide();
@@ -1703,8 +1725,17 @@ var pipas = (function ($) {
                 "snippet--modalContent",
                 "snippet--modal"
             ]
+        },
+        applyUrlParams: function (url) {
+            return pipasUrl.append(url, "_target", "modal");
+        },
+        enable: function (settings) {
+            settings.modalAjax.enabled = true;
+            return settings;
+        },
+        isTargetModal: function (settings) {
+            return settings.modalAjax && settings.modalAjax.enabled;
         }
-
     });
 
 })(jQuery, pipas.modal, pipas.message, pipas.url, pipas.spinner);
@@ -1714,6 +1745,7 @@ var pipas = (function ($) {
  * Example for manual calling
  * $.nette.ajax({
  *          redirect: false     // Disable redirection from server
+ *          redirectUrl: false  // Disable url address changes
  *      }
  * });
  *
@@ -1741,11 +1773,15 @@ var pipas = (function ($) {
         },
         prepare: function (settings) {
             if (settings.redirect == undefined)settings.redirect = true;
-            if (settings.redirectUrlChange == undefined)settings.redirectUrlChange = true;
+            if (settings.redirectUrl == undefined)settings.redirectUrl = true;
             if (settings.nette && settings.nette.el) {
                 var $elm = settings.nette.el;
-                if ($elm && $elm.hasClass("no-redirect"))
+                if ($elm && $elm.hasClass("no-redirect")){
                     settings.redirect = false;
+                }
+                if ($elm && $elm.hasClass("no-redirect-url")){
+                    settings.redirectUrl = false;
+                }
             }
         },
         success: function (payload, status, jqXHR, settings) {
@@ -1760,13 +1796,13 @@ var pipas = (function ($) {
                         document.location.href = payload.redirect;
                         return false;
                     } else {
+                        var clonedSettings = pipas.utils.tryClone(settings);
+                        clonedSettings.url = payload.redirect;
                         //AJAX redirect
-                        $.nette.ajax({
-                            url: payload.redirect
-                        });
+                        $.nette.ajax(clonedSettings);
                     }
                     //enable url changes only for GET requests
-                } else if ((settings.type == undefined || settings.type == "get") && settings.redirectUrlChange) {
+                } else if ((settings.type == undefined || settings.type == "get") && settings.redirectUrl) {
                     PipasUrl.changeTo(settings.url);
                 }
             }
@@ -1799,7 +1835,7 @@ var pipas = (function ($) {
          * @returns {*}
          */
         disableUrlChange: function (settings) {
-            settings.redirectUrlChange = false;
+            settings.redirectUrl = false;
             return settings;
         }
 

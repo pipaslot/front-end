@@ -53,7 +53,7 @@
                         if (that.jqXHR)that.jqXHR.abort();
                     });
                     //Add to url information about modal mode
-                    settings.url = pipasUrl.append(settings.url, "_target", "modal");
+                    settings.url = that.applyUrlParams(settings.url);
                 }
             }
         },
@@ -99,7 +99,14 @@
                     }
                     //Parse response from payload
                 } else if (payload) {
-                     if (payload.refresh) {
+                    if (payload.redirect) {
+                        var redirect = this.ext("redirect");
+                        //If redirection is forbidden, modal is closed
+                        if (redirect && !redirect.isEnabled(settings)) {
+                            modal.hide();
+                        }
+                    }
+                    else if (payload.refresh) {
                         modal.hide();
                         pipasSpinner.show("refreshFromModal", "body");
                         location.reload();
@@ -161,8 +168,17 @@
                 "snippet--modalContent",
                 "snippet--modal"
             ]
+        },
+        applyUrlParams: function (url) {
+            return pipasUrl.append(url, "_target", "modal");
+        },
+        enable: function (settings) {
+            settings.modalAjax.enabled = true;
+            return settings;
+        },
+        isTargetModal: function (settings) {
+            return settings.modalAjax && settings.modalAjax.enabled;
         }
-
     });
 
 })(jQuery, pipas.modal, pipas.message, pipas.url, pipas.spinner);

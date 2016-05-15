@@ -16,6 +16,24 @@
                 return (JSON.parse(JSON.stringify(object)));
             }
             return object;
+        },
+        /**
+         * Make clone of object
+         * @param {Object} obj
+         * @returns {Object}
+         */
+        tryClone: function (obj) {
+            if (obj) {
+                var newObj = {};
+                for (var p in obj) {
+                    try {
+                        newObj[p] = JSON.parse(JSON.stringify(obj[p]));
+                    } catch (e) {
+                    }
+                }
+                return newObj;
+            }
+            return obj;
         }
     }
 })(pipas);

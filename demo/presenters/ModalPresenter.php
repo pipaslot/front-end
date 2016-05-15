@@ -90,9 +90,12 @@ class ModalPresenter extends BasePresenter
 		$this->terminate();
 	}
 
+	/**
+	 * Expected AJAX request
+	 */
 	public function handleRedirect()
 	{
-		$this->redirect("redirectedPage");
+			$this->redirect("redirectedPage");
 	}
 
 }

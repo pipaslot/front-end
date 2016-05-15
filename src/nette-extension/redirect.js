@@ -10,7 +10,7 @@
  *
  * For disabling redirection apply class "no-redirect"
  */
-(function ($, document, PipasUrl) {
+(function ($, document, PipasUrl, PipasUtils) {
     $.nette.ext('redirect', false);
     $.nette.ext('redirect', {
         init: function () {
@@ -35,10 +35,10 @@
             if (settings.redirectUrl == undefined)settings.redirectUrl = true;
             if (settings.nette && settings.nette.el) {
                 var $elm = settings.nette.el;
-                if ($elm && $elm.hasClass("no-redirect")){
+                if ($elm && $elm.hasClass("no-redirect")) {
                     settings.redirect = false;
                 }
-                if ($elm && $elm.hasClass("no-redirect-url")){
+                if ($elm && $elm.hasClass("no-redirect-url")) {
                     settings.redirectUrl = false;
                 }
             }
@@ -55,11 +55,10 @@
                         document.location.href = payload.redirect;
                         return false;
                     } else {
+                        var clonedSettings = PipasUtils.tryClone(settings);
+                        clonedSettings.url = payload.redirect;
                         //AJAX redirect
-                        $.nette.ajax({
-                            url: payload.redirect,
-                            redirectUrl: settings.redirectUrl
-                        });
+                        $.nette.ajax(clonedSettings);
                     }
                     //enable url changes only for GET requests
                 } else if ((settings.type == undefined || settings.type == "get") && settings.redirectUrl) {
@@ -100,4 +99,4 @@
         }
 
     });
-})(jQuery, document, pipas.url);
+})(jQuery, document, pipas.url, pipas.utils);
