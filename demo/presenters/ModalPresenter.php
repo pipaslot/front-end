@@ -46,7 +46,7 @@ class ModalPresenter extends BasePresenter
 			$form->addError("Expected error message");
 		};
 		$form->onSuccess[] = function () {
-			$this->sendJson(array('message' => 'Saved'));
+			$this->sendJson(array('messages' => 'Saved'));
 		};
 		return $form;
 	}
@@ -54,16 +54,6 @@ class ModalPresenter extends BasePresenter
 	public function handleJsonMessage()
 	{
 		$this->sendJson(["Message passed by method \$this->sendJson(['My message']) at presenter"]);
-	}
-
-	public function handlePayloadMessage()
-	{
-		$this->payload->message = "Message passed by methods \$this->payload->message = 'My message' and \$this->sendPayload(); at presenter";
-		$this->payload->messageInfo = "Custom info";
-		$this->payload->messageError = "Custom error";
-		$this->payload->messageWarning = "Custom warning";
-		$this->payload->messageSuccess = "Custom success";
-		$this->sendPayload();
 	}
 
 	public function handlePayloadMessages()

@@ -1,10 +1,16 @@
 {var $title = "Notification"}
 
 {define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/pipas.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/message.js"></script>
     <script type="text/javascript" src="{$basePath}/../src/nette-extension/message.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-init.js"></script>
 {/define}
 
 {define styles}
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/overlay.css">
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/message.css">
 	<link rel="stylesheet" href="{$basePath}/../src/nette-extension/message.css"/>
 {/define}
 
@@ -35,8 +41,8 @@
 
 <h2>Load from snippets</h2>
 <p>
-	<a n:href="flashMessages!" class="btn btn-default">Parse flash messages from response</a>
-	<a n:href="loadJsonMessages!" class="btn btn-default">Get flash messages from JSON or payload</a>
+	<a n:href="flashMessages!" class="btn btn-secondary">Parse flash messages from response</a>
+	<a n:href="loadJsonMessages!" class="btn btn-secondary">Get flash messages from JSON or payload</a>
 
 </p>
 

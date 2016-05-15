@@ -4,6 +4,7 @@
 var pipas = (function ($) {
     return new function () {
         var inner = {
+            isDebug: false,
             basePath: "",
             locale: null,
             history: {},
@@ -66,9 +67,24 @@ var pipas = (function ($) {
                     path = path.substring(0, questionMark);
                 }
                 return (path.substring(path.length - extension.length) == extension);
+            },
+            getScriptCached: function (url) {
+                return $.ajax({
+                    dataType: "script",
+                    cache: !inner.isDebug,
+                    url: url
+                });
             }
         };
-
+        /**
+         * Enable/Disable debug tools
+         * @param setter
+         * @returns {boolean}
+         */
+        this.debug = function (setter) {
+            if (setter !== undefined)inner.isDebug = setter ? true : false;
+            return inner.isDebug;
+        };
         /**
          * Get or Set base path into www root
          * @param setter
@@ -210,7 +226,7 @@ var pipas = (function ($) {
                         args.push(inner.history[url]);
                     }
                 } else if (inner.hasExtension(url, "js")) {
-                    xhr = $.getScript(url);
+                    xhr = inner.getScriptCached(url);
                     requests.push(xhr);
                     args.push(xhr);
                     inner.history[url] = xhr;

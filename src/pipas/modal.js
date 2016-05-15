@@ -8,7 +8,7 @@
     pipas.modal = new function () {
         var $elm, that = this;
         var createButton = function (title, closing) {
-            return '<button type="button" class="btn btn-default" ' + (closing ? 'data-dismiss="modal"' : '') + '>' + title + '</button>';
+            return '<button type="button" class="btn btn-secondary" ' + (closing ? 'data-dismiss="modal"' : '') + '>' + title + '</button>';
         };
         var doHide = function () {
             if ($elm) {

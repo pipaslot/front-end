@@ -1,6 +1,8 @@
 {var $title = "File upload"}
 
 {define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/progress.js"></script>
 	<script type="text/javascript" src="{$basePath}/../src/pipas/upload.js"></script>
 	<script>
 		pipas.upload.onUpload.push(function () {
@@ -18,6 +20,11 @@
 		});
 		control.processingStatusUrl = {link getUploadStatus!};
 	</script>
+{/define}
+{define styles}
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/overlay.css">
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/message.css">
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/progress.css"/>
 {/define}
 
 

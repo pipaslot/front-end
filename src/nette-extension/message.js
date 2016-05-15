@@ -16,8 +16,12 @@
                 }
             }
             if (payload.messages) {
-                for (var type in payload.messages) {
-                    message.show(payload.messages[type], type);
+                if ((typeof payload.messages ) == 'string') {
+                    message.showInfo(payload.messages);
+                } else {
+                    for (var type in payload.messages) {
+                        message.show(payload.messages[type], type);
+                    }
                 }
                 delete payload.messages;
             }

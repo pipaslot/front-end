@@ -2,6 +2,7 @@
 
 {define scripts}
     <script type="text/javascript" src="{$basePath}/../src/nette-extension/unique.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-init.js"></script>
     <script>
 	function abortSame(){
 	    $.nette.ajax({
@@ -48,17 +49,17 @@
 <h2>Anchors</h2>
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<a n:href="invalidate! text1, 7" class="btn btn-default">Call and abort same</a>
-		<a n:href="invalidate! text1, 6" class="btn btn-default no-unique">Can call more than once</a>
-		<a n:href="invalidate! text1, 5" class="btn btn-default unique">Call unique and abort all</a>
-		<a n:href="invalidate! text1, 5" class="btn btn-default" data-unique="uniqueKey">Aborted by key 1/2</a>
-		<a n:href="invalidate! text1, 5" class="btn btn-default" data-unique="uniqueKey">Aborted by key 2/2 (same as previous)</a>
+		<a n:href="invalidate! text1, 7" class="btn btn-secondary">Call and abort same</a>
+		<a n:href="invalidate! text1, 6" class="btn btn-secondary no-unique">Can call more than once</a>
+		<a n:href="invalidate! text1, 5" class="btn btn-secondary unique">Call unique and abort all</a>
+		<a n:href="invalidate! text1, 5" class="btn btn-secondary" data-unique="uniqueKey">Aborted by key 1/2</a>
+		<a n:href="invalidate! text1, 5" class="btn btn-secondary" data-unique="uniqueKey">Aborted by key 2/2 (same as previous)</a>
 		<br>
-		<a href="javascript:abortSame();" class="btn btn-default">JS: Call and abort same</a>
-		<a href="javascript:callableMultipple();" class="btn btn-default">JS: Can call more than once</a>
-		<a href="javascript:abortAll();" class="btn btn-default">JS: Call unique and abort all</a>
-		<a href="javascript:abortByKey();" class="btn btn-default">JS: Aborted by key 1/2</a>
-		<a href="javascript:abortByKey();" class="btn btn-default">JS: Aborted by key 2/2 (same as previous)</a>
+		<a href="javascript:abortSame();" class="btn btn-secondary">JS: Call and abort same</a>
+		<a href="javascript:callableMultipple();" class="btn btn-secondary">JS: Can call more than once</a>
+		<a href="javascript:abortAll();" class="btn btn-secondary">JS: Call unique and abort all</a>
+		<a href="javascript:abortByKey();" class="btn btn-secondary">JS: Aborted by key 1/2</a>
+		<a href="javascript:abortByKey();" class="btn btn-secondary">JS: Aborted by key 2/2 (same as previous)</a>
 	</div>
 	<div id="snippet-parent">
 	{snippet text1}

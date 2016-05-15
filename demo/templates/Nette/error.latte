@@ -1,16 +1,24 @@
 {var $title = "Error reporting"}
 
 {define scripts}
-    <script type="text/javascript" src="{$basePath}/../src/nette-extension/error.js"></script>
-    <script>
-    $(function(){
-        $("a.abort").on("click",function(){
-           var unique = $.nette.ext('unique');
-           unique.xhr.abort();
-           unique.xhr=null;
-        });
-    });
-    </script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/message.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-extension/error.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-init.js"></script>
+	<script>
+		$(function () {
+			$("a.abort").on("click", function () {
+				var unique = $.nette.ext('unique');
+				unique.xhr.abort();
+				unique.xhr = null;
+			});
+		});
+	</script>
+{/define}
+{define styles}
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/overlay.css">
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/message.css">
 {/define}
 
 
@@ -19,47 +27,39 @@
 	Catching errors after AJAX.
 </p>
 
-<p class="row">
+<div class="row">
 	<div class="col-md-4">
-		<a n:href="errorException!" class="btn btn-default">Run error</a>
+		<a n:href="errorException!" class="btn btn-secondary">Run error</a>
 	</div>
 	<div class="col-md-8">
 		Shows error notification
 	</div>
-</p>
-<p class="row">
+</div>
+<div class="row">
 	<div class="col-md-4">
-		<a n:href="badRequestException!" class="btn btn-default">Run bad request</a>
-	</div>
-	<div class="col-md-8">
-		Shows error notification
-	</div>
-</p>
-<p class="row">
-	<div class="col-md-4">
-		<a n:href="abortException!" class="btn btn-default">Run aborted request</a>
+		<a n:href="abortException!" class="btn btn-secondary">Run aborted request</a>
 	</div>
 	<div class="col-md-8">
 		Shows warning if was empty response
 	</div>
-</p>
+</div>
 
-<p class="row">
-<div class="col-md-4">
-	<a n:href="wait10Seconds!" class="btn btn-default">Run long time request</a>
-	<a href="#" class="btn btn-default abort">Aborted request</a>
+<div class="row">
+	<div class="col-md-4">
+		<a n:href="wait10Seconds!" class="btn btn-secondary">Run long time request</a>
+		<a href="#" class="btn btn-secondary abort">Aborted request</a>
+	</div>
+	<div class="col-md-8">
+		No error is thrown during abort of current request
+	</div>
 </div>
-<div class="col-md-8">
-	No error is thrown during abort of current request
-</div>
-</p>
 
-<p class="row">
-<div class="col-md-4">
-	<a n:href="error403!" class="btn btn-default">Error 403</a>
-	<a n:href="error404!" class="btn btn-default">Error 404</a>
+<div class="row">
+	<div class="col-md-4">
+		<a n:href="error403!" class="btn btn-secondary">Error 403</a>
+		<a n:href="error404!" class="btn btn-secondary">Error 404</a>
+	</div>
+	<div class="col-md-8">
+		Error should be catch at production mode (must be disabled debug mode)
+	</div>
 </div>
-<div class="col-md-8">
-	Error should be catch at production mode
-</div>
-</p>

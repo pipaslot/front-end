@@ -1,22 +1,27 @@
 {var $title = "Redirections"}
 
 {define scripts}
-    <script type="text/javascript" src="{$basePath}/../src/nette-extension/redirect.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/url.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-extension/redirect.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-init.js"></script>
 {/define}
 
 {block #content}
 <p>
-	<a class="btn btn-default" n:href="redirectToPage2!">Redirect to init page from server</a>
+	<a class="btn btn-secondary" n:href="redirectToPage2!">Redirect to init page from server</a>
 </p>
 <p>
-	<a class="btn btn-default" n:href="redirectToPage3!">Redirect without ajax, because server will returns plain HTML</a>
+	<a class="btn btn-secondary" n:href="redirectToPage3!">Redirect without ajax, because server will returns plain HTML</a>
 </p>
 <p>
-	<a class="btn btn-default no-redirect" n:href="redirectToPage2!">Call request but ignore redirect</a>
+	<a class="btn btn-secondary no-redirect" n:href="redirectToPage2!">Call request but ignore redirect <code>.no-redirect</code></a>
 </p>
 <p>
-	<a class="btn btn-default" n:href="redirectToFailing!">Call failing request without current url redirection</a>
+	<a class="btn btn-secondary no-redirect-url" n:href="redirectToPage2!">Redirect page but let URL<code>.no-redirect-url</code></a>
 </p>
 <p>
-	<a class="btn btn-default" n:href="redirectWithoutAjax!">Canceled AJAX redirection, because server sent <code>payload.noAjax=true</code></a>
+	<a class="btn btn-secondary" n:href="redirectToFailing!">Call failing request without current url redirection</a>
+</p>
+<p>
+	<a class="btn btn-secondary" n:href="redirectWithoutAjax!">Canceled AJAX redirection, because server sent <code>payload.noAjax=true</code></a>
 </p>

@@ -1,58 +1,63 @@
 {var $title = "Spinner"}
 
 {define scripts}
-    <script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
-    <script>
-    var defaultOverlay = pipas.overlay.defaultElement();
-    var defaultSpinner = pipas.spinner.defaultElement();
-    function callDefault(){
-        var id = "first";
-        pipas.overlay.defaultElement(defaultOverlay);
-        pipas.spinner.defaultElement(defaultSpinner);
-        pipas.spinner.show(id);
-		setTimeout(function(){
-			pipas.spinner.hide(id);
-		}, 1500);
-    }
-    function callCustom(){
-        var id = "custom";
-        pipas.overlay.defaultElement('<div id="page-loader"></div>');
-        pipas.spinner.defaultElement('<span class="spinner"></span>');
-        pipas.spinner.show(id);
-        setTimeout(function(){
-            pipas.spinner.hide(id);
-        }, 1500);
-    }
-    </script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/spinner.js"></script>
+	<script>
+		var defaultOverlay = pipas.overlay.defaultElement();
+		var defaultSpinner = pipas.spinner.defaultElement();
+		function callDefault() {
+			var id = "first";
+			pipas.overlay.defaultElement(defaultOverlay);
+			pipas.spinner.defaultElement(defaultSpinner);
+			pipas.spinner.show(id);
+			setTimeout(function () {
+				pipas.spinner.hide(id);
+			}, 1500);
+		}
+		function callCustom() {
+			var id = "custom";
+			pipas.overlay.defaultElement('<div id="page-loader"></div>');
+			pipas.spinner.defaultElement('<span class="spinner"></span>');
+			pipas.spinner.show(id);
+			setTimeout(function () {
+				pipas.spinner.hide(id);
+			}, 1500);
+		}
+	</script>
 {/define}
 
 {define styles}
-<style type="text/css">
-#page-loader {
-    background: #e6e8ec none repeat scroll 0 0;
-}
-.spinner {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #24b498 #fff #fff;
-    border-image: none;
-    border-radius: 100%;
-    border-style: solid;
-    border-width: 2px;
-    height: 40px;
-    left: 50%;
-    margin: -20px -20px 0 0;
-    position: absolute;
-    width: 40px;
-    display: block;
-}
-</style>
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/overlay.css">
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/spinner.css">
+
+	<style type="text/css">
+		#page-loader {
+			background-color: rgba(200,200,200, 0.8);
+		}
+
+		.spinner {
+			-moz-border-bottom-colors: none;
+			-moz-border-left-colors: none;
+			-moz-border-right-colors: none;
+			-moz-border-top-colors: none;
+			border-color: #24b498 #fff #fff;
+			border-image: none;
+			border-radius: 100%;
+			border-style: solid;
+			border-width: 2px;
+			height: 40px;
+			left: 50%;
+			margin: -20px -20px 0 0;
+			position: absolute;
+			width: 40px;
+			display: block;
+		}
+	</style>
 {/define}
 
 
 {block #content}
-<a href="javascript:callDefault()" class="btn btn-default">default</a>
-<a href="javascript:callCustom()" class="btn btn-default">custom</a>
+<a href="javascript:callDefault()" class="btn btn-secondary">default</a>
+<a href="javascript:callCustom()" class="btn btn-secondary">custom</a>
 

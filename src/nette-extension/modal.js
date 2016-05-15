@@ -39,10 +39,10 @@
                     //ignore warning if empty response is received
                     var error = this.ext("error");
                     if (error)error.ignoreWarning(settings);
-                    //disable page redirection after modal i opened
+                    //disable URL address changes
                     var redirect = this.ext("redirect");
                     //check if extension is defined and if is defined method disable what is used at override default nette extension
-                    if (redirect && redirect.disable)redirect.disable(settings);
+                    if (redirect && redirect.disableUrlChange)redirect.disableUrlChange(settings);
 
                     //prepare modal
                     var that = this;
@@ -99,47 +99,17 @@
                     }
                     //Parse response from payload
                 } else if (payload) {
-                    if (payload.redirect) {
-                        modal.hide();
-                    }
-                    else if (payload.refresh) {
+                     if (payload.refresh) {
                         modal.hide();
                         pipasSpinner.show("refreshFromModal", "body");
                         location.reload();
                     }
                     //messages
-                    if (payload.message) {
-                        console.log("payload.message is deprecated. Please use nette extension messages as payload.messages.info[]='my mesage'");
-                        messages.showInfo(payload.message);
-                        modal.hide()
-                    }
-                    else if (payload[0] && $.isArray(payload) && typeof payload[0] == 'string') {
+                    if (payload[0] && $.isArray(payload) && typeof payload[0] == 'string') {
                         messages.showInfo(payload[0]);
                         modal.hide()
                     }
-                    if (payload.messageInfo) {
-                        console.log("payload.messageInfo is deprecated. Please use nette extension messages as payload.messages.info[]='my mesage'");
-                        messages.showInfo(payload.messageInfo);
-                        modal.hide()
-                    }
-                    if (payload.messageError) {
-                        console.log("payload.messageError is deprecated. Please use nette extension messages as payload.messages.error[]='my mesage'");
-                        messages.showError(payload.messageError);
-                        modal.hide()
-                    }
-                    if (payload.messageWarning) {
-                        console.log("payload.messageWarning is deprecated. Please use nette extension messages as payload.messages.warning[]='my mesage'");
-                        messages.showWarning(payload.messageWarning);
-                        modal.hide()
-                    }
-                    if (payload.messageSuccess) {
-                        console.log("payload.messageSuccess is deprecated. Please use nette extension messages as payload.messages.success[]='my mesage'");
-                        messages.showSuccess(payload.messageSuccess);
-                        modal.hide()
-                    }
-
                 }
-
 
                 // Close dialog if is received empty response
                 if (!payload || $.isEmptyObject(payload) || (typeof payload == 'string' && payload.trim() == "")) {

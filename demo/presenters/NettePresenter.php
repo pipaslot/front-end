@@ -79,11 +79,6 @@ class NettePresenter extends BasePresenter
 		throw new \ErrorException("Testing error was caused.");
 	}
 
-	public function handleBadRequestException()
-	{
-		throw new BadRequestException("Requested page not found");
-	}
-
 	public function handleAbortException()
 	{
 		throw new AbortException("Request was aborted");

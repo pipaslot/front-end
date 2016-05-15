@@ -4,6 +4,7 @@
  * Example for manual calling
  * $.nette.ajax({
  *          redirect: false     // Disable redirection from server
+ *          redirectUrl: false  // Disable url address changes
  *      }
  * });
  *
@@ -31,10 +32,15 @@
         },
         prepare: function (settings) {
             if (settings.redirect == undefined)settings.redirect = true;
+            if (settings.redirectUrl == undefined)settings.redirectUrl = true;
             if (settings.nette && settings.nette.el) {
                 var $elm = settings.nette.el;
-                if ($elm && $elm.hasClass("no-redirect"))
+                if ($elm && $elm.hasClass("no-redirect")){
                     settings.redirect = false;
+                }
+                if ($elm && $elm.hasClass("no-redirect-url")){
+                    settings.redirectUrl = false;
+                }
             }
         },
         success: function (payload, status, jqXHR, settings) {
@@ -51,11 +57,12 @@
                     } else {
                         //AJAX redirect
                         $.nette.ajax({
-                            url: payload.redirect
+                            url: payload.redirect,
+                            redirectUrl: settings.redirectUrl
                         });
                     }
                     //enable url changes only for GET requests
-                } else if (settings.type == undefined || settings.type == "get") {
+                } else if ((settings.type == undefined || settings.type == "get") && settings.redirectUrl) {
                     PipasUrl.changeTo(settings.url);
                 }
             }
@@ -80,6 +87,15 @@
          */
         disable: function (settings) {
             settings.redirect = false;
+            return settings;
+        },
+        /**
+         * Disable page url changes
+         * @param settings
+         * @returns {*}
+         */
+        disableUrlChange: function (settings) {
+            settings.redirectUrl = false;
             return settings;
         }
 

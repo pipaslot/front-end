@@ -1,8 +1,6 @@
 {var $title = "Default"}
 
 {define scripts}
-	<script type="text/javascript" src="{$basePath}/../src/pipas.js"></script>
-	<script type="text/javascript" src="{$basePath}/../src/pipas/bower.js"></script>
 	<script type="text/javascript" src="{$basePath}/../src/pipas/utils.js"></script>
 	<script>
 		pipas.basePath({$basePath});
@@ -11,8 +9,7 @@
 		});
 		pipas.define("bootstrap",[
 			"bower_components/bootstrap/dist/js/bootstrap.js",
-			"bower_components/bootstrap/dist/css/bootstrap.css",
-			"bower_components/bootstrap/dist/css/bootstrap-theme.css"
+			"bower_components/bootstrap/dist/css/bootstrap.css"
 		],null,["bootstrap2","bootstrap2"]);
 		function call1() {
 			var url = "data/test1.js";
@@ -42,7 +39,7 @@
 		}
 		function call5() {
 			var url = ["bootstrap/dist/js/bootstrap.js"];
-			pipas.bower.get(url, function () {
+			pipas.get(url, function () {
 				console.log("loaded:", url, "arguments:", arguments);
 			});
 		}
@@ -81,16 +78,20 @@
 
 {block #content}
 <p>Loading of libraries with caching. Test with console</p>
-<a href="javascript:call1()" class="btn btn-default">Load one</a>
-<a href="javascript:call2()" class="btn btn-default">Load multiple</a>
+<p>
+<a href="javascript:(function(){ pipas.debug(true); })()" class="btn btn-primary">Enable debug</a>
+<a href="javascript:(function(){ pipas.debug(false); })()" class="btn btn-primary">Disable debug</a>
+</p>
+<a href="javascript:call1()" class="btn btn-secondary">Load one</a>
+<a href="javascript:call2()" class="btn btn-secondary">Load multiple</a>
 <p>Using pipas.getUniquetyle load list of styles. On second calling previous are removed ad replaced by current</p>
-<a href="javascript:call3()" class="btn btn-default">Load an change body style 1</a>
-<a href="javascript:call4()" class="btn btn-default">Load an change body style 2</a>
+<a href="javascript:call3()" class="btn btn-secondary">Load an change body style 1</a>
+<a href="javascript:call4()" class="btn btn-secondary">Load an change body style 2</a>
 <p>Bower library loading</p>
-<a href="javascript:call5()" class="btn btn-default">Load bower library</a>
-<a href="javascript:call6()" class="btn btn-default">Failing loading logged to console as error</a>
+<a href="javascript:call5()" class="btn btn-secondary">Load bower library</a>
+<a href="javascript:call6()" class="btn btn-secondary">Failing loading logged to console as error</a>
 <p>---</p>
-<a href="javascript:call7()" class="btn btn-default">Load bootstrap and run once initialization</a>
-<a href="javascript:call8()" class="btn btn-default">Load via aliases</a>
-<a href="javascript:call9()" class="btn btn-default">Fail during overriding existing alias</a>
-<a href="javascript:call10()" class="btn btn-default">Load recursive, before for parent dependency</a>
+<a href="javascript:call7()" class="btn btn-secondary">Load bootstrap and run once initialization</a>
+<a href="javascript:call8()" class="btn btn-secondary">Load via aliases</a>
+<a href="javascript:call9()" class="btn btn-secondary">Fail during overriding existing alias</a>
+<a href="javascript:call10()" class="btn btn-secondary">Load recursive, before for parent dependency</a>

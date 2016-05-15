@@ -1,5 +1,15 @@
-{include '_actions.latte'}
+{include '_actions2.latte'}
 
+<h2>Upload control</h2>
+{var $rand = rand(0,1000)}
+<input name="upload[]" id="uploadControl{$rand}" type="file" multiple>
+<script type="text/javascript">
+	$(function () {
+		pipas.upload.create("#uploadControl" +{$rand},{link fileUpload!});
+	});
+</script>
+
+<h2>Form</h2>
 {control form}
 
 <script>

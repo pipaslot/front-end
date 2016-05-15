@@ -1,6 +1,7 @@
 {var $title = "Progress"}
 
 {define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
 	<script type="text/javascript" src="{$basePath}/../src/pipas/progress.js"></script>
 	<script type="text/javascript">
 		function callShow(parent) {
@@ -36,9 +37,14 @@
 	</script>
 {/define}
 
+{define styles}
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/overlay.css">
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/progress.css">
+{/define}
+
 {block #content}
-<a href="javascript:callShow()" class="btn btn-default">Show</a>
-<a href="javascript:callShow('showProgressHere')" class="btn btn-default">At div</a>
+<a href="javascript:callShow()" class="btn btn-secondary">Show</a>
+<a href="javascript:callShow('showProgressHere')" class="btn btn-secondary">At div</a>
 
 <p id="showProgressHere">
 	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis nibh nibh. Sed pulvinar, nisi ac mattis

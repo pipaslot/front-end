@@ -1,0 +1,74 @@
+{var $title = "Modal - documentation"}
+
+{block #content}
+<p>
+	Use next selectors to setup modal dialog
+<ul>
+	<li><code>.modal-ajax</code> - Open at modal - default required class</li>
+	<li><code>.modal-ajax-sm</code> - as Small</li>
+	<li><code>.modal-ajax-md</code> - as Medium</li>
+	<li><code>.modal-ajax-lg</code> - as Large</li>
+	<li><code>.modal-ajax-no-header</code> - Hide header</li>
+	<li><code>.modal-ajax-success</code> - Green scheme</li>
+	<li><code>.modal-ajax-warning</code> - Orange scheme</li>
+	<li><code>.modal-ajax-danger</code> - Red scheme</li>
+</ul>
+</p>
+<h2>Request</h2>
+<p>
+	At url is as default added parameter <code>_target = modal</code> for recognise this request by server.
+</p>
+<h2>Response</h2>
+<p>
+	Modal supports two combianions of response as HTML snippet or JSON response
+</p>
+<h3>HTML</h3>
+<p>
+	Is accepted to receive only HTML snippet from page. If response starts with HTML or DOCTYPE tag, throws error.
+</p>
+<h3>JSON</h3>
+<p>
+	Can accept one of follow options or their combinaions
+</p>
+<h4>Message</h4>
+<p>You can use message presentation defined at pipas.messages library of this package. Is possible show one message if payload is a string</p>
+
+<h4>Event</h4>
+<code>
+	{
+	<div style="padding-left:20px">
+		// Call page refresh<br>
+		refresh: true,<br><br>
+		// Redirect current page to another (@see: pipas/nette-extension/redirect.js)<br>
+		redirect: "target/url"
+	</div>
+	}
+</code>
+<h4>Snippet</h4>
+<p>
+	You can send modal title and body via JSON snippet properties specified by their ID. Mapping of snippets is stored
+	at <code>nette.ext('pipas-modal').snippetMap.title</code>
+	and <code>nette.ext('pipas-modal').snippetMap.body</code> You can extend that list by your own id. Default map
+	contains:<br>
+	<code>
+		{
+		<div style="padding-left:20px">
+			snippetMap: {
+			<div style="padding-left:20px">
+				title: [
+				<div style="padding-left:20px">
+					"snippet--modalTitle"
+				</div>
+				],
+				body: [
+				<div style="padding-left:20px">
+					"snippet--modalContent",<br>
+					"snippet--modal"
+				</div>
+				]
+			</div>
+			}
+		</div>
+		}
+	</code>
+</p>

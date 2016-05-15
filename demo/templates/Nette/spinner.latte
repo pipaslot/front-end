@@ -1,7 +1,10 @@
 {var $title = "Spinner"}
 
 {define scripts}
+	<script type="text/javascript" src="{$basePath}/../src/pipas/overlay.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/pipas/spinner.js"></script>
     <script type="text/javascript" src="{$basePath}/../src/nette-extension/spinner.js"></script>
+	<script type="text/javascript" src="{$basePath}/../src/nette-init.js"></script>
     <script>
     $.nette.ext("unique",false); //Disable extension unque
     function loadNoSpinner(){
@@ -33,6 +36,8 @@
 {/define}
 
 {define styles}
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/overlay.css">
+	<link rel="stylesheet" href="{$basePath}/../src/pipas/spinner.css">
 {/define}
 
 {define snippetText}
@@ -56,13 +61,13 @@
 <h2>Anchors</h2>
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<a n:href="invalidate! text1, 1" class="btn btn-default">On body</a>
-		<a n:href="invalidate! text1, 1" class="btn btn-default" data-spinner="{$control->getSnippetId('text1')}">On target element</a>
-		<a n:href="invalidate! text1" class="btn btn-default no-spinner">No spinner</a>
+		<a n:href="invalidate! text1, 1" class="btn btn-secondary">On body</a>
+		<a n:href="invalidate! text1, 1" class="btn btn-secondary" data-spinner="{$control->getSnippetId('text1')}">On target element</a>
+		<a n:href="invalidate! text1" class="btn btn-secondary no-spinner">No spinner</a>
 		<br>
-		<a href="javascript:loadNoSpinner();" class="btn btn-default no-ajax">JS no-spinner</a>
-		<a href="javascript:loadOnParent();" class="btn btn-default no-ajax">JS On target element</a>
-		<a href="javascript:loadLongTimeMultiple();" class="btn btn-default no-ajax">JS On target element callable multiple</a>
+		<a href="javascript:loadNoSpinner();" class="btn btn-secondary no-ajax">JS no-spinner</a>
+		<a href="javascript:loadOnParent();" class="btn btn-secondary no-ajax">JS On target element</a>
+		<a href="javascript:loadLongTimeMultiple();" class="btn btn-secondary no-ajax">JS On target element callable multiple</a>
 	</div>
 	<div id="snippet-parent">
 	{snippet text1}

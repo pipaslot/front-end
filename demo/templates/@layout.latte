@@ -13,7 +13,7 @@
 	<script type="text/javascript" src="{$basePath}/bower_components/jquery/jquery.min.js"></script>
 </head>
 
-<body style="padding-top: 70px">
+<body style="padding-top: 50px">
 <nav class="navbar navbar-light bg-faded navbar-fixed-top">
 	<div class="container">
 		<a class="navbar-brand" href="#">Library tests</a>
@@ -48,6 +48,7 @@
 				<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 				   aria-expanded="false">Modal <span class="caret"></span></a>
 				<ul class="dropdown-menu">
+					<li><a class="dropdown-item no-ajax" n:href="Modal:documentation">Documentation</a></li>
 					<li><a class="dropdown-item no-ajax" n:href="Modal:">Default functionality</a></li>
 					<li><a class="dropdown-item no-ajax" n:href="Modal:integration">Integration</a></li>
 				</ul>
@@ -61,14 +62,14 @@
 	<div n:snippet="flashMessages" class="flashMessages">
 		<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type">{$flash->message|noescape}</div>
 	</div>
-	{ifset $title}<h1>{$title}</h1>{/ifset}
+	{ifset $title}<h1 style="margin-top:20px;">{$title}</h1>{/ifset}
 	{include content}
 </div>
 <script type="text/javascript" src="{$basePath}/bower_components/tether/dist/js/tether.min.js"></script>
 <script type="text/javascript" src="{$basePath}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="{$basePath}/bower_components/nette.ajax.js/nette.ajax.js"></script>
-<script type="text/javascript"
-        src="{$basePath}/bower_components/nette-live-form-validation/live-form-validation.js"></script>
+<script type="text/javascript" src="{$basePath}/bower_components/nette-live-form-validation/live-form-validation.js"></script>
+<script type="text/javascript" src="{$basePath}/../src/pipas.js"></script>
 {block scripts}
 {/block}
 </body>
