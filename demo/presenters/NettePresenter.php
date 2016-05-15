@@ -59,6 +59,20 @@ class NettePresenter extends BasePresenter
 		return $form;
 	}
 
+	/**
+	 * @return Form
+	 */
+	protected function createComponentFormAjaxImage()
+	{
+		$form = $this->createForm();
+		$form->removeComponent($form['submit']);
+		$form->addImage('submit', $this->template->basePath . '/button.jpg', "Button");
+		$form->setDefaults(array(
+			"snippet" => "formAjaxImage"
+		));
+		return $form;
+	}
+
 	/******************************* Error **************************************/
 	public function handleErrorException()
 	{
