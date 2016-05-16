@@ -34,6 +34,7 @@
     "nette.ajax.js": "~2.1",
     "jquery": "~1.9",
     "components-font-awesome": "^4.5.0",
-    "nette-live-form-validation": "^1.6.2"
+    "nette-live-form-validation": "^1.6.2",
+    "font-awesome": "fontawesome#^4.6.3"
   }
 }

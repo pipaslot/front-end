@@ -15,6 +15,15 @@
 				pipas.spinner.hide(id);
 			}, 1500);
 		}
+		function callLong() {
+			var id = "first";
+			pipas.overlay.defaultElement(defaultOverlay);
+			pipas.spinner.defaultElement(defaultSpinner);
+			pipas.spinner.show(id);
+			setTimeout(function () {
+				pipas.spinner.hide(id);
+			}, 10000);
+		}
 		function callCustom() {
 			var id = "custom";
 			pipas.overlay.defaultElement('<div id="page-loader"></div>');
@@ -59,5 +68,6 @@
 
 {block #content}
 <a href="javascript:callDefault()" class="btn btn-secondary">default</a>
+<a href="javascript:callLong()" class="btn btn-secondary">default (10s)</a>
 <a href="javascript:callCustom()" class="btn btn-secondary">custom</a>
 
