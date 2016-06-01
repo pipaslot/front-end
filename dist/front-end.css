@@ -134,4 +134,8 @@ form .alert-danger {
         z-index: 1042;
         display: block;
     }
+
+    .pipas-spinner  i.fa-spinner{
+        color:white;
+    }
 }

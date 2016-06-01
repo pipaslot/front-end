@@ -305,6 +305,8 @@ var pipas = (function ($) {
     };
 })(jQuery);
 
+window.pipas = pipas;
+
 
 
 /**
@@ -411,7 +413,7 @@ var pipas = (function ($) {
 
     pipas.spinner = new function () {
         var inner = {
-            defaultElement: $('<i></i>'),
+            defaultElement: $('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>'),
             parents: {},
             getSelector: function (id) {
                 return (id && id != "body") ? "#" + id : "body";
@@ -421,8 +423,8 @@ var pipas = (function ($) {
                 var $parent = $(parentSelector).css("position", "relative");
                 var $spinner = $parent.find("> .pipas-spinner");
                 if (!$spinner.length) {
-                    $spinner = $('<i class="pipas-spinner" class="fa fa-spinner fa-pulse fa-lg fa-fw" style="color:white"></i>');
-                    //inner.defaultElement.clone().appendTo($spinner);
+                    $spinner = $('<div class="pipas-spinner"></div>');
+                    inner.defaultElement.clone().appendTo($spinner);
                     $spinner.appendTo($parent);
                 }
                 return $spinner;
