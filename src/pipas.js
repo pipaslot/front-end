@@ -305,4 +305,6 @@ var pipas = (function ($) {
     };
 })(jQuery);
 
+window.pipas = pipas;
+
 
