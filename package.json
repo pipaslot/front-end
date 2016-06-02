@@ -1,10 +1,9 @@
 {
   "name": "pipaslot-front-end",
-  "version": "1.0.0",
+  "version": "1.5.3",
   "description": "Nette front-end library",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "nette",
