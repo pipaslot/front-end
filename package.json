@@ -1,6 +1,6 @@
 {
   "name": "pipaslot-front-end",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Nette front-end library",
   "main": "Gruntfile.js",
   "scripts": {
