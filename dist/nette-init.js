@@ -16,7 +16,7 @@ $(function () {
     } else {
         $.nette.init(function (rh) {
             //Anchors
-            $('html:not(.tracy-js) a:not(.no-ajax,[target="_blank"],[href]):not([href^="javascript:"])')
+            $('a[href]:not(.no-ajax,[target="_blank"],[href=""]):not([href^="javascript:"])')
                 .off('click', rh)
                 .on('click', rh);
 
