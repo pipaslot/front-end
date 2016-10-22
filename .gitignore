@@ -5,3 +5,4 @@ demo/temp/
 demo/vendor/
 node_modules/
 composer.lock
+.idea/
