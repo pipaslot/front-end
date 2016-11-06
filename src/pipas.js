@@ -306,8 +306,3 @@ var pipas = (function ($) {
 })(jQuery);
 
 window.pipas = pipas;
-<<<<<<< HEAD
-
-=======
->>>>>>> version1
-

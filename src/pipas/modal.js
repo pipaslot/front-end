@@ -31,7 +31,7 @@
                 $elm = $('<div class="modal fade" id="' + this.id + '" tabindex="-1" role="dialog" aria-labelledby="' + this.id + '-label">'
                     + '<div class="modal-dialog" role="document">'
                     + '<div class="modal-content">'
-                    + '<div class="modal-header">'
+                    + '<div class="modal-header" style="display: none">'
                     + '<span class="modal-header-button close" data-dismiss="modal" aria-label="' + that.text.close + '"><span class="fa fa-close"></span></span>'
                     + '<a href="#" class="modal-header-button refresh" title="' + that.text.refresh + '"><span class="fa fa-refresh"></span></a>'
                     + '<h4 class="modal-title" id="' + this.id + '-label"></h4>'

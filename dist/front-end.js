@@ -306,9 +306,6 @@ var pipas = (function ($) {
 })(jQuery);
 
 window.pipas = pipas;
-
-
-
 /**
  * Overlay management
  * - Enables define overlay for multiple events for one target container
@@ -966,7 +963,7 @@ window.pipas = pipas;
                 $elm = $('<div class="modal fade" id="' + this.id + '" tabindex="-1" role="dialog" aria-labelledby="' + this.id + '-label">'
                     + '<div class="modal-dialog" role="document">'
                     + '<div class="modal-content">'
-                    + '<div class="modal-header">'
+                    + '<div class="modal-header" style="display: none">'
                     + '<span class="modal-header-button close" data-dismiss="modal" aria-label="' + that.text.close + '"><span class="fa fa-close"></span></span>'
                     + '<a href="#" class="modal-header-button refresh" title="' + that.text.refresh + '"><span class="fa fa-refresh"></span></a>'
                     + '<h4 class="modal-title" id="' + this.id + '-label"></h4>'
@@ -1434,100 +1431,6 @@ window.pipas = pipas;
         }
     }
 })(pipas);
-(function ($) {
-    $.nette.ext('ajax-debug-panel', {
-        start: function (xhr, settings) {
-            var $panel = this.getPanel();
-            console.log($panel)
-            if (!$panel) return;
-            if (this.singleReport) this.clear();
-            $(this.getTitle(++this.counter, 'request')).appendTo($panel);
-            $("<p><b>Type</b> : " + settings.type + "</p>").appendTo($panel);
-            $("<p><b>Url</b> : <a href='" + settings.url + "' target='_blank'>" + settings.url + "</a></p>").appendTo($panel);
-        },
-        success: function (payload) {
-            var $panel = this.getPanel();
-            if (!$panel || !payload || payload.length == 0) return;
-            $(this.getTitle(this.counter, 'response')).appendTo($panel);
-            $.each(this.getMonitored(), function (i, key) {
-                var count;
-                $helper = $('<div class="nette-ContainerPanel-parameters">');
-                if (key in payload) {
-                    var count = 0;
-                    $.each(payload[key], function (name, value) {
-                        var output;
-                        var code = null;
-                        output = '<i style="color: #060">' + (typeof value) + '</i> ';
-                        if (value === null) {
-                            output += '<i style="color: #900">null</i>';
-                        } else if (value === "") {
-                            output += '<i style="color: #ccc">empty string</i>';
-                        } else if (typeof value === 'boolean') {
-                            output += '<i style="color: #900">' + (value ? 'true' : 'false') + '</i>';
-                        } else if (typeof value === 'undefined') {
-                            output += '<i style="color: #ccc">undefined</i>';
-                        } else if (typeof value === 'number') {
-                            output += '<i style="color: #009">' + value + '</i>';
-                        } else {
-
-                            //output += value.substr(0,100);
-                            code = $('<pre class="nette-dump">').text(value);
-                            code = $('<code style="display: inline;" class="nette-collapsed">').text(value.substr(0, 100));
-                        }
-                        if (code) {
-                            $('<a href="#" rel="next"><span class="php-key">' + name + '</span> <abbr>►</abbr> </a>').appendTo($helper);
-                            var pre = $('<pre class="nette-dump" style="display:block;">');
-                            code.appendTo(pre);
-                            pre.appendTo($helper);
-                        } else {
-                            $('<p><b style="color: #009; font-wight: bold">' + name + "</b> : " + output + "</p>").appendTo($helper);
-                        }
-                        count++;
-                    });
-                    count = "(" + count + ")";
-                } else {
-                    count = "(<i>not present</i>)";
-                }
-                $("<h3 style='font-weight:bold;'>" + key + " " + count + "</h3>").appendTo($panel);
-                $helper.appendTo($panel);
-            });
-        }
-    }, {
-        counter: 0,
-        singleReport: true,
-        initialize: function () {
-            if (!($("#tracy-debug").length > 0)) return false;
-            var panel = $('<div id="tracy-debug-panel-ajax-json" class="tracy-panel tracy-mode-peek">').appendTo($("#tracy-debug"));
-
-            panel.html('<h1 id="tracy-ajax-json-panel-title">Ajax Panel<span class="pull-right" style="font-size: 16px;">'
-                + 'Single:<a href="#" id="tracy-debug-panel-tracy-ajax-json-mode" onclick="javacript:$.nette.ext(\'diagnostics.jsonpanel\').toggleMode();return false;">' + (this.singleReport ? 'on' : 'off') + '</a>'
-                + ' | <a href="#" id="tracy-debug-panel-tracy-ajax-clear"  onclick="javacript:$.nette.ext(\'diagnostics.jsonpanel\').clear();">Clear</a>'
-                + '</span></h1><div id="tracy-ajax-json-panel" style="position:relative;max-height:700px;overflow:auto;width:100%;"></div>');
-            //$('body').css('margin-left', '300px');
-            var bar = $('<li><a rel="ajax-json-panel" href="#">AJAX</li>').appendTo($('#tracy-debug-bar ul'));
-
-            return $("#ajax-json-panel");
-        },
-        clear: function () {
-            this.panel.html('');
-        },
-        toggleMode: function () {
-            this.singleReport = !this.singleReport;
-            $("#tracy-debug-panel-ajax-json-mode").text(this.singleReport ? 'on' : 'off');
-
-        },
-        getMonitored: function () {
-            return ['state', 'snippets', 'bsmodals'];
-        },
-        getTitle: function (count, type) {
-            return '<h2 style="font:11pt/1.5 sans-serif;margin:0;padding:2px 8px;background:#3484d2;color:white">Ajax ' + type + ' #' + count + '</h2>';
-        },
-        getPanel: function () {
-            if (!this.panel) this.panel = this.initialize();
-            return this.panel;
-        }
-    });
-})(jQuery);
 /*
  * Error reporting
  */
@@ -2303,7 +2206,7 @@ $(function () {
     } else {
         $.nette.init(function (rh) {
             //Anchors
-            $('a:not(.no-ajax,[target="_blank"],[href]):not([href^="javascript:"])')
+            $('a[href]:not(.no-ajax,[target="_blank"],[href=""]):not([href^="javascript:"])')
                 .off('click', rh)
                 .on('click', rh);
 
