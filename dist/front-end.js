@@ -1667,6 +1667,9 @@ window.pipas = pipas;
                         pipasSpinner.show("refreshFromModal", "body");
                         location.reload();
                     }
+                    else if(payload.close){
+                        modal.hide();
+                    }
                     //messages
                     if (payload[0] && $.isArray(payload) && typeof payload[0] == 'string') {
                         messages.showInfo(payload[0]);
